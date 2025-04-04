@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "esnext",
+      "jsx": "react",
+      "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "preserveConstEnums": true,
+      "allowJs": true,
+      "sourceMap": true,
+      "moduleResolution": "node",
+      "strict": true,
+      "forceConsistentCasingInFileNames": false,
+      "noImplicitReturns": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "resolveJsonModule": true,
+      "downlevelIteration": true,
+      "noEmit": true,
+      "skipLibCheck": true
+    },
+    "compileOnSave": false
+  }
