@@ -1,0 +1,259 @@
+@import "_variables";
+@import "_mixins";
+
+@import "reset";
+@import "utils";
+
+html {
+	font-family: @font-main;
+	font-size: 14px;
+	height: @window-height;
+}
+
+body {
+	font-family: @font-main;
+	color: @color-black;
+	background-color: @color-main;
+	margin: 30px;
+	height: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	line-height: 1.3;
+	.relUnit(margin-bottom, 14px, @base-font-size, rem);
+	font-weight: @font-regular;
+
+	strong {
+		font-weight: @font-regular;
+	}
+}
+
+h1 {
+	.relUnit(margin-bottom, 16px, @base-font-size, rem);
+	.relUnit(font-size, 26px, @base-font-size, rem);
+
+	.gte-sm({
+		line-height: 1.2;
+		.relUnit(margin-bottom, 20px, @base-font-size, rem);
+		.relUnit(font-size, 35px, @base-font-size, rem);
+	});
+
+	.gte-md({
+		.relUnit(margin-bottom, 30px, @base-font-size, rem);
+		.relUnit(font-size, 58px, @base-font-size, rem);
+	});
+
+	strong {
+		.relUnit(font-size, 30px, @base-font-size, rem);
+
+		.gte-sm({
+			.relUnit(font-size, 40px, @base-font-size, rem);
+		});
+
+		.gte-md({
+			.relUnit(font-size, 65px, @base-font-size, rem);
+		});
+	}
+}
+
+h2 {
+	.relUnit(font-size, 25px, @base-font-size, rem);
+
+	.gte-sm({
+		.relUnit(font-size, 30px, @base-font-size, rem);
+	});
+}
+
+h3 {
+	.relUnit(font-size, 20px, @base-font-size, rem);
+
+	.gte-sm({
+		.relUnit(font-size, 26px, @base-font-size, rem);
+	});
+}
+
+h4,
+h5,
+h6 {
+	.relUnit(font-size, 15px, @base-font-size, rem);
+	font-weight: @font-semibold;
+
+	.gte-sm({
+		.relUnit(font-size, 17px, @base-font-size, rem);
+	});
+}
+
+p,
+ul,
+ol,
+dl {
+	margin: 0;
+	.relUnit(margin-bottom, 20px, @base-font-size, rem);
+	.relUnit(font-size, 14px, @base-font-size, rem);
+	line-height: 1.43;
+
+	.gte-sm({
+		.relUnit(font-size, 16px, @base-font-size, rem);
+		line-height: 1.56;
+	});
+
+	.gte-md({
+		line-height: 1.69;
+	});
+
+	.gte-xl({
+		line-height: 1.81;
+	});
+}
+
+ul,
+ol {
+	.relUnit(padding-left, 30px, @base-font-size, rem);
+}
+
+li {
+	ul,
+	ol {
+		margin-bottom: 0;
+	}
+}
+
+table {
+	width: 100%;
+	margin: 0;
+	.relUnit(margin-bottom, 20px, @base-font-size, rem);
+}
+
+th,
+td {
+	padding: 15px 5px;
+	.relUnit(font-size, 15px, @base-font-size, rem);
+	text-align: left;
+
+	&:first-child {
+		border-left: none;
+	}
+
+	&:last-child {
+		border-right: none;
+	}
+}
+
+thead {
+	th {
+		border-top: none;
+		padding-top: 12px;
+		text-align: center;
+		font-weight: @font-semibold;
+		vertical-align: bottom;
+	}
+}
+
+tbody {
+	th {
+		padding: 5px 5px 5px 0;
+		text-align: left;
+		font-weight: @font-semibold;
+	}
+
+	td {
+		height: 42px;
+		padding: 5px;
+		text-align: center;
+		.relUnit(font-size, 14px, @base-font-size, rem);
+	}
+}
+
+tfoot {
+	td {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		border-bottom: none;
+		text-align: center;
+		vertical-align: top;
+	}
+}
+
+caption {
+	caption-side: bottom;
+}
+
+caption,
+figcaption {
+	margin: 0;
+	.relUnit(margin-top, 14px, @base-font-size, rem);
+	.relUnit(font-size, 15px, @base-font-size, rem);
+	line-height: 1.4;
+	font-style: italic;
+	text-align: center;
+}
+
+address {
+	.relUnit(margin-bottom, 20px, @base-font-size, rem);
+}
+
+blockquote {
+	margin: 0;
+	padding: 20px;
+	.relUnit(margin-top, 30px, @base-font-size, rem);
+	.relUnit(margin-bottom, 30px, @base-font-size, rem);
+	border-left: solid @color-green 2px;
+	border-radius: 2px;
+
+	:last-child {
+		margin-bottom: 0;
+	}
+}
+
+details {
+	.clearfix();
+	margin: 0;
+	.relUnit(margin-top, 30px, @base-font-size, rem);
+	.relUnit(margin-bottom, 30px, @base-font-size, rem);
+	border-radius: 2px;
+}
+
+summary {
+	margin: 0;
+	padding: 15px 20px;
+	.relUnit(font-size, 17px, @base-font-size, rem);
+	font-weight: @font-semibold;
+
+	~ * {
+		margin: 20px;
+	}
+}
+
+hr {
+	margin: 0;
+	.relUnit(margin-top, 40px, @base-font-size, rem);
+	.relUnit(margin-bottom, 40px, @base-font-size, rem);
+}
+
+a {
+	text-decoration: none;
+}
+
+::selection {
+	color: @color-main;
+}
+
+em {
+	font-style: normal;
+	font-weight: @font-semibold;
+}
+
+strong {
+	font-weight: @font-bold;
+}
+
+samp {
+	.relUnit(font-size, 14px, @base-font-size, rem);
+	line-height: 1.4;
+}

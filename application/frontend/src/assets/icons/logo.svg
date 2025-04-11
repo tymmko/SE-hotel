@@ -1,0 +1,11 @@
+<svg width="55" height="51" viewBox="0 0 55 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<path d="M28.1966 20.6269C9.65171 20.0129 7.8714 41.6577 7.8714 41.6577H48.6702C48.6702 41.6577 46.7415 21.241 28.1966 20.6269Z" fill="#FBCD6A" stroke="black" stroke-width="2" stroke-linejoin="round"/>
+	<path d="M7.44193 50H48.6702" stroke="black" stroke-width="2" stroke-linecap="round"/>
+	<line x1="28.3444" y1="19.7552" x2="28.3444" y2="15.89" stroke="black" stroke-width="2"/>
+	<path d="M34.0685 15.0614L22.4731 15.0614" stroke="black" stroke-width="2" stroke-linecap="round"/>
+	<line x1="28.1971" y1="1" x2="28.1971" y2="8.44814" stroke="black" stroke-width="2" stroke-linecap="round"/>
+	<line x1="44.7415" y1="4.37225" x2="41.0175" y2="10.8225" stroke="black" stroke-width="2" stroke-linecap="round"/>
+	<line x1="53.5645" y1="14.6793" x2="47.1142" y2="18.4034" stroke="black" stroke-width="2" stroke-linecap="round"/>
+	<line x1="1" y1="-1" x2="8.44814" y2="-1" transform="matrix(0.5 0.866025 0.866025 -0.5 11.7365 3.00623)" stroke="black" stroke-width="2" stroke-linecap="round"/>
+	<line x1="1" y1="-1" x2="8.44814" y2="-1" transform="matrix(0.866025 0.5 0.5 -0.866025 1 13.3133)" stroke="black" stroke-width="2" stroke-linecap="round"/>
+</svg>

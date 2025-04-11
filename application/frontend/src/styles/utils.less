@@ -1,0 +1,145 @@
+@import "_variables";
+@import "_mixins";
+
+// Color
+.color {
+	each(@colors, {
+		@color: ~"color-@{value}";
+
+		&-@{value} {
+			color: @@color !important;
+		}
+	});
+
+	&-transparent {
+		color: transparent !important;
+	}
+}
+
+// Display
+.d {
+	&-none {
+		display: none !important;
+	}
+
+	&-initial {
+		display: initial !important;
+	}
+
+	&-inline {
+		display: inline !important;
+	}
+
+	&-inline-block {
+		display: inline-block !important;
+	}
+
+	&-block {
+		display: block !important;
+	}
+
+	&-table {
+		display: table !important;
+	}
+
+	&-table-row {
+		display: table-row !important;
+	}
+
+	&-table-cell {
+		display: table-cell !important;
+	}
+
+	&-flex {
+		display: -ms-flexbox !important;
+		display: flex !important;
+	}
+
+	&-inline-flex {
+		display: -ms-inline-flexbox !important;
+		display: inline-flex !important;
+	}
+
+	&-grid {
+		display: -ms-grid !important;
+		display: grid;
+	}
+}
+
+.justify-content {
+	@values: flex-start flex-end center space-between space-around;
+
+	each(@values, {
+		&-@{value} {
+			justify-content: @value !important;
+		}
+	});
+}
+
+// borders
+.b {
+	@values: 1 2 3;
+	@radii: 10 15 20 30;
+
+	each(@values, {
+		&-@{value} {
+			border: unit(@value, px) solid !important;
+		}
+	});
+
+	each(@values, {
+		@b: @value;
+		each(@radii, .(@r) {
+			&r-@{b}-@{r} {
+				border: unit(@b, px) solid !important;
+				border-radius: unit(@r, px) !important;
+			}
+		});
+	});
+}
+
+// width
+.w {
+	@values: 85 100 200 250 300;
+
+	each(@values, {
+		&-@{value} {
+			width: unit(@value, px) !important;
+		}
+	});
+}
+
+// margin
+.m {
+	@values: auto 0 1 -1 2 -2 3 -3 4 -4 5 -5 7 -7 10 -10 15 -15 20 -20 25 -25 30 -30 35 -35 40 -40 45 -45;
+
+	.generate-margins(@prop) {
+		each(@values, {
+			&-@{value} when (isNumber(@value)) {
+				@{prop}: unit(@value, px) !important;
+			}
+
+			&-@{value} when not (isNumber(@value)) {
+				@{prop}: @value !important;
+			}
+		});
+	};
+
+	.generate-margins(margin);
+
+	&t {
+		.generate-margins(margin-top);
+	}
+
+	&r {
+		.generate-margins(margin-right);
+	}
+
+	&b {
+		.generate-margins(margin-bottom);
+	}
+
+	&l {
+		.generate-margins(margin-left);
+	}
+}
