@@ -1,28 +1,20 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route
-} from "react-router-dom";
 import { Provider } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
 import store from './app/store';
-import { Home } from './pages';
+import { router } from './routes/router';
 import './styles/websiteBase.less';
 
 const domNode = document.getElementById('app')!;
 const root = createRoot(domNode);
 
 const App = () => {
-	return (
-		<Provider store={store}>
-			<Router>
-				<Routes>
-					<Route path="/" element={<Home />} />
-				</Routes>
-			</Router>
-		</Provider>
-	)
-}
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
+};
 
 root.render(<App />);
