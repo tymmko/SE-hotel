@@ -1,3 +1,3 @@
-import { RoomStatusDropdown } from "./RoomStatusDropdown";
+import { RoomStatusDropdown, StatusOption } from './RoomStatusDropdown'
 
-export { RoomStatusDropdown };
+export { RoomStatusDropdown, StatusOption };
