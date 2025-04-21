@@ -5,7 +5,7 @@ import colors from '../../assets/colors.json';
 type RoomComponentProps = {
   type: 'single' | 'double' | 'suite';
   isAvailable: boolean;
-  price: string;
+  price: number;
   roomNumber: number;
 };
 
