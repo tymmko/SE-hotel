@@ -3,27 +3,34 @@ import { Icon } from '../../../../components';
 import classNames from 'classnames';
 // @ts-ignore
 import * as styles from './styles.m.less';
+import { MenuOption } from '../../../../types/pages';
 
-const icons = [
+type SideBarProps = {
+	active: MenuOption;
+}
+
+const icons = (active: MenuOption) => [
 	{
-		name: 'couch',
+		name: active === 'rooms' ? 'couch-filled' : 'couch',
 		onClick: () => console.log('Couch clicked')
 	},
 	{
-		name: 'book',
+		name: active === 'reservations' ? 'book-filled' : 'book',
 		onClick: () => console.log('Book clicked')
 	},
 	{
-		name: 'user',
+		name: active === 'guests' ? 'user-filled' : 'user',
 		onClick: () => console.log('User clicked')
 	},
 	{
-		name: 'bill',
+		name: active === 'bills' ? 'bill-filled' : 'bill',
 		onClick: () => console.log('Bill clicked')
 	},
   ];
 
-export const SideBar = () => {
+export const SideBar = ({
+	active
+}: SideBarProps) => {
 	return <div className={classNames('d-grid br-2-15 w-85', styles['side-bar'])}>
 		<Icon
 			name='logo'
@@ -31,7 +38,7 @@ export const SideBar = () => {
 			size='large'
 		/>
 		<div className='mt-20 d-grid justify-content-center'>
-			{icons.map((icon) => (
+			{icons(active).map((icon) => (
 				<Icon
 					key={icon.name}
 					name={icon.name as any}

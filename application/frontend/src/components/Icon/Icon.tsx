@@ -15,7 +15,7 @@ type IconProps = {
 	hex?: string,
 	size?: IconSize,
 	className?: string,
-	onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
+	onClick?: React.MouseEventHandler<SVGSVGElement | HTMLImageElement | HTMLElement>;
 	tooltip?: string,
 };
 
@@ -28,24 +28,25 @@ const Icon = ({
 	onClick,
 	tooltip,
 }: IconProps) => {
-	const col = hex || colors[color!];
-	const style = col ? {color: col} : undefined;
-	const IconSrc = icons[name] ?? '';
+	const col = hex || (color ? colors[color] : undefined);
+	const IconComponent = icons[name];
 
-	return <img
-		src={IconSrc}
-		alt={name}
-		onClick={onClick}
-		className={classNames(
-			'icon',
-			styles['image-icon'],
-			styles[`image-icon-${size}`],
-			className,
-			tooltip && 'tooltip-bottom',
-		)}
-		style={style}
-		data-title={tooltip}
-	/>
+	console.log(name, col)
+	if (!IconComponent) return null;
+
+	return (
+		<IconComponent
+			onClick={onClick}
+			fill={col}
+			className={classNames(
+				styles['image-icon'],
+				styles[`image-icon-${size}`],
+				className,
+				tooltip && 'tooltip-bottom',
+			)}
+			data-title={tooltip}
+		/>
+	);
 };
 
 export default Icon;

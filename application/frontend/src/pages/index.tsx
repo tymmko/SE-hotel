@@ -1,4 +1,7 @@
-import { Home } from './Home';
+import { Rooms } from './Rooms';
 import { Login } from './Login';
 
-export { Home, Login };
+export { 
+    Rooms, 
+    Login
+};
