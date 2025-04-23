@@ -1,13 +1,8 @@
 import React from 'react';
 import * as styles from './room-component.m.less';
 import colors from '../../assets/colors.json';
+import { RoomComponent } from '../types';
 
-type RoomComponentProps = {
-  type: 'single' | 'double' | 'suite';
-  isAvailable: boolean;
-  price: number;
-  roomNumber: number;
-};
 
 // mapping of colors depending on the room type
 const intersectColors: Record<'single' | 'double' | 'suite', string> = {
@@ -22,7 +17,7 @@ const roomNumberColors: Record<'single' | 'double' | 'suite', string> = {
     suite: colors.yellowMedium,
 };
 
-const RoomComponent = ({ type, isAvailable, price, roomNumber }: RoomComponentProps) => {
+const RoomComponent = ({ type, isAvailable, price, roomNumber }: RoomComponent) => {
   const roomTypeClass = styles[`room-${type}`]; 
   const intersectColor = intersectColors[type];
 
