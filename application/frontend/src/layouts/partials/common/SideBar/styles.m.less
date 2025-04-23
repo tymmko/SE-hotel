@@ -1,39 +1,13 @@
-// @import "../../../../styles/_variables.less";
-
-// .side-bar {
-//     height: calc(@window-height - 45px);
-//     justify-content: center;
-//     align-content: baseline;
-//     padding: 20px 0;
-//     position: fixed;
-
-//     img {
-//         cursor: pointer;
-//     }
-// }
-
 @import "../../../../styles/_variables.less";
 
 .side-bar {
-    height: calc(@window-height - 45px);
-    justify-content: center;
-    align-content: baseline;
-    padding: 20px 0;
-    position: fixed;
-    width: 85px; /* Default width, matching w-85 utility class */
-    background-color: @color-main; /* Ensure visibility */
-    overflow-y: auto; /* Allow scrolling if icons overflow vertically */
+	height: calc(@window-height - 45px);
+	justify-content: center;
+	align-content: baseline;
+	padding: 20px 0;
+	position: fixed;
 
-    img {
-        cursor: pointer;
-    }
-
-    /* Adjust width on smaller screens */
-    @media (max-width: @breakpoint-sm) { /* 600px */
-        width: 60px;
-    }
-
-    @media (max-width: @breakpoint-xs) { /* 450px */
-        width: 50px;
-    }
+	img {
+		cursor: pointer;
+	}
 }
