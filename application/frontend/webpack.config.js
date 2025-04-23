@@ -20,7 +20,7 @@ const config = {
 	path: path.resolve(__dirname + '/dist'),
 	filename: 'assets/[name].[contenthash:6].js',
 	chunkFilename: 'assets/[name].[chunkhash:6].js',
-	publicPath: '',
+	publicPath: '/',
   },
   module: {
 	rules: [
@@ -87,11 +87,17 @@ const config = {
 	  },
 	  {
 		test: /\.svg$/,
-		type: 'asset/resource',
-		generator: {
-		  filename: 'assets/icons/[name].[hash][ext]'
-		}
-	  },					
+		issuer: /\.[jt]sx?$/,
+		use: [
+		  {
+			loader: '@svgr/webpack',
+			options: {
+				icon: true,
+			},
+		  },
+		  'url-loader'
+		],
+	  },				  
 	  {
 		test: /\.(jpe?g|png|gif)$/i,
 		exclude: [/node_modules/],

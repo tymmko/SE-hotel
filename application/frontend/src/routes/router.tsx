@@ -1,17 +1,14 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { Home, Login } from '../pages';
+import { Rooms, Login } from '../pages';
 
 export const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Home />,
-        children: [
-            // TODO
-        ],
-    },
-    {
-        path: '/login',
-        element: <Login />,
-    },
+	{
+		path: '/',
+		element: <Rooms />,
+	},
+	{
+		path: "/login",
+		element: <Login />
+	}
 ]);

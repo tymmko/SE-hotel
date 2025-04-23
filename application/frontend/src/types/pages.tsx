@@ -1,0 +1,1 @@
+export type MenuOption = 'reservations' | 'rooms' | 'guests' | 'bills';
