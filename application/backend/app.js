@@ -1,15 +1,15 @@
-const http = require("http");
-const { neon } = require("@neondatabase/serverless");
+const express = require('express');
+const cors = require('cors');
+const apiRoutes = require('./src/routes/apiRoutes');
+const errorHandler = require('./src/middlewares/errorHandler');
 
-const sql = neon(process.env.DATABASE_URL);
+const app = express();
 
-const requestHandler = async (req, res) => {
-  const result = await sql`SELECT version()`;
-  const { version } = result[0];
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end(version);
-};
+app.use(cors());
+app.use(express.json());
 
-http.createServer(requestHandler).listen(3000, () => {
-  console.log("Server running at http://localhost:3000");
-});
+app.use('/api', apiRoutes);
+
+app.use(errorHandler);
+
+module.exports = app;
