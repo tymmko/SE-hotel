@@ -4,21 +4,44 @@ const path = require('path');
 
 // Function to read and execute SQL file statements individually
 async function executeSqlFile(sqlFilePath) {
-  // Read the SQL file content
   const sqlContent = await fs.readFile(sqlFilePath, 'utf8');
-  
-  // Split into individual statements by semicolon, remove empty ones
   const statements = sqlContent.split(';')
     .map(s => s.trim())
     .filter(s => s.length > 0);
 
-  // Execute each statement separately
   for (const statement of statements) {
     try {
       await pool.query(statement);
       console.log(`✅ Executed: ${statement.substring(0, 50)}...`);
     } catch (error) {
       console.error(`❌ Error executing statement: ${statement}`, error);
+      throw error;
+    }
+  }
+}
+
+// Function to reset sequences for all SERIAL columns
+async function resetSequences() {
+  const tables = [
+    { table: 'Room', column: 'room_id' },
+    { table: 'Guest', column: 'guest_id' },
+    { table: 'Reservation', column: 'reservation_id' },
+    { table: 'Stay', column: 'stay_id' },
+    { table: 'Bill', column: 'bill_id' },
+    { table: 'Equipment', column: 'equipment_id' },
+    { table: 'PriceHistory', column: 'price_history_id' },
+    { table: 'ServiceOrder', column: 'service_order_id' }
+  ];
+
+  for (const { table, column } of tables) {
+    const sequenceName = `${table.toLowerCase()}_${column}_seq`;
+    try {
+      await pool.query(`
+        SELECT setval($1, (SELECT COALESCE(MAX(${column}), 0) FROM ${table}), true)
+      `, [sequenceName]);
+      console.log(`✅ Reset sequence for ${table}.${column}`);
+    } catch (error) {
+      console.error(`❌ Error resetting sequence for ${table}.${column}:`, error);
       throw error;
     }
   }
@@ -38,6 +61,10 @@ async function setupDatabase() {
     const seedPath = path.join(__dirname, 'seed.sql');
     await executeSqlFile(seedPath);
     console.log('🌱 Database seeded successfully!');
+
+    // Reset sequences
+    await resetSequences();
+    console.log('🔄 All sequences reset successfully!');
   } catch (error) {
     console.error('❌ Error setting up database:', error);
     throw error;
