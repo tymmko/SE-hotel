@@ -1,0 +1,4 @@
+import colorsDefinitions from '../assets/colors.json';
+export const colors = colorsDefinitions;
+
+export * from './Icon';
