@@ -3,3 +3,4 @@ export const colors = colorsDefinitions;
 
 export * from './Icon';
 export * from './Card';
+export * from './PriceHistory';
