@@ -1,5 +1,6 @@
 import { FC, SVGProps } from 'react';
 
+import { ReactComponent as ArrowDiagonal } from './arrow-diagonal.svg';
 import { ReactComponent as Bill } from './bill.svg';
 import { ReactComponent as BillFilled } from './bill-filled.svg';
 import { ReactComponent as Book } from './book.svg';
@@ -15,6 +16,7 @@ import { ReactComponent as Eye } from './eye.svg';
 
 
 const icons: Record<string, FC<SVGProps<SVGSVGElement>>> = {
+	'arrow-diagonal': ArrowDiagonal,
 	bill: Bill,
 	'bill-filled': BillFilled,
 	book: Book,
