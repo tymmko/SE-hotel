@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import Notes from './notes.slice';
+import { RoomsReducer } from './rooms.reducer';
 
 const rootReducer = combineReducers({
-  Notes
+	RoomsReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>
