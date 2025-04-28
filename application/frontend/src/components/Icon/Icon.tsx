@@ -31,7 +31,6 @@ const Icon = ({
 	const col = hex || (color ? colors[color] : undefined);
 	const IconComponent = icons[name];
 
-	console.log(name, col)
 	if (!IconComponent) return null;
 
 	return (

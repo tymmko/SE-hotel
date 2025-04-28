@@ -1,36 +1,38 @@
 import React from 'react';
 import { Icon } from '../../../../components';
+import { MenuOption } from '../../../../types/pages';
 import classNames from 'classnames';
 // @ts-ignore
 import * as styles from './styles.m.less';
-import { MenuOption } from '../../../../types/pages';
+import { navigate } from '../../../../services/utils';
 
 type SideBarProps = {
 	active: MenuOption;
 }
 
-const icons = (active: MenuOption) => [
-	{
-		name: active === 'rooms' ? 'couch-filled' : 'couch',
-		onClick: () => console.log('Couch clicked')
-	},
-	{
-		name: active === 'reservations' ? 'book-filled' : 'book',
-		onClick: () => console.log('Book clicked')
-	},
-	{
-		name: active === 'guests' ? 'user-filled' : 'user',
-		onClick: () => console.log('User clicked')
-	},
-	{
-		name: active === 'bills' ? 'bill-filled' : 'bill',
-		onClick: () => console.log('Bill clicked')
-	},
-  ];
-
 export const SideBar = ({
 	active
 }: SideBarProps) => {
+	const icons = (active: MenuOption) => [
+		{
+			name: active === 'rooms' ? 'couch-filled' : 'couch',
+			onClick: () => navigate('/rooms')
+		},
+		{
+			name: active === 'reservations' ? 'book-filled' : 'book',
+			onClick: () => navigate('/reservations')
+		},
+		{
+			name: active === 'guests' ? 'user-filled' : 'user',
+			onClick: () => navigate('/guests')
+		},
+		{
+			name: active === 'bills' ? 'bill-filled' : 'bill',
+			onClick: () => navigate('/bills')
+		},
+	];
+
+	
 	return <div className={classNames('d-grid br-2-15 w-85', styles['side-bar'])}>
 		<Icon
 			name='logo'

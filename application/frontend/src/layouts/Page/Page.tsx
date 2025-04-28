@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 import { SideBar, TopBar } from '../partials/common';
 import { MenuOption } from '../../types/pages';
 
 type PageProps = {
 	active: MenuOption,
-	children: ReactElement
+	children: ReactNode
 }
 
 export const Page = ({
