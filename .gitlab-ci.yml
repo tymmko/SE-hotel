@@ -1,0 +1,66 @@
+  stages:
+  - install
+  - build
+  - deploy
+
+default:
+  image: node:20
+
+variables:
+  NODE_ENV: production
+
+# Install backend dependencies
+install_backend:
+  stage: install
+  script:
+    - cd application/backend
+    - npm install --legacy-peer-deps
+  artifacts:
+    paths:
+      - application/backend/node_modules/
+
+# Install frontend dependencies
+install_frontend:
+  stage: install
+  script:
+    - cd application/frontend
+    - npm install --legacy-peer-deps
+  artifacts:
+    paths:
+      - application/frontend/node_modules/
+
+# Build frontend
+build_frontend:
+  stage: build
+  script:
+    - cd application/frontend
+    - npm install --legacy-peer-deps --include=dev
+    - npm run build
+  artifacts:
+    paths:
+      - application/frontend/dist
+
+# Deploy frontend
+deploy_frontend:
+  stage: deploy
+  image: node:20
+  script:
+    - npm install -g railway
+    - cd application/frontend
+    - railway login --token $RAILWAY_TOKEN
+    - railway up --service frontend
+  only:
+    - main
+
+# Deploy backend
+deploy_backend:
+  stage: deploy
+  image: node:20
+  script:
+    - npm install -g railway
+    - cd application/backend
+    - railway login --token $RAILWAY_TOKEN
+    - railway up --service backend
+  only:
+    - main
+
