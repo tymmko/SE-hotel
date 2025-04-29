@@ -50,7 +50,7 @@ deploy_frontend:
     - railway login --token $RAILWAY_TOKEN
     - railway up --service frontend
   only:
-    - main
+    - dev
 
 # Deploy backend
 deploy_backend:
@@ -62,5 +62,5 @@ deploy_backend:
     - railway login --token $RAILWAY_TOKEN
     - railway up --service backend
   only:
-    - main
+    - dev
 
