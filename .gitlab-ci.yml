@@ -45,7 +45,7 @@ deploy_frontend:
   stage: deploy
   image: ghcr.io/railwayapp/cli:latest
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
     FRONTEND_SVC_ID: $RAILWAY_FRONTEND_SVC_ID
@@ -59,7 +59,7 @@ deploy_backend:
   stage: deploy
   image: ghcr.io/railwayapp/cli:latest
   rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
     BACKEND_SVC_ID: $RAILWAY_BACKEND_SVC_ID
