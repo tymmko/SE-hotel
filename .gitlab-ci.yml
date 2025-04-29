@@ -52,7 +52,7 @@ deploy_frontend:
     PROJECT_ID: $RAILWAY_PROJECT_ID
   script:
     - cd application/frontend
-    - railway link $PROJECT_ID
+    - railway link --project=$PROJECT_ID
     - railway up --service=$FRONTEND_SVC_ID
 
 # Deploy backend
@@ -67,5 +67,5 @@ deploy_backend:
     PROJECT_ID: $RAILWAY_PROJECT_ID
   script:
     - cd application/backend
-    - railway link $PROJECT_ID
+    - railway link --project=$PROJECT_ID
     - railway up --service=$BACKEND_SVC_ID
