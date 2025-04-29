@@ -22,7 +22,7 @@ CREATE TABLE Guest (
 CREATE TABLE Room (
     room_id BIGSERIAL PRIMARY KEY,
     room_type TEXT CHECK (room_type IN ('Single', 'Double', 'Suite')) NOT NULL,
-    status TEXT CHECK (status IN ('Occupied', 'Free')) NOT NULL,
+    status TEXT CHECK (status IN ('Occupied', 'Available')) NOT NULL,
     capacity INT NOT NULL,
     price_per_night FLOAT NOT NULL
 );
