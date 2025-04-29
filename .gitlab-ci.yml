@@ -40,12 +40,27 @@ build_frontend:
     paths:
       - application/frontend/dist
 
+# Deploy frontend
+deploy_frontend:
+  stage: deploy
+  image: node:20
+  script:
+    - npm install -g railway
+    - cd application/frontend
+    - railway login --token $RAILWAY_TOKEN
+    - railway up --service frontend
+  only:
+    - main
+
 # Deploy backend
 deploy_backend:
   stage: deploy
+  image: node:20
   script:
+    - npm install -g railway
     - cd application/backend
-    - npm run start
+    - railway login --token $RAILWAY_TOKEN
+    - railway up --service backend
   only:
     - main
 
