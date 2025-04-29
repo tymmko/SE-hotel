@@ -46,15 +46,13 @@ deploy_frontend:
   image: ghcr.io/railwayapp/cli:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "dev"'
-  script:
-    - cd application/frontend
-    - echo $RAILWAY_TOKEN | railway login --browserless --token-stdin
-    - railway link --project=$PROJECT_ID
-    - railway up --service=$FRONTEND_SVC_ID
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
-    PROJECT_ID: $RAILWAY_PROJECT_ID
     FRONTEND_SVC_ID: $RAILWAY_FRONTEND_SVC_ID
+    PROJECT_ID: $RAILWAY_PROJECT_ID
+  script:
+    - cd application/frontend
+    - railway up --service=$FRONTEND_SVC_ID
 
 # Deploy backend
 deploy_backend:
@@ -62,13 +60,11 @@ deploy_backend:
   image: ghcr.io/railwayapp/cli:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "dev"'
-  script:
-    - cd application/backend
-    - echo $RAILWAY_TOKEN | railway login --browserless --token-stdin
-    - railway link --project=$PROJECT_ID
-    - railway up --service=$BACKEND_SVC_ID
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
-    PROJECT_ID: $RAILWAY_PROJECT_ID
     BACKEND_SVC_ID: $RAILWAY_BACKEND_SVC_ID
+    PROJECT_ID: $RAILWAY_PROJECT_ID
+  script:
+    - cd application/backend
+    - railway up --service=$BACKEND_SVC_ID
 
