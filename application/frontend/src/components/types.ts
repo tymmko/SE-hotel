@@ -1,4 +1,5 @@
-export type IconName = 'bill' |
+export type IconName =  'arrow-diagonal'|
+                        'bill' |
                         'book' |
                         'couch' |
                         'logo' |
