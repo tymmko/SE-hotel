@@ -13,8 +13,8 @@ import { ReactComponent as Search } from './search.svg';
 import { ReactComponent as User } from './user.svg';
 import { ReactComponent as UserFilled } from './user-filled.svg';
 import { ReactComponent as Eye } from './eye.svg';
-import { ReactComponent as roomNumberBadge } from './roomNumberBadge.svg';
-import { ReactComponent as guestBadge } from './guestBadge.svg';
+import { ReactComponent as RoomNumberBadge } from './roomNumberBadge.svg';
+import { ReactComponent as GuestBadge } from './guestBadge.svg';
 
 
 const icons: Record<string, FC<SVGProps<SVGSVGElement>>> = {
@@ -31,6 +31,8 @@ const icons: Record<string, FC<SVGProps<SVGSVGElement>>> = {
 	search: Search,
 	eye: Eye,
 	visual: Visual,
+	roomNumberBadge: RoomNumberBadge,
+	guestBadge: GuestBadge
 };
 
 export default icons;
