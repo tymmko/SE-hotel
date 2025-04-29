@@ -1,5 +1,5 @@
 import { RoomsStoreType } from '../types/RoomsStoreType';
-import * as action from '../services/constants';
+import * as action from '../types/constants';
 
 export const initialState: RoomsStoreType = {
 	roomsList: [],

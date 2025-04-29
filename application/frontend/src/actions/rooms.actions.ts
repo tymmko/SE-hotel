@@ -1,4 +1,4 @@
-import * as constants from '../services/constants';
+import * as constants from '../types/constants';
 
 export const roomsListLoading = () => ({
 	type: constants.ROOMS_LIST_LOADING,
