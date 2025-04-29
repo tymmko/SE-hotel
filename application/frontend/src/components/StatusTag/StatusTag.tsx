@@ -28,18 +28,18 @@ const StatusTag = ({
   const style = bgColor ? { backgroundColor: bgColor, color: '#fff' } : undefined;
 
   return (
-    <span
-      onClick={onClick}
-      className={classNames(
-        'statusTag',
-        styles['statusTag'],
-        styles[`statusTag-${size}`],
-        className
-      )}
-      style={style}
-    >
-      {text}
-    </span>
+	<span
+		onClick={onClick}
+		className={classNames(
+			'statusTag',
+			styles['statusTag'],
+			styles[`statusTag-${size}`],
+			className
+		)}
+		style={style}
+	>
+	  {text}
+	</span>
   );
 };
 

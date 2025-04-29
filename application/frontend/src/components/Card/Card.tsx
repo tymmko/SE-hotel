@@ -8,6 +8,7 @@ type CardProps = {
 	classHeader: string,
 	header: ReactNode,
 	children: ReactNode,
+	onClick: () => void,
 }
 
 const Card = ({
@@ -15,9 +16,14 @@ const Card = ({
 	classHeader,
 	header,
 	children,
+	onClick
 }: CardProps) => {
 	return (
-		<div className={`${styles['component']} ${classHeader}`} style={{ backgroundColor: colors.mainMedium }}>
+		<div 
+			className={`${styles['component']} ${classHeader}`}
+			style={{ backgroundColor: colors.mainMedium }}
+			onClick={() => onClick()}
+		>
 			<div className={styles.intersect} style={{ backgroundColor: color }}>
 				{header}
 			</div>

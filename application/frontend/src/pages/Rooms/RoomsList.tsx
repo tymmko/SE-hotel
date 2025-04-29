@@ -1,9 +1,9 @@
 import React from 'react';
-import { Page } from '../../layouts';
 import { Room } from '../../types/rooms';
-import { Card, colors, Icon } from '../../components';
+import { Card, colors, Icon, StatusTag } from '../../components';
 
 import * as styles from './styles.m.less';
+import classNames from 'classnames';
 
 const rooms: Room[] = [
 	{
@@ -23,8 +23,15 @@ const rooms: Room[] = [
 		isAvailable: true,
 		price: 300,
 		roomNumber: 15
+	},
+	{
+		type: 'suite',
+		isAvailable: true,
+		price: 300,
+		roomNumber: 15
 	}
 ]
+
 const intersectColors: Record<'single' | 'double' | 'suite', string> = {
 	single: colors.blue,
 	double: colors.green,
@@ -37,10 +44,17 @@ const roomTypeColorsText: Record<'single' | 'double' | 'suite', string> = {
 	suite: colors.yellowMedium,
 };
 
-function RoomsList() {
+type RoomsListProps = {
+	selectRoom: (room: Room) => void
+}
+
+const RoomsList = ({
+	selectRoom,
+}: RoomsListProps) => {
 	const getClass = (type: Room['type']) => {
 		return styles[`room-${type}`]; 
 	}
+
 
 	return (
 		<div className={styles['room-list']}>
@@ -49,6 +63,7 @@ function RoomsList() {
 					key={i}
 					color={intersectColors[room.type]}
 					classHeader={getClass(room.type)}
+					onClick={() => selectRoom(room)}
 					header={
 						<>
 							<div className={styles['room-type']}>
@@ -61,7 +76,12 @@ function RoomsList() {
 					}
 				>
 					<div className={styles.status}>
-						Status : {room.isAvailable ? 'Available' : 'Occupied'}
+						Status:
+						<StatusTag
+							text={room.isAvailable ? 'Available' : 'Occupied'}
+							hex={room.isAvailable ? colors.green : colors.pink}
+							className={classNames('ml-10', styles.tag)}
+						/>
 					</div>
 					<div className={styles.price}>
 						Price : ${room.price} / night
