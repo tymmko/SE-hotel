@@ -1,36 +1,9 @@
 import React from 'react';
 import { Room } from '../../types/rooms';
-import { Card, colors, Icon, StatusTag } from '../../components';
+import { AddButton, Card, colors, Icon, StatusTag } from '../../components';
 
 import * as styles from './styles.m.less';
 import classNames from 'classnames';
-
-const rooms: Room[] = [
-	{
-		type: 'single',
-		isAvailable: true,
-		price: 100,
-		roomNumber: 12
-	},
-	{
-		type: 'double',
-		isAvailable: false,
-		price: 200,
-		roomNumber: 13
-	},
-	{
-		type: 'suite',
-		isAvailable: true,
-		price: 300,
-		roomNumber: 15
-	},
-	{
-		type: 'suite',
-		isAvailable: true,
-		price: 300,
-		roomNumber: 15
-	}
-]
 
 const intersectColors: Record<'single' | 'double' | 'suite', string> = {
 	single: colors.blue,
@@ -45,16 +18,17 @@ const roomTypeColorsText: Record<'single' | 'double' | 'suite', string> = {
 };
 
 type RoomsListProps = {
+	rooms: Room[],
 	selectRoom: (room: Room) => void
 }
 
 const RoomsList = ({
+	rooms,
 	selectRoom,
 }: RoomsListProps) => {
 	const getClass = (type: Room['type']) => {
 		return styles[`room-${type}`]; 
 	}
-
 
 	return (
 		<div className={styles['room-list']}>
@@ -91,6 +65,10 @@ const RoomsList = ({
 					</div>
 				</Card>
 			)}
+
+			<div className={styles.add}>
+				<AddButton color='orange' />
+			</div>
 		</div>
 	);
 }

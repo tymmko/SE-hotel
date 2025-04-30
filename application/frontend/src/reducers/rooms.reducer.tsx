@@ -1,4 +1,4 @@
-import { RoomsStoreType } from '../types/RoomsStoreType';
+import { RoomsStoreType } from '../types/rooms';
 import * as action from '../types/constants';
 
 export const initialState: RoomsStoreType = {

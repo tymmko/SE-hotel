@@ -27,6 +27,18 @@
 	}
 }
 
+.gte-xs(@rules) {
+	@media (min-width: @breakpoint-xs) {
+		@rules();
+	}
+}
+
+.lt-xs(@rules) {
+	@media (max-width: (@breakpoint-sm - 0.02)) {
+		@rules();
+	}
+}
+
 .gte-sm(@rules) {
 	@media (min-width: @breakpoint-sm) {
 		@rules();

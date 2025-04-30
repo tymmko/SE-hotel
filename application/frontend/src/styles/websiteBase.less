@@ -26,8 +26,8 @@ h5,
 h6 {
 	margin: 0;
 	line-height: 1.3;
-	.relUnit(margin-bottom, 14px, @base-font-size, rem);
-	font-weight: @font-regular;
+	.relUnit(margin-bottom, 8px, @base-font-size, rem);
+	font-weight: @font-extralight;
 
 	strong {
 		font-weight: @font-regular;
@@ -71,10 +71,10 @@ h2 {
 }
 
 h3 {
-	.relUnit(font-size, 20px, @base-font-size, rem);
+	.relUnit(font-size, 16px, @base-font-size, rem);
 
 	.gte-sm({
-		.relUnit(font-size, 26px, @base-font-size, rem);
+		.relUnit(font-size, 20px, @base-font-size, rem);
 	});
 }
 
@@ -150,7 +150,7 @@ thead {
 		border-top: none;
 		padding-top: 12px;
 		text-align: center;
-		font-weight: @font-semibold;
+		font-weight: @font-extralight;
 		vertical-align: bottom;
 	}
 }
@@ -159,7 +159,7 @@ tbody {
 	th {
 		padding: 5px 5px 5px 0;
 		text-align: left;
-		font-weight: @font-semibold;
+		font-weight: @font-extralight;
 	}
 
 	td {
@@ -241,7 +241,7 @@ a {
 }
 
 ::selection {
-	color: @color-main;
+	background-color: @color-yellow-medium;
 }
 
 em {
@@ -256,4 +256,9 @@ strong {
 samp {
 	.relUnit(font-size, 14px, @base-font-size, rem);
 	line-height: 1.4;
+}
+
+
+div {
+	font-size: 16px;
 }
