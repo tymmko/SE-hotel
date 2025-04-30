@@ -5,23 +5,29 @@ const router = express.Router();
 // Import models
 const models = require('../models/model');
 
-// Import repository class
+// Import repository classes
 const RoomRepository = require('../data/repositories/roomRepository');
+const BillRepository = require('../data/repositories/billRepository');
 
-// Create repository instance
+// Create repository instances
 const roomRepository = new RoomRepository(models);
+const billRepository = new BillRepository(models);
 
-// Import service class
+// Import service classes
 const RoomService = require('../services/roomService');
+const BillService = require('../services/billService');
 
-// Create service instance
+// Create service instances
 const roomService = new RoomService(roomRepository);
+const billService = new BillService(billRepository);
 
-// Import controller class
+// Import controller classes
 const RoomController = require('../controllers/room.controller');
+const BillController = require('../controllers/bill.controller');
 
-// Create controller instance
+// Create controller instances
 const roomController = new RoomController(roomService);
+const billController = new BillController(billService);
 
 // Room routes
 // Specific routes first to avoid routing conflicts
@@ -44,5 +50,23 @@ router.route('/rooms/:id')
   .get(roomController.getRoom.bind(roomController))
   .put(roomController.updateRoom.bind(roomController))
   .delete(roomController.deleteRoom.bind(roomController));
+
+// Bill routes
+router.route('/bills')
+  .get(billController.getAllBills.bind(billController))
+  .post(billController.createBill.bind(billController));
+
+router.route('/bills/:id')
+  .get(billController.getBill.bind(billController))
+  .put(billController.updateBill.bind(billController));
+
+router.route('/bills/:id/status')
+  .put(billController.updateBillStatus.bind(billController));
+
+router.route('/bills/:id/payment')
+  .post(billController.processPayment.bind(billController));
+
+router.route('/bills/check-overdue')
+  .get(billController.checkOverdueBills.bind(billController));
 
 module.exports = router;

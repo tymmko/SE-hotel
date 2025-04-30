@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
         allowNull: false,
         validate: {
-          isIn: [['Pending', 'Paid', 'Unpaid', 'Cancelled']]
+          isIn: [['Paid', 'Unpaid']]
         }
       },
       stay_id: {

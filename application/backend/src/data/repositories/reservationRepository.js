@@ -152,9 +152,7 @@ class ReservationRepository extends BaseRepository {
     try {
       const whereClause = {
         room_id: roomId,
-        status: {
-          [Op.notIn]: ['Cancelled']
-        },
+        status: 'Confirmed', // Only check against confirmed reservations
         [Op.or]: [
           // Check-in during another stay
           {
