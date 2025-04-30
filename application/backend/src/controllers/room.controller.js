@@ -58,6 +58,58 @@ class RoomController {
   }
 
   /**
+   * Get price history for a room
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Function} next - Express next middleware function
+   */
+  async getPriceHistoryByRoom(req, res, next) {
+    try {
+      const priceHistory = await this.roomService.getPriceHistoryByRoom(req.params.id);
+      
+      res.status(200).json({
+        success: true,
+        count: priceHistory.length,
+        data: priceHistory
+      });
+    } catch (error) {
+      if (error.message === 'Room not found') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+      next(error);
+    }
+  }
+
+  /**
+   * Get equipment/amenities for a room
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Function} next - Express next middleware function
+   */
+  async getEquipmentByRoom(req, res, next) {
+    try {
+      const equipment = await this.roomService.getEquipmentByRoom(req.params.id);
+      
+      res.status(200).json({
+        success: true,
+        count: equipment.length,
+        data: equipment
+      });
+    } catch (error) {
+      if (error.message === 'Room not found') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+      next(error);
+    }
+  }
+
+  /**
    * Create new room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object

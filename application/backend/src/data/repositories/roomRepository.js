@@ -214,6 +214,44 @@ class RoomRepository extends BaseRepository {
       throw error; // Rethrow to let the service handle it
     }
   }
+    /**
+   * Find price history for a specific room
+   * @param {number} roomId - Room ID
+   * @param {Object} options - Additional query options
+   * @returns {Promise<Array>} List of price history entries for the room
+   */
+    async findPriceHistoryByRoom(roomId, options = {}) {
+      try {
+        return await this.models.PriceHistory.findAll({
+          where: { room_id: roomId },
+          order: [['start_date', 'DESC']], // Most recent first
+          ...options,
+          raw: true
+        });
+      } catch (error) {
+        console.error('Error in findPriceHistoryByRoom:', error);
+        throw error;
+      }
+    }
+     /**
+   * Find equipment/amenities for a specific room
+   * @param {number} roomId - Room ID
+   * @returns {Promise<Array>} List of equipment items for the room
+   */
+  async findEquipmentByRoom(roomId) {
+    try {
+      return await this.models.Equipment.findAll({
+        where: { room_id: roomId },
+        order: [['name', 'ASC']],
+        raw: true
+      });
+    } catch (error) {
+      console.error('Error in findEquipmentByRoom:', error);
+      throw error;
+    }
+  }
 }
+
+
 
 module.exports = RoomRepository;

@@ -38,6 +38,40 @@ class RoomService extends BaseService {
   }
 
   /**
+   * Get price history for a specific room
+   * @param {number} roomId - Room ID
+   * @returns {Promise<Array>} List of price history entries for the room
+   * @throws {Error} If room not found
+   */
+  async getPriceHistoryByRoom(roomId) {
+    // Verify room exists
+    const room = await this.repository.findById(roomId);
+    
+    if (!room) {
+      throw new Error('Room not found');
+    }
+    
+    return await this.repository.findPriceHistoryByRoom(roomId);
+  }
+
+  /**
+   * Get equipment/amenities for a specific room
+   * @param {number} roomId - Room ID
+   * @returns {Promise<Array>} List of equipment items for the room
+   * @throws {Error} If room not found
+   */
+  async getEquipmentByRoom(roomId) {
+    // Verify room exists
+    const room = await this.repository.findById(roomId);
+    
+    if (!room) {
+      throw new Error('Room not found');
+    }
+    
+    return await this.repository.findEquipmentByRoom(roomId);
+  }
+
+  /**
    * Create a new room with initial price history
    * @param {Object} roomData - Room data
    * @returns {Promise<Object>} Created room
@@ -189,8 +223,6 @@ class RoomService extends BaseService {
     // Update room status
     return await this.updateRoom(roomId, { status });
   }
-
-  
 }
 
 module.exports = RoomService;

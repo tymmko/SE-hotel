@@ -2,25 +2,40 @@
 const express = require('express');
 const router = express.Router();
 
-// Import original controllers (except Room)
+// Import models
+const models = require('../models/model');
 
-// Import the new room controller
-const RoomController = require('../controllers/room.controller');
-
-// Create instances of dependencies needed for the new controller
+// Import repository class
 const RoomRepository = require('../data/repositories/roomRepository');
+
+// Create repository instance
+const roomRepository = new RoomRepository(models);
+
+// Import service class
 const RoomService = require('../services/roomService');
 
-// Get models from existing configuration
-const { Room, Equipment, PriceHistory, Reservation } = require('../models/model');
-
-// Create instances for the new RoomController
-const models = { Room, Equipment, PriceHistory, Reservation };
-const roomRepository = new RoomRepository(models);
+// Create service instance
 const roomService = new RoomService(roomRepository);
+
+// Import controller class
+const RoomController = require('../controllers/room.controller');
+
+// Create controller instance
 const roomController = new RoomController(roomService);
 
-// Room routes (using the new controller)
+// Room routes
+// Specific routes first to avoid routing conflicts
+router.get('/rooms/available', roomController.getAvailableRooms.bind(roomController));
+
+router.route('/rooms/:id/status')
+  .put(roomController.updateRoomStatus.bind(roomController));
+
+router.route('/rooms/:id/price-history')
+  .get(roomController.getPriceHistoryByRoom.bind(roomController));
+
+router.route('/rooms/:id/equipment')
+  .get(roomController.getEquipmentByRoom.bind(roomController));
+
 router.route('/rooms')
   .get(roomController.getAllRooms.bind(roomController))
   .post(roomController.createRoom.bind(roomController));
@@ -29,14 +44,5 @@ router.route('/rooms/:id')
   .get(roomController.getRoom.bind(roomController))
   .put(roomController.updateRoom.bind(roomController))
   .delete(roomController.deleteRoom.bind(roomController));
-
-router.get('/rooms/available', roomController.getAvailableRooms.bind(roomController));
-
-router.put('/rooms/:id/status', roomController.updateRoomStatus.bind(roomController));
-
-// Routes for other controllers (keeping original implementation)
-// Guests
-
-// ... Keep remaining original routes ...
 
 module.exports = router;
