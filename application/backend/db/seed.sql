@@ -15,7 +15,7 @@ RESTART IDENTITY CASCADE;
 INSERT INTO Room (room_type, status, capacity, price_per_night) VALUES
   ('Single','Occupied',  1, 80),
   ('Double', 'Occupied', 2, 120),
-  ('Suite', 'Available', 4, 250);
+  ('Suite', 'Available', 3, 250);
 
 -- Insert Guests
 INSERT INTO Guest (first_name, last_name, email, phone_number) VALUES 

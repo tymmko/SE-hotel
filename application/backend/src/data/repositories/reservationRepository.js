@@ -50,20 +50,7 @@ class ReservationRepository extends BaseRepository {
   async findReservationWithDetails(reservationId) {
     try {
       return await this.model.findByPk(reservationId, {
-        include: [
-          {
-            model: this.models.Guest,
-            attributes: ['guest_id', 'first_name', 'last_name', 'email']
-          },
-          {
-            model: this.models.Room,
-            attributes: ['room_id', 'room_type', 'capacity', 'price_per_night']
-          },
-          {
-            model: this.models.Stay,
-            attributes: ['stay_id', 'actual_check_in', 'actual_check_out', 'is_no_show']
-          }
-        ],
+       
         raw: false // Need Sequelize instances for includes
       });
     } catch (error) {
