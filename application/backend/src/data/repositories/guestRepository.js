@@ -4,7 +4,7 @@ const BaseRepository = require('./common/baseRepository');
 
 /**
  * Repository for Guest-related data operations
- * Extends BaseRepository with guest-specific data access methods
+ * Simplified to handle basic guest functionality
  */
 class GuestRepository extends BaseRepository {
   /**
@@ -16,91 +16,32 @@ class GuestRepository extends BaseRepository {
   }
 
   /**
-   * Find guests with basic details
-   * @param {Object} options - Additional query options
-   * @returns {Promise<Array>} List of guests with related data
+   * Find all guests
+   * @returns {Promise<Array>} List of guests
    */
-  async findGuestsWithDetails(options = {}) {
+  async findAllGuests() {
     try {
       return await this.model.findAll({
-        ...options,
         raw: true // Get plain JSON objects instead of Sequelize instances
       });
     } catch (error) {
-      console.error('Error in findGuestsWithDetails:', error);
-      throw error; // Rethrow to let the service handle it
+      console.error('Error in findAllGuests:', error);
+      throw error;
     }
   }
 
   /**
-   * Find a single guest with details
+   * Find a single guest by ID
    * @param {number} guestId - Guest ID
-   * @returns {Promise<Object>} Guest with related data
+   * @returns {Promise<Object>} Guest data
    */
-  async findGuestWithDetails(guestId) {
+  async findGuestById(guestId) {
     try {
       return await this.model.findByPk(guestId, {
         raw: true // Get plain JSON object instead of Sequelize instance
       });
     } catch (error) {
-      console.error('Error in findGuestWithDetails:', error);
-      throw error; // Rethrow to let the service handle it
-    }
-  }
-
-  /**
-   * Find guests with their reservation history
-   * @param {number} guestId - Guest ID
-   * @returns {Promise<Object>} Guest with reservation history
-   */
-  async findGuestWithReservations(guestId) {
-    try {
-      return await this.model.findByPk(guestId, {
-        include: [{
-          model: this.models.Reservation,
-          attributes: ['reservation_id', 'check_in_date', 'check_out_date', 'status', 'total_price']
-        }],
-        raw: false // Need Sequelize instance to handle includes properly
-      });
-    } catch (error) {
-      console.error('Error in findGuestWithReservations:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Find guests by status (Active, Inactive)
-   * @param {string} status - Guest status
-   * @returns {Promise<Array>} List of guests with specified status
-   */
-  async findGuestsByStatus(status) {
-    try {
-      return await this.model.findAll({
-        where: { status },
-        raw: true
-      });
-    } catch (error) {
-      console.error('Error in findGuestsByStatus:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Update guest status
-   * @param {number} guestId - Guest ID
-   * @param {string} status - New status (Active, Inactive)
-   * @returns {Promise<Array>} [affectedCount, affectedRows]
-   */
-  async updateGuestStatus(guestId, status) {
-    try {
-      return await this.model.update(
-        { status },
-        {
-          where: { guest_id: guestId }
-        }
-      );
-    } catch (error) {
-      console.error('Error in updateGuestStatus:', error);
+      console.error('Error in findGuestById:', error);
       throw error;
     }
   }
@@ -115,9 +56,7 @@ class GuestRepository extends BaseRepository {
       const count = await this.models.Reservation.count({
         where: {
           guest_id: guestId,
-          status: {
-            [Op.notIn]: ['Cancelled', 'Completed']
-          }
+          status: 'Confirmed'
         }
       });
 

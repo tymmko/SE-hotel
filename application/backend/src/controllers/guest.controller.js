@@ -2,7 +2,7 @@
 
 /**
  * Controller for Guest-related endpoints
- * Handles HTTP requests/responses and delegates business logic to the service layer
+ * Simplified to handle basic guest functionality
  */
 class GuestController {
   /**
@@ -20,7 +20,7 @@ class GuestController {
    */
   async getAllGuests(req, res, next) {
     try {
-      const guests = await this.guestService.getAllGuestsWithDetails();
+      const guests = await this.guestService.getAllGuests();
       
       res.status(200).json({
         success: true,
@@ -40,32 +40,7 @@ class GuestController {
    */
   async getGuest(req, res, next) {
     try {
-      const guest = await this.guestService.getGuestWithDetails(req.params.id);
-      
-      res.status(200).json({
-        success: true,
-        data: guest
-      });
-    } catch (error) {
-      if (error.message === 'Guest not found') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-      next(error);
-    }
-  }
-
-  /**
-   * Get guest with reservation history
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   * @param {Function} next - Express next middleware function
-   */
-  async getGuestWithReservations(req, res, next) {
-    try {
-      const guest = await this.guestService.getGuestWithReservations(req.params.id);
+      const guest = await this.guestService.getGuestById(req.params.id);
       
       res.status(200).json({
         success: true,
@@ -97,7 +72,8 @@ class GuestController {
         data: guest
       });
     } catch (error) {
-      if (error.message === 'Invalid email format') {
+      if (error.message.includes('required') || 
+          error.message.includes('Invalid email')) {
         return res.status(400).json({
           success: false,
           message: error.message
@@ -108,7 +84,7 @@ class GuestController {
   }
 
   /**
-   * Update guest
+   * Update a guest
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
@@ -128,7 +104,8 @@ class GuestController {
           message: error.message
         });
       }
-      if (error.message === 'Invalid email format') {
+      
+      if (error.message.includes('Invalid email')) {
         return res.status(400).json({
           success: false,
           message: error.message
@@ -137,79 +114,6 @@ class GuestController {
       next(error);
     }
   }
-
-  /**
-   * Delete guest
-    * @param {Object} req - Express request object
-    * @param {Object} res - Express response object
-    * @param {Function} next - Express next middleware function
-    */
-    async deleteGuest(req, res, next) {
-      try {
-        await this.guestService.deleteGuest(req.params.id);
-        
-        res.status(200).json({
-          success: true,
-          data: {}
-        });
-      } catch (error) {
-        if (error.message === 'Guest not found') {
-          return res.status(404).json({
-            success: false,
-            message: error.message
-          });
-        }
-        if (error.message === 'Cannot delete guest with active reservations') {
-          return res.status(400).json({
-            success: false,
-            message: error.message
-          });
-        }
-        next(error);
-      }
-    }
-
-    /**
-     * Update guest status
-     * @param {Object} req - Express request object
-     * @param {Object} res - Express response object
-     * @param {Function} next - Express next middleware function
-     */
-    async updateGuestStatus(req, res, next) {
-      try {
-        const { status } = req.body;
-        
-        if (!status) {
-          return res.status(400).json({
-            success: false,
-            message: 'Please provide a status'
-          });
-        }
-        
-        const guest = await this.guestService.updateGuestStatus(req.params.id, status);
-        
-        res.status(200).json({
-          success: true,
-          data: guest
-        });
-      } catch (error) {
-        if (error.message === 'Guest not found') {
-          return res.status(404).json({
-            success: false,
-            message: error.message
-          });
-        }
-        
-        if (error.message.includes('Invalid status') || 
-            error.message.includes('Cannot mark guest as Inactive')) {
-          return res.status(400).json({
-            success: false,
-            message: error.message
-          });
-        }
-        next(error);
-      }
-    }
 }
 
 module.exports = GuestController;
