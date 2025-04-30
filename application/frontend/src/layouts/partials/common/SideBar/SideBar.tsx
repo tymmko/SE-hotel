@@ -1,29 +1,38 @@
 import React from 'react';
 import { Icon } from '../../../../components';
+import { MenuOption } from '../../../../types/pages';
 import classNames from 'classnames';
 // @ts-ignore
 import * as styles from './styles.m.less';
+import { navigate } from '../../../../services/utils';
 
-const icons = [
-	{
-		name: 'couch',
-		onClick: () => console.log('Couch clicked')
-	},
-	{
-		name: 'book',
-		onClick: () => console.log('Book clicked')
-	},
-	{
-		name: 'user',
-		onClick: () => console.log('User clicked')
-	},
-	{
-		name: 'bill',
-		onClick: () => console.log('Bill clicked')
-	},
-  ];
+type SideBarProps = {
+	active: MenuOption;
+}
 
-export const SideBar = () => {
+export const SideBar = ({
+	active
+}: SideBarProps) => {
+	const icons = (active: MenuOption) => [
+		{
+			name: active === 'rooms' ? 'couch-filled' : 'couch',
+			onClick: () => navigate('/rooms')
+		},
+		{
+			name: active === 'reservations' ? 'book-filled' : 'book',
+			onClick: () => navigate('/reservations')
+		},
+		{
+			name: active === 'guests' ? 'user-filled' : 'user',
+			onClick: () => navigate('/guests')
+		},
+		{
+			name: active === 'bills' ? 'bill-filled' : 'bill',
+			onClick: () => navigate('/bills')
+		},
+	];
+
+	
 	return <div className={classNames('d-grid br-2-15 w-85', styles['side-bar'])}>
 		<Icon
 			name='logo'
@@ -31,7 +40,7 @@ export const SideBar = () => {
 			size='large'
 		/>
 		<div className='mt-20 d-grid justify-content-center'>
-			{icons.map((icon) => (
+			{icons(active).map((icon) => (
 				<Icon
 					key={icon.name}
 					name={icon.name as any}

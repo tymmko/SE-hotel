@@ -1,0 +1,84 @@
+@import '../../styles/_variables.less';
+
+.rooms {
+	display: flex;
+}
+
+.room-list {
+	display: flex;
+	flex-wrap: wrap;
+	width: 60%;
+	max-width: 70%;
+}
+
+.intersect {
+	height: 47px;
+	border-bottom: 1px solid @color-black;
+	display: flex; 
+	align-items: center;
+	justify-content: space-between; 
+	padding: 0 16px; 
+}
+
+.room-number {
+	font-size: 16px;
+	font-weight: 400;
+}  
+
+.room-type {
+	font-size: 16px;
+}
+
+.status {
+	padding-left: 20px;
+	font-weight: 400;
+	font-size: 14px;
+	display: flex;  
+	align-items: center;  
+	flex-grow: 1;
+}
+
+.price {
+	padding-left: 20px;
+	padding-left: 20px;
+	font-weight: 400;
+	font-size: 14px;
+	display: flex;  
+	align-items: center;  
+	flex-grow: 1;
+}
+
+.logo {
+	padding: 10px;
+	display: flex;
+	position: relative;
+	justify-content: right;
+
+	svg {
+		cursor: pointer;
+		background-color: @color-main;
+		border-radius: 10px;
+		padding: 2px;
+	}
+}
+
+.summary {
+	margin-left: 15px;
+	width: 34%;
+
+	img {
+		max-width: 50%;
+	}
+}
+
+.tag {
+	color: @color-black !important;
+}
+
+.info {
+	flex-direction: column;
+
+	div {
+		margin-top: 10px;
+	}
+}

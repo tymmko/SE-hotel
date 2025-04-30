@@ -10,11 +10,11 @@ const domNode = document.getElementById('app')!;
 const root = createRoot(domNode);
 
 const App = () => {
-  return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  );
+	return (
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
+	);
 };
 
 root.render(<App />);
