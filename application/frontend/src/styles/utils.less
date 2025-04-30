@@ -76,6 +76,16 @@
 	});
 }
 
+.align-items {
+	@values: center;
+
+	each(@values, {
+		&-@{value} {
+			align-items: @value !important;
+		}
+	});
+}
+
 // borders
 .b {
 	@values: 1 2 3;
@@ -111,7 +121,7 @@
 
 // margin
 .m {
-	@values: auto 0 1 -1 2 -2 3 -3 4 -4 5 -5 7 -7 10 -10 15 -15 20 -20 25 -25 30 -30 35 -35 40 -40 45 -45;
+	@values: auto 0 1 -1 2 -2 3 -3 4 -4 5 -5 7 -7 10 -10 15 -15 20 -20 25 -25 30 -30 35 -35 40 -40 45 -45 90 125;
 
 	.generate-margins(@prop) {
 		each(@values, {
@@ -141,5 +151,50 @@
 
 	&l {
 		.generate-margins(margin-left);
+	}
+}
+
+// padding
+.p {
+	@values: auto 0 1 2 3 4 5 7 10 15 20 25 30 35 40 45;
+
+	.generate-paddings(@prop) {
+		each(@values, {
+			&-@{value} when (isNumber(@value)) {
+				@{prop}: unit(@value, px) !important;
+			}
+
+			&-@{value} when not (isNumber(@value)) {
+				@{prop}: @value !important;
+			}
+		});
+	};
+
+	.generate-paddings(padding);
+
+	&t {
+		.generate-paddings(padding-top);
+	}
+
+	&r {
+		.generate-paddings(padding-right);
+	}
+
+	&b {
+		.generate-paddings(padding-bottom);
+	}
+
+	&l {
+		.generate-paddings(padding-left);
+	}
+
+	&x {
+		.generate-paddings(padding-right);
+		.generate-paddings(padding-left);
+	}
+
+	&y {
+		.generate-paddings(padding-top);
+		.generate-paddings(padding-bottom);
 	}
 }

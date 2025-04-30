@@ -1,6 +1,14 @@
 declare module '*.m.less';
-
 declare module '*.svg' {
-	const fileUrl: string;
-	export = fileUrl;
+	import * as React from 'react';
+	export const ReactComponent: React.FunctionComponent<
+	  React.SVGProps<SVGSVGElement> & { title?: string }
+	>;
+	const src: string;
+	export default src;
+}
+
+declare module '*.png' {
+	const value: string;
+	export default value;
 }
