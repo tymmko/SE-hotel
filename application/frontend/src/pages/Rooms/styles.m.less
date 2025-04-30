@@ -1,14 +1,38 @@
 @import '../../styles/_variables.less';
+@import '../../styles/_mixins.less';
 
 .rooms {
 	display: flex;
+	height: calc(100vh - 149px);
+	overflow: scroll;
 }
 
 .room-list {
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	width: 60%;
 	max-width: 70%;
+ 	justify-content: space-between;
+	align-content: baseline;
+	margin-top: -20px;
+
+	.lt-md({
+		width: 40%;
+	});
+}
+
+.summary {
+	margin-left: 15px;
+	width: 40%;
+
+	img {
+		max-width: 50%;
+	}
+
+	.lt-md({
+		width: 56%;
+	});
 }
 
 .intersect {
@@ -62,13 +86,26 @@
 	}
 }
 
-.summary {
-	margin-left: 15px;
-	width: 34%;
+.add {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
 
-	img {
-		max-width: 50%;
-	}
+.amenities {
+	position: absolute;
+	bottom: 0;
+}
+
+.amenities-tag {
+	border-radius: 20px;
+	color: @color-black !important;
+	margin-right: 10px;
+}
+
+.info-label {
+	width: 55px;
+	margin-top: 0 !important;
 }
 
 .tag {
@@ -77,6 +114,7 @@
 
 .info {
 	flex-direction: column;
+	position: relative;
 
 	div {
 		margin-top: 10px;
