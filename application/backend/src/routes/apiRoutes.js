@@ -1,38 +1,98 @@
-
-
+// src/routes/apiRoutes.js
 const express = require('express');
 const router = express.Router();
-const reservationController = require('../controllers/reservation.controller');
-const guestController = require('../controllers/guest.controller');
-const roomController = require('../controllers/room.controller');
-const billController = require('../controllers/bill.controller');
-const priceHistoryController = require('../controllers/priceHistory.controller');
 
+// Import models
+const models = require('../models/model');
 
-router.get('/reservations', reservationController.getReservations);
-router.post('/reservation', reservationController.createReservation);
-router.get('/guest/:id', guestController.getGuest);
-router.get('/amenities/:room_id', reservationController.getAmenitiesByRoomId);
+// Import repository classes
+const RoomRepository = require('../data/repositories/roomRepository');
+const BillRepository = require('../data/repositories/billRepository');
+const ReservationRepository = require('../data/repositories/reservationRepository');
+const GuestRepository = require('../data/repositories/guestRepository');
 
-router.get('/rooms', roomController.getAllRooms);
-router.get('/rooms/:id', roomController.getRoom);
-router.post('/rooms', roomController.createRoom);
-router.put('/rooms/:id', roomController.updateRoom);
-router.delete('/rooms/:id', roomController.deleteRoom);
+// Create repository instances
+const roomRepository = new RoomRepository(models);
+const billRepository = new BillRepository(models);
+const reservationRepository = new ReservationRepository(models);
+const guestRepository = new GuestRepository(models);
 
-router.get('/bills', billController.getAllBills);
-router.get('/bills/:id', billController.getBill);
-router.post('/bills', billController.createBill);
-router.put('/bills/:id', billController.updateBill);
+// Import service classes
+const RoomService = require('../services/roomService');
+const BillService = require('../services/billService');
+const ReservationService = require('../services/reservationService');
+const GuestService = require('../services/guestService');
 
-// Price History routes
-router.get('/pricehistory', priceHistoryController.getAllPriceHistories);
-router.get('/pricehistory/:id', priceHistoryController.getPriceHistory);
-router.get('/pricehistory/room/:roomId', priceHistoryController.getPriceHistoryByRoomId);
-router.post('/pricehistory', priceHistoryController.createPriceHistory);
-router.put('/pricehistory/:id', priceHistoryController.updatePriceHistory);
-router.delete('/pricehistory/:id', priceHistoryController.deletePriceHistory);
+// Create service instances
+const roomService = new RoomService(roomRepository);
+const billService = new BillService(billRepository);
+const reservationService = new ReservationService(reservationRepository, roomRepository);
+const guestService = new GuestService(guestRepository);
 
+// Import controller classes
+const RoomController = require('../controllers/room.controller');
+const BillController = require('../controllers/bill.controller');
+const ReservationController = require('../controllers/reservation.controller');
+const GuestController = require('../controllers/guest.controller');
 
+// Create controller instances
+const roomController = new RoomController(roomService);
+const billController = new BillController(billService);
+const reservationController = new ReservationController(reservationService);
+const guestController = new GuestController(guestService);
+
+// Room routes
+// Specific routes first to avoid routing conflicts
+router.get('/rooms/available', roomController.getAvailableRooms.bind(roomController));
+
+router.route('/rooms/:id/status')
+  .put(roomController.updateRoomStatus.bind(roomController));
+
+router.route('/rooms/:id/price-history')
+  .get(roomController.getPriceHistoryByRoom.bind(roomController));
+
+router.route('/rooms/:id/equipment')
+  .get(roomController.getEquipmentByRoom.bind(roomController));
+
+router.route('/rooms')
+  .get(roomController.getAllRooms.bind(roomController))
+  .post(roomController.createRoom.bind(roomController));
+
+router.route('/rooms/:id')
+  .get(roomController.getRoom.bind(roomController))
+  .put(roomController.updateRoom.bind(roomController))
+  .delete(roomController.deleteRoom.bind(roomController));
+
+// Bill routes
+router.route('/bills')
+  .get(billController.getAllBills.bind(billController))
+  .post(billController.createBill.bind(billController));
+
+router.route('/bills/:id')
+  .get(billController.getBill.bind(billController));
+
+router.route('/bills/:id/status')
+  .put(billController.updateBillStatus.bind(billController));
+
+// Reservation routes
+router.route('/reservations')
+  .get(reservationController.getAllReservations.bind(reservationController))
+  .post(reservationController.createReservation.bind(reservationController));
+
+router.route('/reservations/:id')
+  .get(reservationController.getReservation.bind(reservationController))
+  .put(reservationController.updateReservation.bind(reservationController));
+
+router.route('/reservations/:id/status')
+  .put(reservationController.updateReservationStatus.bind(reservationController));
+
+// Guest routes
+router.route('/guests')
+  .get(guestController.getAllGuests.bind(guestController))
+  .post(guestController.createGuest.bind(guestController));
+
+router.route('/guests/:id')
+  .get(guestController.getGuest.bind(guestController))
+  .put(guestController.updateGuest.bind(guestController));
 
 module.exports = router;
