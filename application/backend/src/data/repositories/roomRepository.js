@@ -38,14 +38,113 @@ class RoomRepository extends BaseRepository {
    * @param {number} roomId - Room ID
    * @returns {Promise<Object>} Room with related data
    */
-  async findRoomWithDetails(roomId, options = {}) {
+  async findRoomWithDetails(roomId) {
     try {
       return await this.model.findByPk(roomId, {
-        raw: true,
-        ...options // Include transaction here
+        raw: true // Get plain JSON object instead of Sequelize instance
       });
     } catch (error) {
       console.error('Error in findRoomWithDetails:', error);
+      throw error; // Rethrow to let the service handle it
+    }
+  }
+
+  /**
+   * Find current reservation and guest for a room
+   * @param {number} roomId - Room ID
+   * @returns {Promise<Object>} Current reservation and guest info, or null if none
+   */
+  async findCurrentReservationAndGuest(roomId) {
+    try {
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      
+      // Find current active reservation for the room
+      const reservation = await this.models.Reservation.findOne({
+        where: {
+          room_id: roomId,
+          status: 'Confirmed', // Status from Reservation model, not Room model
+          check_in_date: { [Op.lte]: formattedDate },  // Check-in date is today or earlier
+          check_out_date: { [Op.gte]: formattedDate }  // Check-out date is today or later
+        },
+        include: [
+          {
+            model: this.models.Guest,
+            attributes: ['guest_id', 'first_name', 'last_name', 'email', 'phone_number']
+          },
+          {
+            model: this.models.Stay,
+            attributes: ['stay_id', 'check_in_date', 'check_out_date']
+          }
+        ],
+        raw: false
+      });
+      
+      if (!reservation) {
+        return null;  // No current reservation found
+      }
+      
+      // Format the response
+      return {
+        reservation: {
+          reservation_id: reservation.reservation_id,
+          check_in_date: reservation.check_in_date,
+          check_out_date: reservation.check_out_date,
+          status: reservation.status,
+          stay: reservation.Stays && reservation.Stays.length > 0 ? {
+            stay_id: reservation.Stays[0].stay_id,
+            check_in_date: reservation.Stays[0].check_in_date,
+            check_out_date: reservation.Stays[0].check_out_date
+          } : null
+        },
+        guest: {
+          guest_id: reservation.Guest.guest_id,
+          first_name: reservation.Guest.first_name,
+          last_name: reservation.Guest.last_name,
+          email: reservation.Guest.email,
+          phone_number: reservation.Guest.phone_number
+        }
+      };
+    } catch (error) {
+      console.error('Error in findCurrentReservationAndGuest:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Find price history for a specific room
+   * @param {number} roomId - Room ID
+   * @param {Object} options - Additional query options
+   * @returns {Promise<Array>} List of price history entries for the room
+   */
+  async findPriceHistoryByRoom(roomId, options = {}) {
+    try {
+      return await this.models.PriceHistory.findAll({
+        where: { room_id: roomId },
+        order: [['start_date', 'DESC']], // Most recent first
+        ...options,
+        raw: true
+      });
+    } catch (error) {
+      console.error('Error in findPriceHistoryByRoom:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Find equipment/amenities for a specific room
+   * @param {number} roomId - Room ID
+   * @returns {Promise<Array>} List of equipment items for the room
+   */
+  async findEquipmentByRoom(roomId) {
+    try {
+      return await this.models.Equipment.findAll({
+        where: { room_id: roomId },
+        order: [['name', 'ASC']],
+        raw: true
+      });
+    } catch (error) {
+      console.error('Error in findEquipmentByRoom:', error);
       throw error;
     }
   }
@@ -75,27 +174,6 @@ class RoomRepository extends BaseRepository {
     } catch (error) {
       console.error('Error in createPriceHistory:', error);
       throw error; // Rethrow to let the service handle it
-    }
-  }
-
-  async createPriceHistory(roomId, price, startDate = new Date(), endDate = null, options = {}) {
-    try {
-      // Default end date to 1 year from now if not specified
-      if (!endDate) {
-        endDate = new Date();
-        endDate.setFullYear(endDate.getFullYear() + 1);
-      }
-  
-      // Make sure to properly pass the transaction options
-      return await this.models.PriceHistory.create({
-        room_id: roomId,
-        start_date: startDate,
-        end_date: endDate,
-        price: price
-      }, options); // This needs to have the transaction object
-    } catch (error) {
-      console.error('Error in createPriceHistory:', error);
-      throw error;
     }
   }
 
@@ -133,7 +211,7 @@ class RoomRepository extends BaseRepository {
         attributes: ['room_id'],
         where: {
           status: {
-            [Op.notIn]: ['Cancelled']
+            [Op.notIn]: ['Canceled']
           },
           [Op.or]: [
             // Check-in during another stay
@@ -203,7 +281,7 @@ class RoomRepository extends BaseRepository {
         where: {
           room_id: roomId,
           status: {
-            [Op.notIn]: ['Cancelled', 'Completed']
+            [Op.notIn]: ['Canceled']
           }
         }
       });
@@ -214,44 +292,6 @@ class RoomRepository extends BaseRepository {
       throw error; // Rethrow to let the service handle it
     }
   }
-    /**
-   * Find price history for a specific room
-   * @param {number} roomId - Room ID
-   * @param {Object} options - Additional query options
-   * @returns {Promise<Array>} List of price history entries for the room
-   */
-    async findPriceHistoryByRoom(roomId, options = {}) {
-      try {
-        return await this.models.PriceHistory.findAll({
-          where: { room_id: roomId },
-          order: [['start_date', 'DESC']], // Most recent first
-          ...options,
-          raw: true
-        });
-      } catch (error) {
-        console.error('Error in findPriceHistoryByRoom:', error);
-        throw error;
-      }
-    }
-     /**
-   * Find equipment/amenities for a specific room
-   * @param {number} roomId - Room ID
-   * @returns {Promise<Array>} List of equipment items for the room
-   */
-  async findEquipmentByRoom(roomId) {
-    try {
-      return await this.models.Equipment.findAll({
-        where: { room_id: roomId },
-        order: [['name', 'ASC']],
-        raw: true
-      });
-    } catch (error) {
-      console.error('Error in findEquipmentByRoom:', error);
-      throw error;
-    }
-  }
 }
-
-
 
 module.exports = RoomRepository;

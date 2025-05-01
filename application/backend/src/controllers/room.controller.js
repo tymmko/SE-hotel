@@ -58,6 +58,37 @@ class RoomController {
   }
 
   /**
+   * Get current reservation and guest for a room
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @param {Function} next - Express next middleware function
+   */
+  async getCurrentOccupancy(req, res, next) {
+    try {
+      const occupancyInfo = await this.roomService.getCurrentReservationAndGuest(req.params.id);
+      
+      res.status(200).json({
+        success: true,
+        data: occupancyInfo
+      });
+    } catch (error) {
+      if (error.message === 'Room not found') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+      if (error.message === 'Room has no current reservation') {
+        return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+      next(error);
+    }
+  }
+
+  /**
    * Get price history for a room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object

@@ -41,6 +41,8 @@ const billController = new BillController(billService);
 const reservationController = new ReservationController(reservationService);
 const guestController = new GuestController(guestService);
 
+// Updated room routes section for apiRoutes.js
+
 // Room routes
 // Specific routes first to avoid routing conflicts
 router.get('/rooms/available', roomController.getAvailableRooms.bind(roomController));
@@ -53,6 +55,9 @@ router.route('/rooms/:id/price-history')
 
 router.route('/rooms/:id/equipment')
   .get(roomController.getEquipmentByRoom.bind(roomController));
+
+router.route('/rooms/:id/occupancy')
+  .get(roomController.getCurrentOccupancy.bind(roomController));
 
 router.route('/rooms')
   .get(roomController.getAllRooms.bind(roomController))
