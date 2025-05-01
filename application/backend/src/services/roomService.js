@@ -85,7 +85,7 @@ class RoomService extends BaseService {
       // Create initial price history if price provided
       if (roomData.price_per_night) {
         await this.repository.createPriceHistory(
-          room.room_id,
+          room.id,
           roomData.price_per_night,
           new Date(),
           null,

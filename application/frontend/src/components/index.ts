@@ -5,4 +5,4 @@ export * from './AddButton';
 export * from './Icon';
 export * from './Card';
 export * from './StatusTag';
-export * from './RoomStatusDropdown';
+export * from './StatusDropdown';

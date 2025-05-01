@@ -1,5 +1,5 @@
 import React from 'react';
-import { RoomStatusDropdown, StatusOption } from '../../components/RoomStatusDropdown';
+import { StatusDropdown, StatusOption } from '../../components';
 import { Icon } from '../../components/Icon';
 
 type SummaryProps = {
@@ -49,7 +49,7 @@ export const Summary: React.FC<SummaryProps> = ({
 
 				<div className="d-flex">
 					<span className="mr-5" style={{ alignSelf: 'center' }}>status:</span>
-					<RoomStatusDropdown
+					<StatusDropdown
 						options={statusOptions}
 						value={status}
 						onChange={onStatusChange}

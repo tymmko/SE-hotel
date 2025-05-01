@@ -1,7 +1,7 @@
 // src/models/Equipment.js
 module.exports = (sequelize, DataTypes) => {
     const Equipment = sequelize.define('Equipment', {
-      equipment_id: {
+      id: {
         type: DataTypes.BIGINT,
         primaryKey: true,
         autoIncrement: true
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   
     Equipment.associate = (models) => {
-      Equipment.belongsTo(models.Room, { foreignKey: 'room_id' });
+      Equipment.belongsTo(models.Room, { foreignKey: 'id' });
     };
   
     return Equipment;

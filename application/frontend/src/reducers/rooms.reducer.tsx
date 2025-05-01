@@ -3,6 +3,13 @@ import * as action from '../types/constants';
 
 export const initialState: RoomsStoreType = {
 	roomsList: [],
+	room: {
+		id: 0,
+		type: 'single',
+		status: 'occupied'
+	},
+	priceHistory: [],
+	equipment: [],
 	error: null,
 	loading: false
 };
@@ -23,6 +30,110 @@ const actionMap = {
 		roomsList: action.rooms,
 	}),
 	[action.ROOMS_LIST_ERROR]: (
+		store: RoomsStoreType,
+		action: {
+			error: unknown,
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+	// CREATE ROOM
+	[action.CREATE_ROOM_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.CREATE_ROOM_OK]: (
+		store: RoomsStoreType,
+		action: {
+			room: RoomsStoreType['room'],
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		roomsList: [
+			...store.roomsList,
+			action.room,
+		],
+	}),
+	[action.CREATE_ROOM_ERROR]: (
+		store: RoomsStoreType,
+		action: {
+			error: unknown,
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+
+	// GET ROOM BY ID
+	[action.ROOM_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.ROOM_OK]: (
+		store: RoomsStoreType,
+		action: {
+			room: RoomsStoreType['room'],
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		room: action.room
+	}),
+	[action.ROOM_ERROR]: (
+		store: RoomsStoreType,
+		action: {
+			error: unknown,
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+	// GET PRICE HISTORY
+	[action.PRICE_HISTORY_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.PRICE_HISTORY_OK]: (
+		store: RoomsStoreType,
+		action: {
+			priceHistory: RoomsStoreType['priceHistory'],
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		priceHistory: action.priceHistory,
+	}),
+	[action.PRICE_HISTORY_ERROR]: (
+		store: RoomsStoreType,
+		action: {
+			error: unknown,
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+	// GET EQUIPMENT
+	[action.EQUIPMENT_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.EQUIPMENT_OK]: (
+		store: RoomsStoreType,
+		action: {
+			equipment: RoomsStoreType['equipment'],
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		equipment: action.equipment,
+	}),
+	[action.EQUIPMENT_ERROR]: (
 		store: RoomsStoreType,
 		action: {
 			error: unknown,

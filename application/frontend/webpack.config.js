@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 const path = require('path');
 
 const app_dir = __dirname + '/src';
@@ -110,6 +112,9 @@ const config = {
 		new MiniCssExtractPlugin({
 			filename: 'assets/fonts.css',
 		}),
+		new webpack.DefinePlugin({
+			'process.env.API_BASE_URL': JSON.stringify(process.env.DEVELOP ? 'http://localhost:3000' : 'https://your-prod-api-url.com')
+		})
 	],
   resolve: {
 	extensions: [".ts", ".tsx", ".js", ".jsx", ".json", ".less"]

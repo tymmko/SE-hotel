@@ -25,7 +25,7 @@ class RoomController {
       res.status(200).json({
         success: true,
         count: rooms.length,
-        data: rooms
+        rooms
       });
     } catch (error) {
       next(error);
@@ -44,7 +44,7 @@ class RoomController {
       
       res.status(200).json({
         success: true,
-        data: room
+        room
       });
     } catch (error) {
       if (error.message === 'Room not found') {
@@ -70,7 +70,7 @@ class RoomController {
       res.status(200).json({
         success: true,
         count: priceHistory.length,
-        data: priceHistory
+        priceHistory
       });
     } catch (error) {
       if (error.message === 'Room not found') {
@@ -96,7 +96,7 @@ class RoomController {
       res.status(200).json({
         success: true,
         count: equipment.length,
-        data: equipment
+        equipment
       });
     } catch (error) {
       if (error.message === 'Room not found') {
@@ -121,7 +121,7 @@ class RoomController {
       
       res.status(201).json({
         success: true,
-        data: room
+        room
       });
     } catch (error) {
       next(error);
