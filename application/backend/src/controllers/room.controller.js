@@ -69,7 +69,7 @@ class RoomController {
       
       res.status(200).json({
         success: true,
-        data: occupancyInfo
+        occupancyInfo
       });
     } catch (error) {
       if (error.message === 'Room not found') {

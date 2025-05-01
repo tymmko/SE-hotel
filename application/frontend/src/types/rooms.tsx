@@ -1,3 +1,5 @@
+import { Guest } from './guest';
+
 export type RoomsStoreType = {
 	roomsList : Room[],
 	room: Room,
@@ -5,6 +7,7 @@ export type RoomsStoreType = {
 	loading: boolean,
 	priceHistory: PriceEntry[],
 	equipment: Equipment[],
+	guest: Guest,
 }
 
 export type Room = {
@@ -16,7 +19,7 @@ export type Room = {
 };
 
 export type PriceEntry = {
-	price_history_id: number,
+	price_history_id?: number,
 	start_date: string,
 	end_date: string,
 	price: number,

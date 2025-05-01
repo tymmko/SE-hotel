@@ -1,6 +1,6 @@
 import { AppDispatch } from '../app/store';
 import * as actions from '../actions/rooms.actions';
-import { getEquipment, getPriceHistory, getRoomById, getRooms, postRoom } from '../api/rooms.api';
+import { getEquipment, getOccupancy, getPriceHistory, getRoomById, getRooms, postRoom } from '../api/rooms.api';
 import { Room } from '../types/rooms';
 
 export const fetchRooms = () => async (dispatch: AppDispatch) => {
@@ -55,3 +55,14 @@ export const fetchEquiment = (id: string | number) => async (dispatch: AppDispat
 		dispatch(actions.equipmentError(err));
 	}
 };
+
+export const fetchOccupancy = (id: string | number) => async (dispatch: AppDispatch) => {
+	dispatch(actions.occupancyLoading());
+	try {
+		const occupancy = await getOccupancy(id);
+		dispatch(actions.occupancyOk(occupancy));
+	} catch (err) {
+		dispatch(actions.occupancyError(err));
+	}
+};
+

@@ -7,6 +7,7 @@ import { ReactComponent as Bill } from './bill.svg';
 import { ReactComponent as BillFilled } from './bill-filled.svg';
 import { ReactComponent as Book } from './book.svg';
 import { ReactComponent as BookFilled } from './book-filled.svg';
+import { ReactComponent as Calendar } from './calendar.svg';
 import { ReactComponent as Check } from './check.svg';
 import { ReactComponent as Couch } from './couch.svg';
 import { ReactComponent as CouchFilled } from './couch-filled.svg';
@@ -30,6 +31,7 @@ const icons: Record<string, FC<SVGProps<SVGSVGElement>>> = {
 	'bill-filled': BillFilled,
 	book: Book,
 	'book-filled': BookFilled,
+	calendar: Calendar,
 	check: Check,
 	couch: Couch,
 	'couch-filled': CouchFilled,

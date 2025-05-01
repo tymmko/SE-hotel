@@ -4,7 +4,8 @@ import * as styles from './styles.m.less';
 import classNames from 'classnames';
 
 type InputProps = {
-	value: string,
+	value: string | number,
+	type?: 'text' | 'number',
 	required?: boolean,
 	className?: string,
 	onChange: (value: string) => void,
@@ -12,6 +13,7 @@ type InputProps = {
 
 const Input = ({
 	value,
+	type = 'text',
 	required,
 	className,
 	onChange
@@ -23,10 +25,11 @@ const Input = ({
 	return (
 		<input
 			className={classNames(styles.input, className)}
-			type="text"
+			type={type}
 			value={value}
 			onChange={getChange}
 			required={required}
+			step={type === 'number' ? 0.01 : ''}
 		/>
 	);
 };

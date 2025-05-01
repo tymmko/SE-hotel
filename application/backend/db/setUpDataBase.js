@@ -24,7 +24,7 @@ async function executeSqlFile(sqlFilePath) {
 async function resetSequences() {
   const tables = [
     { table: 'Room', column: 'id' },
-    { table: 'Guest', column: 'guest_id' },
+    { table: 'Guest', column: 'id' },
     { table: 'Reservation', column: 'reservation_id' },
     { table: 'Stay', column: 'stay_id' },
     { table: 'Bill', column: 'bill_id' },

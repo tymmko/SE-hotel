@@ -5,7 +5,7 @@ import { Room } from '../../types/rooms';
 import { colors, Icon, StatusTag } from '../../components';
 import classNames from 'classnames';
 import { PriceHistory } from './PriceHistory';
-import { fetchEquiment, fetchPriceHistory, fetchRoomById } from '../../thunks/rooms.thunks';
+import { fetchEquiment, fetchOccupancy, fetchPriceHistory, fetchRoomById } from '../../thunks/rooms.thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { capitalizeFirstLetter } from '../../services/utils';
@@ -21,11 +21,13 @@ const RoomSummary = ({
 	const room = useSelector((state: RootState) => state.RoomsReducer.room);
 	const priceHistory = useSelector((state: RootState) => state.RoomsReducer.priceHistory);
 	const equipment= useSelector((state: RootState) => state.RoomsReducer.equipment);
+	const guest = useSelector((state: RootState) => state.RoomsReducer.guest);
 
 	useEffect(() => {
 		dispatch(fetchRoomById(id));
 		dispatch(fetchPriceHistory(id));
 		dispatch(fetchEquiment(id));
+		dispatch(fetchOccupancy(id));
 	}, [id])
 
 	return (
@@ -36,7 +38,7 @@ const RoomSummary = ({
 				<div className={classNames('ml-30 d-flex', styles.info)}>
 					<div className='d-flex'>
 						<div className={styles['info-label']}>Type: </div>
-						<div className='mt-0'>{room.type}</div>
+						<div className='mt-0 ft-14'>{room.type}</div>
 					</div>
 					<div className='d-flex mt-25'>
 						<div className={classNames('align-content-center', styles['info-label'])}>Status:</div>
@@ -50,7 +52,7 @@ const RoomSummary = ({
 						<div className={styles['info-label']}>Guest:</div>
 						<div className='d-flex mt-0 align-items-center'>
 							<Icon name='guest-badge' size='extra-small' className='ml-5 h-25 w-25' />
-							<span className='ml-5 h-15 mt-1'>Guest Name</span>
+							<span className='ml-5 h-15 ft-14'>{guest.first_name} {guest.last_name}</span>
 						</div>
 					</div>
 					<div className={styles.amenities}>

@@ -82,7 +82,8 @@ const CreateRoom = ({
 					<div className={styles['info-label']}>Price per night:</div>
 					<div className={classNames('d-flex mt-0 align-items-center', styles.input)}>
 						$ <Input
-							value={`${room.price_per_night}`}
+							type='number'
+							value={room.price_per_night ?? 0}
 							onChange={changePricePerNight}
 							className='ml-5'
 						/>
@@ -92,7 +93,7 @@ const CreateRoom = ({
 					<div className={styles['info-label']}>Capacity:</div>
 					<div className={classNames('d-flex mt-0 align-items-center', styles.input)}>
 						<Input
-							value={`${room.capacity}`}
+							value={room.capacity ?? 0}
 							onChange={changeCapacity}
 							className='ml-5'
 						/>
