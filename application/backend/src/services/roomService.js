@@ -38,6 +38,30 @@ class RoomService extends BaseService {
   }
 
   /**
+   * Get current reservation and guest for a room
+   * @param {number} roomId - Room ID
+   * @returns {Promise<Object>} Current reservation and guest info
+   * @throws {Error} If room not found or has no current reservation
+   */
+  async getCurrentReservationAndGuest(roomId) {
+    // Verify room exists
+    const room = await this.repository.findById(roomId);
+    
+    if (!room) {
+      throw new Error('Room not found');
+    }
+    
+    // Get current reservation and guest
+    const occupancyInfo = await this.repository.findCurrentReservationAndGuest(roomId);
+    
+    if (!occupancyInfo) {
+      throw new Error('Room has no current reservation');
+    }
+    
+    return occupancyInfo;
+  }
+
+  /**
    * Get price history for a specific room
    * @param {number} roomId - Room ID
    * @returns {Promise<Array>} List of price history entries for the room
