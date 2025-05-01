@@ -30,7 +30,7 @@ class ReservationRepository extends BaseRepository {
           },
           {
             model: this.models.Room,
-            attributes: ['room_id', 'room_type', 'capacity', 'price_per_night']
+            attributes: ['id', 'type', 'capacity', 'price_per_night']
           }
         ],
         ...options,

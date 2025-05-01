@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { StatusOption } from '../../components/RoomStatusDropdown';
+import { StatusOption } from '../../components/StatusDropdown';
 import { Page } from '../../layouts';
 import { Summary } from './ReservationSummary';
 
 const statusOptions: StatusOption[] = [
-	{ value: 'Paid', label: 'Paid', tagColor: '#FFF6DD' },
-	{ value: 'checked-in', label: 'Checked In', tagColor: '#99AD65' },
-	{ value: 'checked-out', label: 'Checked Out', tagColor: '#FBCD6A' },
+	{ value: 'Paid', label: 'Paid', color: '#FFF6DD' },
+	{ value: 'checked-in', label: 'Checked In', color: '#99AD65' },
+	{ value: 'checked-out', label: 'Checked Out', color: '#FBCD6A' },
 ];
 
 const Reservations: React.FC = () => {

@@ -1,6 +1,9 @@
-export type IconName =  'arrow-diagonal'|
+export type IconName =  'add' |
+						'arrow-diagonal'|
+						'arrow-down' |
 						'bill' |
 						'book' |
+						'check' |
 						'couch' |
 						'dollar-star' |
 						'pencil' |

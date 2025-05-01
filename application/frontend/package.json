@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode=development --hot",
+    "start": "cross-env DEVELOP=true webpack-dev-server --mode=development --hot",
     "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
@@ -49,6 +49,7 @@
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^22.14.0",
     "@types/react": "^19.1.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "fantasticon": "^3.0.0",
     "file-loader": "^6.2.0",

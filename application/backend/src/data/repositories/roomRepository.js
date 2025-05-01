@@ -179,7 +179,7 @@ class RoomRepository extends BaseRepository {
 
       return await this.model.findAll({
         where: {
-          room_id: {
+          id: {
             [Op.notIn]: bookedRoomIds.length > 0 ? bookedRoomIds : [0] // Use [0] when no booked rooms to avoid SQL error
           },
           status: 'Available'
@@ -233,7 +233,8 @@ class RoomRepository extends BaseRepository {
         throw error;
       }
     }
-     /**
+  
+  /*
    * Find equipment/amenities for a specific room
    * @param {number} roomId - Room ID
    * @returns {Promise<Array>} List of equipment items for the room
@@ -251,7 +252,5 @@ class RoomRepository extends BaseRepository {
     }
   }
 }
-
-
 
 module.exports = RoomRepository;

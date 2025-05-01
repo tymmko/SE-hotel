@@ -3,50 +3,35 @@ import { Page } from '../../layouts';
 import RoomsList from './RoomsList';
 import RoomSummary from './RoomSummary';
 
-import * as styles from './styles.m.less';
 import { Room } from '../../types/rooms';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../app/store';
 
-const rooms: Room[] = [
-	{
-		type: 'single',
-		isAvailable: true,
-		price: 100,
-		roomNumber: 12,
-		guestId: 1
-	},
-	{
-		type: 'double',
-		isAvailable: false,
-		price: 200,
-		roomNumber: 13,
-		guestId: 1
-	},
-	{
-		type: 'suite',
-		isAvailable: true,
-		price: 300,
-		roomNumber: 15,
-		guestId: 1
-	},
-	{
-		type: 'suite',
-		isAvailable: true,
-		price: 300,
-		roomNumber: 15,
-		guestId: 1
-	}
-]
-
+import * as styles from './styles.m.less';
+import { createRoom, fetchRooms } from '../../thunks/rooms.thunks';
+import CreateRoom from './CreateRoom';
 
 function Rooms() {
+	const dispatch = useDispatch<AppDispatch>();
 	const [selected, setSelected] = useState<Room>();
+	const [roomCreate, setRoomCreate] = useState<boolean>(false);
+	const rooms = useSelector((state: RootState) => state.RoomsReducer.roomsList);
 
 	useEffect(() => {
-		if (rooms) {
-			setSelected(rooms[0]);
-		}
+		// fetch rooms
+		dispatch(fetchRooms());
+	}, []);
 
-	}, [rooms]);
+	useEffect(() => {
+		if (rooms && !selected) {
+			setSelected(rooms[0])
+		}
+	}, [rooms])
+
+	const createNewRoom = (room: Omit<Room, 'id'>) => {
+		dispatch(createRoom(room));
+		setRoomCreate(false);
+	}
 
 	return (
 		<Page active={'rooms'}>
@@ -54,10 +39,17 @@ function Rooms() {
 				<RoomsList
 					selectRoom={setSelected}
 					rooms={rooms}
+					roomAdd={roomCreate}
+					createRoom={setRoomCreate}
 				/>
-				{selected &&
+				{selected && !roomCreate &&
 					<RoomSummary
-						room={selected}
+						id={selected.id}
+					/>
+				}
+				{roomCreate &&
+					<CreateRoom
+						createRoom={createNewRoom}
 					/>
 				}
 			</div>
