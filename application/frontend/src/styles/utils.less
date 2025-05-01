@@ -220,3 +220,14 @@
 		.generate-paddings(padding-bottom);
 	}
 }
+
+// font-size
+.ft {
+	@values: 10 12 14 16;
+
+	each(@values, {
+		&-@{value} {
+			font-size: unit(@value, px) !important;
+		}
+	});
+}

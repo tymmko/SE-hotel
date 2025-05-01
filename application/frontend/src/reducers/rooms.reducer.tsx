@@ -10,6 +10,13 @@ export const initialState: RoomsStoreType = {
 	},
 	priceHistory: [],
 	equipment: [],
+	guest: {
+		id: 0,
+		first_name: '',
+		last_name: '',
+		email: '',
+		phone_number: '',
+	},
 	error: null,
 	loading: false
 };
@@ -134,6 +141,31 @@ const actionMap = {
 		equipment: action.equipment,
 	}),
 	[action.EQUIPMENT_ERROR]: (
+		store: RoomsStoreType,
+		action: {
+			error: unknown,
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+	// GET OCCUPANCY
+	[action.OCCUPANCY_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.OCCUPANCY_OK]: (
+		store: RoomsStoreType,
+		action: {
+			guest: RoomsStoreType['guest'],
+		}
+	): RoomsStoreType => ({
+		...store,
+		loading: false,
+		guest: action.guest,
+	}),
+	[action.OCCUPANCY_ERROR]: (
 		store: RoomsStoreType,
 		action: {
 			error: unknown,

@@ -73,3 +73,18 @@ export const equipmentError = (error: unknown) => ({
 	type: constants.EQUIPMENT_ERROR,
 	error,
 });
+
+
+export const occupancyLoading = () => ({
+	type: constants.OCCUPANCY_LOADING,
+});
+
+export const occupancyOk = (guest: any) => ({
+	type: constants.OCCUPANCY_OK,
+	guest,
+});
+
+export const occupancyError = (error: unknown) => ({
+	type: constants.OCCUPANCY_ERROR,
+	error,
+});

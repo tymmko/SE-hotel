@@ -4,7 +4,6 @@
 .rooms {
 	display: flex;
 	height: calc(100vh - 149px);
-	overflow: scroll;
 }
 
 .room-list {
@@ -16,6 +15,7 @@
  	justify-content: space-between;
 	align-content: baseline;
 	margin-top: -20px;
+	margin-right: -20px;
 
 	.lt-md({
 		width: 40%;
@@ -23,8 +23,9 @@
 }
 
 .summary {
-	margin-left: 15px;
+	padding-left: 35px;
 	width: calc(40% - 15px);
+	overflow: scroll;
 
 	img {
 		max-width: 50%;

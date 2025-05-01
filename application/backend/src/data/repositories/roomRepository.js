@@ -70,7 +70,7 @@ class RoomRepository extends BaseRepository {
         include: [
           {
             model: this.models.Guest,
-            attributes: ['guest_id', 'first_name', 'last_name', 'email', 'phone_number']
+            attributes: ['id', 'first_name', 'last_name', 'email', 'phone_number']
           },
           {
             model: this.models.Stay,

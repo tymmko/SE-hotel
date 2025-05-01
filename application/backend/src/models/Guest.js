@@ -1,7 +1,7 @@
 // src/models/Guest.js
 module.exports = (sequelize, DataTypes) => {
     const Guest = sequelize.define('Guest', {
-      guest_id: {
+      id: {
         type: DataTypes.BIGINT,
         primaryKey: true,
         autoIncrement: true

@@ -3,6 +3,7 @@ export type IconName =  'add' |
 						'arrow-down' |
 						'bill' |
 						'book' |
+						'calendar' |
 						'check' |
 						'couch' |
 						'dollar-star' |

@@ -66,7 +66,7 @@ const RoomsList = ({
 						Price : ${room.price_per_night} / night
 					</div>
 					<div className={styles.logo}>
-						<Icon name='arrow-diagonal' size='xxxs' />
+						<Icon name='arrow-diagonal' size='xxs' />
 					</div>
 				</Card>
 			)}

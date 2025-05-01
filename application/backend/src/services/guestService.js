@@ -72,7 +72,7 @@ class GuestService extends BaseService {
     }
     
     // Update the guest
-    const [updated] = await this.repository.update(guestData, { guest_id: guestId });
+    const [updated] = await this.repository.update(guestData, { id: guestId });
     
     if (updated === 0) {
       throw new Error('Guest not found');

@@ -8,6 +8,7 @@ export const API = {
 	room: (id: string | number) => endpoint(`rooms/${id}`),
 	priceHistory: (id: string | number) => endpoint(`rooms/${id}/price-history`),
 	equipment: (id: string | number) => endpoint(`rooms/${id}/equipment`),
+	occupancy: (id: string | number) => endpoint(`rooms/${id}/occupancy`),
 
 	// RESERVATIONS
 	reservations: endpoint('reservations'),

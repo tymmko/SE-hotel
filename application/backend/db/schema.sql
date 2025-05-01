@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS Stay CASCADE;
 -- Create Tables
 
 CREATE TABLE Guest (
-    guest_id BIGSERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -32,7 +32,7 @@ CREATE TABLE Reservation (
     check_out_date DATE NOT NULL,
     status TEXT CHECK (status IN ('Confirmed', 'Canceled')) NOT NULL,
     room_id BIGINT REFERENCES Room(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    guest_id BIGINT REFERENCES Guest(guest_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    guest_id BIGINT REFERENCES Guest(id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 CREATE TABLE Stay (
