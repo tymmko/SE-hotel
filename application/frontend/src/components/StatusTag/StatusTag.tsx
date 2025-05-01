@@ -8,26 +8,26 @@ type TagSize = 'extra-small' | 'small' | 'normal' | 'large' | 'extra-large' | 'a
 type TagColor = keyof typeof colors;
 
 type TagProps = {
-  text: string;
-  color?: TagColor;
-  hex?: string;
-  size?: TagSize;
-  className?: string;
-  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+	text: string;
+	color?: TagColor;
+	hex?: string;
+	size?: TagSize;
+	className?: string;
+	onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
 const StatusTag = ({
-  text,
-  color,
-  hex,
-  size = 'normal',
-  className,
-  onClick,
+	text,
+	color,
+	hex,
+	size = 'normal',
+	className,
+	onClick,
 }: TagProps) => {
-  const bgColor = hex || colors[color!];
-  const style = bgColor ? { backgroundColor: bgColor, color: '#fff' } : undefined;
+	const bgColor = hex || colors[color!];
+	const style = bgColor ? { backgroundColor: bgColor, color: '#fff' } : undefined;
 
-  return (
+	return (
 	<span
 		onClick={onClick}
 		className={classNames(
@@ -38,11 +38,9 @@ const StatusTag = ({
 		)}
 		style={style}
 	>
-	  {text}
+		{text}
 	</span>
-  );
+	);
 };
 
 export default StatusTag;
-
-

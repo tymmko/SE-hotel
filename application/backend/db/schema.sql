@@ -19,9 +19,9 @@ CREATE TABLE Guest (
 );
 
 CREATE TABLE Room (
-    room_id BIGSERIAL PRIMARY KEY,
-    room_type TEXT CHECK (room_type IN ('Single', 'Double', 'Suite')) NOT NULL,
-    status TEXT CHECK (status IN ('Occupied', 'Available')) NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
+    type TEXT CHECK (type IN ('single', 'double', 'suite')) NOT NULL,
+    status TEXT CHECK (status IN ('occupied', 'available')) NOT NULL,
     capacity INT NOT NULL,
     price_per_night FLOAT NOT NULL
 );
@@ -31,7 +31,7 @@ CREATE TABLE Reservation (
     check_in_date DATE NOT NULL,
     check_out_date DATE NOT NULL,
     status TEXT CHECK (status IN ('Confirmed', 'Canceled')) NOT NULL,
-    room_id BIGINT REFERENCES Room(room_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    room_id BIGINT REFERENCES Room(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     guest_id BIGINT REFERENCES Guest(guest_id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
@@ -50,10 +50,10 @@ CREATE TABLE Bill (
 );
 
 CREATE TABLE Equipment (
-    equipment_id BIGSERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     price FLOAT NOT NULL,
-    room_id BIGINT REFERENCES Room(room_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    room_id BIGINT REFERENCES Room(id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 CREATE TABLE PriceHistory (
@@ -61,7 +61,7 @@ CREATE TABLE PriceHistory (
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     price FLOAT NOT NULL,
-    room_id BIGINT REFERENCES Room(room_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    room_id BIGINT REFERENCES Room(id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 CREATE TABLE ServiceOrder (

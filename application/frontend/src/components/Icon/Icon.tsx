@@ -6,7 +6,7 @@ import icons from '../../assets/icons';
 // @ts-ignore
 import * as styles from './styles.m.less';
 
-type IconSize = 'xxs' | 'extra-small' | 'small' | 'normal' | 'large' | 'extra-large' | 'xxl' | 'auto';
+type IconSize = 'xxxs' | 'xxs' | 'extra-small' | 'small' | 'normal' | 'large' | 'extra-large' | 'xxl' | 'auto';
 type IconColor = keyof typeof colors;
 
 type IconProps = {

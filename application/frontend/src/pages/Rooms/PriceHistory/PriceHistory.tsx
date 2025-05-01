@@ -3,26 +3,21 @@ import classNames from 'classnames';
 // @ts-ignore
 import * as styles from './styles.m.less';
 import { Icon } from '../../../components';
-
-type PriceEntry = {
-	price: string;
-	startDate: string;
-	endDate: string;
-};
+import { PriceEntry } from '../../../types/rooms';
 
 type PriceHistoryProps = {
-	currentPrice: string;
-	validSince: string;
+	currentPrice: number;
 	history: PriceEntry[];
 	className?: string;
 };
 
 const PriceHistory: React.FC<PriceHistoryProps> = ({
 	currentPrice,
-	validSince,
 	history,
 	className,
 }) => {
+	const validSince = history && history[0] ? history[0].start_date : '';
+
 	return (
 		<div className={styles['price-wrapper']}>
 			<div className={styles['price-icon']}>
@@ -53,8 +48,8 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({
 							{history.map((entry, index) => (
 								<tr key={index}>
 									<td>${entry.price}</td>
-									<td>{entry.startDate}</td>
-									<td>{entry.endDate}</td>
+									<td>{entry.start_date}</td>
+									<td>{entry.end_date}</td>
 								</tr>
 							))}
 						</tbody>

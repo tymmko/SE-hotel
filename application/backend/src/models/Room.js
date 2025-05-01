@@ -1,22 +1,22 @@
 module.exports = (sequelize, DataTypes) => {
   const Room = sequelize.define('Room', {
-    room_id: {
+    id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
       autoIncrement: true
     },
-    room_type: {
+    type: {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isIn: [['Single', 'Double', 'Suite']] // Match the database CHECK constraint
+        isIn: [['single', 'double', 'suite']] // Match the database CHECK constraint
       }
     },
     status: {
       type: DataTypes.STRING(20),
       allowNull: false,
       validate: {
-        isIn: [['Occupied', 'Available']]
+        isIn: [['occupied', 'available']]
       }
     },
     capacity: { 

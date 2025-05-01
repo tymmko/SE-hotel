@@ -24,7 +24,7 @@
 
 .summary {
 	margin-left: 15px;
-	width: 40%;
+	width: calc(40% - 15px);
 
 	img {
 		max-width: 50%;
@@ -33,6 +33,30 @@
 	.lt-md({
 		width: 56%;
 	});
+}
+
+.add-room {
+	background-color: @color-main-medium;
+	border-radius: 20px;
+	margin: 0 10px;
+	padding: 30px;
+	width: calc(40% - 80px);
+	overflow: scroll;
+	position: relative;
+
+	.lt-md({
+		width: calc(56% - 80px);
+	});
+
+	.info-label {
+		width: 100px;
+		margin-top: 0 !important;
+	}
+
+	input {
+		max-width: 150px;
+		width: 100%;
+	}
 }
 
 .intersect {
@@ -119,4 +143,16 @@
 	div {
 		margin-top: 10px;
 	}
+}
+
+.add-info {
+	flex-direction: column;
+	position: relative;
+	height: 30%;
+}
+
+.add-button {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
 }

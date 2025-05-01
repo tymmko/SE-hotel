@@ -5,19 +5,28 @@ import { Room } from '../../types/rooms';
 import { colors, Icon, StatusTag } from '../../components';
 import classNames from 'classnames';
 import { PriceHistory } from './PriceHistory';
+import { fetchEquiment, fetchPriceHistory, fetchRoomById } from '../../thunks/rooms.thunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../app/store';
+import { capitalizeFirstLetter } from '../../services/utils';
 
 type RoomSumaryProps = {
-	room: Room;
+	id: number;
 }
 
 const RoomSummary = ({
-	room
+	id
 }: RoomSumaryProps) => {
-	const [amenities, setAmenities] = useState<string[]>();
+	const dispatch = useDispatch<AppDispatch>();
+	const room = useSelector((state: RootState) => state.RoomsReducer.room);
+	const priceHistory = useSelector((state: RootState) => state.RoomsReducer.priceHistory);
+	const equipment= useSelector((state: RootState) => state.RoomsReducer.equipment);
 
 	useEffect(() => {
-		setAmenities(['tv', 'kitchen']);
-	}, []);
+		dispatch(fetchRoomById(id));
+		dispatch(fetchPriceHistory(id));
+		dispatch(fetchEquiment(id));
+	}, [id])
 
 	return (
 		<div className={styles['summary']}>
@@ -32,8 +41,8 @@ const RoomSummary = ({
 					<div className='d-flex mt-25'>
 						<div className={classNames('align-content-center', styles['info-label'])}>Status:</div>
 						<StatusTag
-							text={room.isAvailable ? 'Available' : 'Occupied'}
-							hex={room.isAvailable ? colors.green : colors.pink}
+							text={capitalizeFirstLetter(room.status)}
+							hex={room.status === 'available' ? colors.green : colors.pink}
 							className={classNames(styles.tag)}
 						/>
 					</div>
@@ -47,9 +56,9 @@ const RoomSummary = ({
 					<div className={styles.amenities}>
 					<div>amenities:</div>
 						<div>
-							{amenities && amenities.map((a, i) => 
+							{equipment.map((e, i) => 
 								<StatusTag
-									text={a}
+									text={e.name}
 									key={i}
 									hex={colors.mainMedium}
 									className={styles['amenities-tag']}
@@ -60,9 +69,8 @@ const RoomSummary = ({
 				</div>
 			</div>
 			<PriceHistory
-				currentPrice={''}
-				validSince={''}
-				history={[]}			
+				currentPrice={room.price_per_night ?? 0.00}
+				history={priceHistory}			
 			/>
 		</div>
 	);

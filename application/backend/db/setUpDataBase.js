@@ -23,12 +23,12 @@ async function executeSqlFile(sqlFilePath) {
 // Function to reset sequences for all SERIAL columns
 async function resetSequences() {
   const tables = [
-    { table: 'Room', column: 'room_id' },
+    { table: 'Room', column: 'id' },
     { table: 'Guest', column: 'guest_id' },
     { table: 'Reservation', column: 'reservation_id' },
     { table: 'Stay', column: 'stay_id' },
     { table: 'Bill', column: 'bill_id' },
-    { table: 'Equipment', column: 'equipment_id' },
+    { table: 'Equipment', column: 'id' },
     { table: 'PriceHistory', column: 'price_history_id' },
     { table: 'ServiceOrder', column: 'service_order_id' }
   ];
