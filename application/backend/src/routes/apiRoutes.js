@@ -1,4 +1,3 @@
-// src/routes/apiRoutes.js
 const express = require('express');
 const router = express.Router();
 
@@ -10,41 +9,44 @@ const RoomRepository = require('../data/repositories/roomRepository');
 const BillRepository = require('../data/repositories/billRepository');
 const ReservationRepository = require('../data/repositories/reservationRepository');
 const GuestRepository = require('../data/repositories/guestRepository');
+const UserRepository = require('../data/repositories/userRepository');
 
 // Create repository instances
 const roomRepository = new RoomRepository(models);
 const billRepository = new BillRepository(models);
 const reservationRepository = new ReservationRepository(models);
 const guestRepository = new GuestRepository(models);
+const userRepository = new UserRepository(models);
 
 // Import service classes
 const RoomService = require('../services/roomService');
 const BillService = require('../services/billService');
 const ReservationService = require('../services/reservationService');
 const GuestService = require('../services/guestService');
+const UserService = require('../services/userService');
 
 // Create service instances
 const roomService = new RoomService(roomRepository);
 const billService = new BillService(billRepository);
 const reservationService = new ReservationService(reservationRepository, roomRepository);
 const guestService = new GuestService(guestRepository);
+const userService = new UserService(userRepository);
 
 // Import controller classes
 const RoomController = require('../controllers/room.controller');
 const BillController = require('../controllers/bill.controller');
 const ReservationController = require('../controllers/reservation.controller');
 const GuestController = require('../controllers/guest.controller');
+const UserController = require('../controllers/user.controller');
 
 // Create controller instances
 const roomController = new RoomController(roomService);
 const billController = new BillController(billService);
 const reservationController = new ReservationController(reservationService);
 const guestController = new GuestController(guestService);
-
-// Updated room routes section for apiRoutes.js
+const userController = new UserController(userService);
 
 // Room routes
-// Specific routes first to avoid routing conflicts
 router.get('/rooms/available', roomController.getAvailableRooms.bind(roomController));
 
 router.route('/rooms/:id/status')
@@ -99,5 +101,9 @@ router.route('/guests')
 router.route('/guests/:id')
   .get(guestController.getGuest.bind(guestController))
   .put(guestController.updateGuest.bind(guestController));
+
+// User routes
+router.post('/register', userController.register.bind(userController));
+router.post('/login', userController.login.bind(userController));
 
 module.exports = router;

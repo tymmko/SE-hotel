@@ -1,21 +1,41 @@
-export const baseURL = process.env.API_BASE_URL || 'https://localhost:3000';
+import axios from 'axios';
+
+export const baseURL = process.env.API_BASE_URL || 'http://localhost:3000';
 
 const endpoint = (path: string) => `${baseURL}/api/${path}`;
 
+const api = axios.create({
+  baseURL: `${baseURL}/api`,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const API = {
-	// ROOMS
-	rooms: endpoint('rooms'),
-	room: (id: string | number) => endpoint(`rooms/${id}`),
-	priceHistory: (id: string | number) => endpoint(`rooms/${id}/price-history`),
-	equipment: (id: string | number) => endpoint(`rooms/${id}/equipment`),
-	occupancy: (id: string | number) => endpoint(`rooms/${id}/occupancy`),
+  // AUTH
+  register: endpoint('register'),
+  login: endpoint('login'),
 
-	// RESERVATIONS
-	reservations: endpoint('reservations'),
+  // ROOMS
+  rooms: endpoint('rooms'),
+  room: (id: string | number) => endpoint(`rooms/${id}`),
+  priceHistory: (id: string | number) => endpoint(`rooms/${id}/price-history`),
+  equipment: (id: string | number) => endpoint(`rooms/${id}/equipment`),
+  occupancy: (id: string | number) => endpoint(`rooms/${id}/occupancy`),
 
-	// GUESTS
-	guests: endpoint('guests'),
-	
-	//BILLS
-	bills: endpoint('bills'),
-}
+  // RESERVATIONS
+  reservations: endpoint('reservations'),
+
+  // GUESTS
+  guests: endpoint('guests'),
+  
+  // BILLS
+  bills: endpoint('bills'),
+};
+
+export default api;

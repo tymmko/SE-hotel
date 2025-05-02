@@ -1,5 +1,3 @@
-// src/controllers/room.controller.js
-
 /**
  * Controller for Room-related endpoints
  * Handles HTTP requests/responses and delegates business logic to the service layer
@@ -21,7 +19,6 @@ class RoomController {
   async getAllRooms(req, res, next) {
     try {
       const rooms = await this.roomService.getAllRoomsWithDetails();
-      
       res.status(200).json({
         success: true,
         count: rooms.length,
@@ -41,7 +38,6 @@ class RoomController {
   async getRoom(req, res, next) {
     try {
       const room = await this.roomService.getRoomWithDetails(req.params.id);
-      
       res.status(200).json({
         success: true,
         room
@@ -66,19 +62,12 @@ class RoomController {
   async getCurrentOccupancy(req, res, next) {
     try {
       const occupancyInfo = await this.roomService.getCurrentReservationAndGuest(req.params.id);
-      
       res.status(200).json({
         success: true,
         occupancyInfo
       });
     } catch (error) {
-      if (error.message === 'Room not found') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-      if (error.message === 'Room has no current reservation') {
+      if (error.message === 'Room not found' || error.message === 'Room has no current reservation') {
         return res.status(404).json({
           success: false,
           message: error.message
@@ -97,7 +86,6 @@ class RoomController {
   async getPriceHistoryByRoom(req, res, next) {
     try {
       const priceHistory = await this.roomService.getPriceHistoryByRoom(req.params.id);
-      
       res.status(200).json({
         success: true,
         count: priceHistory.length,
@@ -123,7 +111,6 @@ class RoomController {
   async getEquipmentByRoom(req, res, next) {
     try {
       const equipment = await this.roomService.getEquipmentByRoom(req.params.id);
-      
       res.status(200).json({
         success: true,
         count: equipment.length,
@@ -148,13 +135,18 @@ class RoomController {
    */
   async createRoom(req, res, next) {
     try {
-      const room = await this.roomService.createRoom(req.body);
-      
+      const room = await this.roomService.createRoom(req.body, req.user);
       res.status(201).json({
         success: true,
         room
       });
     } catch (error) {
+      if (error.message === 'Only admins can create rooms') {
+        return res.status(403).json({
+          success: false,
+          message: error.message
+        });
+      }
       next(error);
     }
   }
@@ -167,8 +159,7 @@ class RoomController {
    */
   async updateRoom(req, res, next) {
     try {
-      const room = await this.roomService.updateRoom(req.params.id, req.body);
-      
+      const room = await this.roomService.updateRoom(req.params.id, req.body, req.user);
       res.status(200).json({
         success: true,
         data: room
@@ -176,6 +167,12 @@ class RoomController {
     } catch (error) {
       if (error.message === 'Room not found') {
         return res.status(404).json({
+          success: false,
+          message: error.message
+        });
+      }
+      if (error.message === 'Only admins can update room prices') {
+        return res.status(403).json({
           success: false,
           message: error.message
         });
@@ -193,7 +190,6 @@ class RoomController {
   async deleteRoom(req, res, next) {
     try {
       await this.roomService.deleteRoom(req.params.id);
-      
       res.status(200).json({
         success: true,
         data: {}
@@ -224,25 +220,24 @@ class RoomController {
   async getAvailableRooms(req, res, next) {
     try {
       const { checkIn, checkOut } = req.query;
-      
       if (!checkIn || !checkOut) {
         return res.status(400).json({
           success: false,
           message: 'Please provide check-in and check-out dates'
         });
       }
-      
       const rooms = await this.roomService.getAvailableRooms(checkIn, checkOut);
-      
       res.status(200).json({
         success: true,
         count: rooms.length,
         data: rooms
       });
     } catch (error) {
-      if (error.message.includes('Invalid date') || 
-          error.message.includes('Check-out date') ||
-          error.message.includes('Check-in date')) {
+      if (
+        error.message.includes('Invalid date') ||
+        error.message.includes('Check-out date') ||
+        error.message.includes('Check-in date')
+      ) {
         return res.status(400).json({
           success: false,
           message: error.message
@@ -261,16 +256,13 @@ class RoomController {
   async updateRoomStatus(req, res, next) {
     try {
       const { status } = req.body;
-      
       if (!status) {
         return res.status(400).json({
           success: false,
           message: 'Please provide a status'
         });
       }
-      
       const room = await this.roomService.updateRoomStatus(req.params.id, status);
-      
       res.status(200).json({
         success: true,
         data: room
@@ -282,9 +274,10 @@ class RoomController {
           message: error.message
         });
       }
-      
-      if (error.message.includes('Invalid status') || 
-          error.message.includes('Cannot mark room as Available')) {
+      if (
+        error.message.includes('Invalid status') ||
+        error.message.includes('Cannot mark room as Available')
+      ) {
         return res.status(400).json({
           success: false,
           message: error.message
