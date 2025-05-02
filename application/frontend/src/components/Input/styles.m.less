@@ -17,4 +17,17 @@
 	input[type=number] {
 		-moz-appearance: textfield;
 	}
+
+	input::placeholder {
+		color: @color-dark-light !important;
+		opacity: 0.5;
+	}
+
+	input[type=date]:invalid::-webkit-datetime-edit {
+		color: @color-dark-light !important;
+	}
+
+	input[type=date]::placeholder {
+		color: @color-dark-light !important;
+	}
 }

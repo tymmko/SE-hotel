@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import roomImg from '../../assets/pictures/room.png'
 import * as styles from './styles.m.less';
-import { Room } from '../../types/rooms';
 import { colors, Icon, StatusTag } from '../../components';
 import classNames from 'classnames';
 import { PriceHistory } from './PriceHistory';
@@ -9,6 +8,7 @@ import { fetchEquiment, fetchOccupancy, fetchPriceHistory, fetchRoomById } from 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { capitalizeFirstLetter } from '../../services/utils';
+import { emptyGuest } from '../../types/guest';
 
 type RoomSumaryProps = {
 	id: number;
@@ -32,7 +32,7 @@ const RoomSummary = ({
 
 	return (
 		<div className={styles['summary']}>
-			<h1>Room Summary</h1>
+			<h1>Room Summary #{room.id}	</h1>
 			<div className='d-flex'>
 				<img src={roomImg} alt="" />
 				<div className={classNames('ml-30 d-flex', styles.info)}>
@@ -40,7 +40,7 @@ const RoomSummary = ({
 						<div className={styles['info-label']}>Type: </div>
 						<div className='mt-0 ft-14'>{room.type}</div>
 					</div>
-					<div className='d-flex mt-25'>
+					<div className='d-flex mt-20'>
 						<div className={classNames('align-content-center', styles['info-label'])}>Status:</div>
 						<StatusTag
 							text={capitalizeFirstLetter(room.status)}
@@ -48,13 +48,15 @@ const RoomSummary = ({
 							className={classNames(styles.tag)}
 						/>
 					</div>
-					<div className='d-flex mt-15 align-items-center'>
-						<div className={styles['info-label']}>Guest:</div>
-						<div className='d-flex mt-0 align-items-center'>
-							<Icon name='guest-badge' size='extra-small' className='ml-5 h-25 w-25' />
-							<span className='ml-5 h-15 ft-14'>{guest.first_name} {guest.last_name}</span>
+					{guest !== emptyGuest &&
+						<div className='d-flex mt-15 align-items-center'>
+							<div className={styles['info-label']}>Guest:</div>
+							<div className='d-flex mt-0 align-items-center'>
+								<Icon name='guest-badge' size='extra-small' className='ml-5 h-25 w-25' />
+								<span className='ml-5 h-15 ft-14'>{guest.first_name} {guest.last_name}</span>
+							</div>
 						</div>
-					</div>
+					}
 					<div className={styles.amenities}>
 					<div>amenities:</div>
 						<div>
@@ -72,7 +74,7 @@ const RoomSummary = ({
 			</div>
 			<PriceHistory
 				currentPrice={room.price_per_night ?? 0.00}
-				history={priceHistory}			
+				history={priceHistory}
 			/>
 		</div>
 	);

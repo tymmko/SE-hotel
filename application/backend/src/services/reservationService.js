@@ -46,7 +46,7 @@ class ReservationService extends BaseService {
    */
   async getReservationsByStatus(status) {
     // Validate status
-    const validStatuses = ['Confirmed', 'Canceled'];
+    const validStatuses = ['confirmed', 'canceled'];
     
     if (!validStatuses.includes(status)) {
       throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
@@ -117,9 +117,9 @@ class ReservationService extends BaseService {
     
     // Set default status if not provided
     if (!reservationData.status) {
-      reservationData.status = 'Confirmed';
-    } else if (reservationData.status !== 'Confirmed' && reservationData.status !== 'Canceled') {
-      throw new Error('Status must be either Confirmed or Canceled');
+      reservationData.status = 'confirmed';
+    } else if (reservationData.status !== 'confirmed' && reservationData.status !== 'canceled') {
+      throw new Error('Status must be either confirmed or canceled');
     }
     
     // Create the reservation
@@ -128,7 +128,7 @@ class ReservationService extends BaseService {
       total_price: totalPrice
     });
     
-    return await this.getReservationWithDetails(reservation.reservation_id);
+    return await this.getReservationWithDetails(reservation.id);
   }
 
   /**
@@ -143,7 +143,7 @@ class ReservationService extends BaseService {
     const currentReservation = await this.getReservationWithDetails(reservationId);
     
     // Check if status is being changed to Canceled
-    const isStatusChange = reservationData.status && reservationData.status === 'Canceled';
+    const isStatusChange = reservationData.status && reservationData.status === 'canceled';
     
     // Check if dates are being changed
     const isDateChange = (reservationData.check_in_date || reservationData.check_out_date) &&
@@ -151,9 +151,9 @@ class ReservationService extends BaseService {
     
     // Validate status if provided
     if (reservationData.status && 
-        reservationData.status !== 'Confirmed' && 
-        reservationData.status !== 'Canceled') {
-      throw new Error('Status must be either Confirmed or Canceled');
+        reservationData.status !== 'confirmed' && 
+        reservationData.status !== 'canceled') {
+      throw new Error('Status must be either confirmed or canceled');
     }
     
     // If dates are changing, verify room availability
@@ -202,7 +202,7 @@ class ReservationService extends BaseService {
     }
     
     // Update reservation
-    const [updated] = await this.repository.update(reservationData, { reservation_id: reservationId });
+    const [updated] = await this.repository.update(reservationData, { id: reservationId });
     
     if (updated === 0) {
       throw new Error('Reservation not found');
@@ -220,7 +220,7 @@ class ReservationService extends BaseService {
    */
   async updateReservationStatus(reservationId, status) {
     // Validate status
-    const validStatuses = ['Confirmed', 'Canceled'];
+    const validStatuses = ['confirmed', 'canceled'];
     
     if (!validStatuses.includes(status)) {
       throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
@@ -234,7 +234,7 @@ class ReservationService extends BaseService {
     }
     
     // Apply business rules for status changes
-    if (status === 'Confirmed' && reservation.status === 'Canceled') {
+    if (status === 'confirmed' && reservation.status === 'canceled') {
       // Recheck availability before confirming a previously canceled reservation
       const isAvailable = await this.repository.isRoomAvailable(
         reservation.room_id,

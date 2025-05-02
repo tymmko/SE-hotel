@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import roomImg from '../../assets/pictures/room.png'
 import * as styles from './styles.m.less';
 import { Room } from '../../types/rooms';
-import { AddButton, colors, Icon, StatusDropdown, StatusTag } from '../../components';
+import { AddButton, colors, Input, StatusDropdown } from '../../components';
 import classNames from 'classnames';
-import { PriceHistory } from './PriceHistory';
-import { fetchEquiment, fetchPriceHistory, fetchRoomById } from '../../thunks/rooms.thunks';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
-import { capitalizeFirstLetter } from '../../services/utils';
-import Input from '../../components/Input/Input';
 
 type RoomSumaryProps = {
 	createRoom: (room: Omit<Room, 'id'>) => void;

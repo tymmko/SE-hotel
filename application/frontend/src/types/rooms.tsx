@@ -1,7 +1,21 @@
-import { Guest } from './guest';
+import { emptyGuest, Guest } from './guest';
+
+export const RoomInitialState: RoomsStoreType = {
+	rooms: [],
+	room: {
+		id: 0,
+		type: 'single',
+		status: 'occupied'
+	},
+	priceHistory: [],
+	equipment: [],
+	guest: emptyGuest,
+	error: null,
+	loading: false
+};
 
 export type RoomsStoreType = {
-	roomsList : Room[],
+	rooms : Room[],
 	room: Room,
 	error: unknown | null,
 	loading: boolean,

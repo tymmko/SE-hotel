@@ -1,16 +1,16 @@
 import * as constants from '../types/constants';
 
-export const roomsListLoading = () => ({
-	type: constants.ROOMS_LIST_LOADING,
+export const roomsLoading = () => ({
+	type: constants.ROOMS_LOADING,
 });
 
-export const roomsListOk = (rooms: any[]) => ({
-	type: constants.ROOMS_LIST_OK,
+export const roomsOk = (rooms: any[]) => ({
+	type: constants.ROOMS_OK,
 	rooms,
 });
 
-export const roomsListError = (error: unknown) => ({
-	type: constants.ROOMS_LIST_ERROR,
+export const roomsError = (error: unknown) => ({
+	type: constants.ROOMS_ERROR,
 	error,
 });
 

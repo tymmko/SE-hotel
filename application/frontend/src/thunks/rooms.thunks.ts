@@ -1,16 +1,16 @@
 import { AppDispatch } from '../app/store';
 import * as actions from '../actions/rooms.actions';
-import { getEquipment, getOccupancy, getPriceHistory, getRoomById, getRooms, postRoom } from '../api/rooms.api';
+import * as API from '../api/rooms.api';
 import { Room } from '../types/rooms';
 
 export const fetchRooms = () => async (dispatch: AppDispatch) => {
-	dispatch(actions.roomsListLoading());
+	dispatch(actions.roomsLoading());
 
 	try {
-		const rooms = await getRooms();
-		dispatch(actions.roomsListOk(rooms));
+		const rooms = await API.getRooms();
+		dispatch(actions.roomsOk(rooms));
 	} catch (err) {
-		dispatch(actions.roomsListError(err));
+		dispatch(actions.roomsError(err));
 	}
 };
 
@@ -18,7 +18,7 @@ export const createRoom = (room: Omit<Room, 'id'>) => async (dispatch: AppDispat
 	dispatch(actions.createRoomLoading());
 
 	try {
-		const rooms = await postRoom(room);
+		const rooms = await API.postRoom(room);
 		dispatch(actions.createRoomOk(rooms));
 	} catch (err) {
 		dispatch(actions.createRoomError(err));
@@ -29,7 +29,7 @@ export const createRoom = (room: Omit<Room, 'id'>) => async (dispatch: AppDispat
 export const fetchRoomById = (id: string | number) => async (dispatch: AppDispatch) => {
 	dispatch(actions.roomLoading());
 	try {
-		const room = await getRoomById(id);
+		const room = await API.getRoomById(id);
 		dispatch(actions.roomOk(room));
 	} catch (err) {
 		dispatch(actions.roomError(err));
@@ -39,7 +39,7 @@ export const fetchRoomById = (id: string | number) => async (dispatch: AppDispat
 export const fetchPriceHistory = (id: string | number) => async (dispatch: AppDispatch) => {
 	dispatch(actions.priceHistoryLoading());
 	try {
-		const priceHistory = await getPriceHistory(id);
+		const priceHistory = await API.getPriceHistory(id);
 		dispatch(actions.priceHistoryOk(priceHistory));
 	} catch (err) {
 		dispatch(actions.priceHistoryError(err));
@@ -49,7 +49,7 @@ export const fetchPriceHistory = (id: string | number) => async (dispatch: AppDi
 export const fetchEquiment = (id: string | number) => async (dispatch: AppDispatch) => {
 	dispatch(actions.equipmentLoading());
 	try {
-		const equipment = await getEquipment(id);
+		const equipment = await API.getEquipment(id);
 		dispatch(actions.equipmentOk(equipment));
 	} catch (err) {
 		dispatch(actions.equipmentError(err));
@@ -59,7 +59,7 @@ export const fetchEquiment = (id: string | number) => async (dispatch: AppDispat
 export const fetchOccupancy = (id: string | number) => async (dispatch: AppDispatch) => {
 	dispatch(actions.occupancyLoading());
 	try {
-		const occupancy = await getOccupancy(id);
+		const occupancy = await API.getOccupancy(id);
 		dispatch(actions.occupancyOk(occupancy));
 	} catch (err) {
 		dispatch(actions.occupancyError(err));

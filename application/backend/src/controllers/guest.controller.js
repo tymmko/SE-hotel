@@ -25,7 +25,7 @@ class GuestController {
       res.status(200).json({
         success: true,
         count: guests.length,
-        data: guests
+        guests
       });
     } catch (error) {
       next(error);
@@ -44,7 +44,7 @@ class GuestController {
       
       res.status(200).json({
         success: true,
-        data: guest
+        guest
       });
     } catch (error) {
       if (error.message === 'Guest not found') {
@@ -69,7 +69,7 @@ class GuestController {
       
       res.status(201).json({
         success: true,
-        data: guest
+        guest
       });
     } catch (error) {
       if (error.message.includes('required') || 
@@ -95,7 +95,7 @@ class GuestController {
       
       res.status(200).json({
         success: true,
-        data: guest
+        guest
       });
     } catch (error) {
       if (error.message === 'Guest not found') {

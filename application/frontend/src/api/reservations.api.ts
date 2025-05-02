@@ -1,31 +1,21 @@
 import axios from 'axios';
-import { Dispatch } from 'redux';
-import {
-  reservationsLoading,
-  reservationsOk,
-  reservationsError,
-  reservationCreateLoading,
-  reservationCreateOk,
-  reservationCreateError
-} from '../actions/reservations.actions';
-import { Reservation, NewReservation } from '../types/reservation';
+import { Reservation } from '../types/reservation';
+import { URL } from './url';
 
-export const fetchReservations = () => async (dispatch: Dispatch) => {
-  dispatch(reservationsLoading());
-  try {
-    const response = await axios.get<Reservation[]>('/api/reservations');
-    dispatch(reservationsOk(response.data));
-  } catch (error) {
-    dispatch(reservationsError(error));
-  }
+// GET reservations
+export const getReservations = async (): Promise<Reservation[]> => {
+	const response = await axios.get(URL.reservations);
+	return response.data.reservations;
 };
 
-export const createReservation = (payload: NewReservation) => async (dispatch: Dispatch) => {
-  dispatch(reservationCreateLoading());
-  try {
-    const response = await axios.post<Reservation>('/api/reservations', payload);
-    dispatch(reservationCreateOk(response.data));
-  } catch (error) {
-    dispatch(reservationCreateError(error));
-  }
+// POST reservation
+export const postReservation = async (reservation: Omit<Reservation, 'id'>): Promise<Reservation> => {
+	const response = await axios.post(URL.reservations, reservation);
+	return response.data.reservation;
+};
+
+// GET reservation by id
+export const getReservationById = async (id: string | number): Promise<Reservation> => {
+	const response = await axios.get(URL.reservation(id));
+	return response.data.reservation;
 };

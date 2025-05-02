@@ -11,20 +11,22 @@ type AddButtonProps = {
 	color?: keyof typeof colors;
 	onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 	className?: string;
+	disabled?: boolean;
 };
 
 const AddButton = ({
 	type = 'add',
 	color,
 	onClick,
-	className
+	className,
+	disabled
 }: AddButtonProps) => {
 	const backgroundColor = color ? colors[color] : 'transparent';
 
 	return (
 		<div
 			onClick={onClick}
-			className={classNames(styles.addButton, className)}
+			className={classNames(disabled ? styles.disabled : '', styles.addButton, className)}
 			style={{ backgroundColor }}
 		>
 			{type === 'add' &&

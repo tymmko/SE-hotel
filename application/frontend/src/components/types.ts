@@ -9,6 +9,7 @@ export type IconName =  'add' |
 						'dollar-star' |
 						'pencil' |
 						'eye' |
+						'group-shapes' |
 						'logo' |
 						'search' |
 						'loginvisual' |

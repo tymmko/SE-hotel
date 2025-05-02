@@ -56,7 +56,7 @@ class GuestRepository extends BaseRepository {
       const count = await this.models.Reservation.count({
         where: {
           guest_id: guestId,
-          status: 'Confirmed'
+          status: 'confirmed'
         }
       });
 
