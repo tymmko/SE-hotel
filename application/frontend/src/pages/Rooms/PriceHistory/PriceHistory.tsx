@@ -36,6 +36,9 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({
 						onSaved={() => {
 							window.location.reload();
 						}}
+						onCancel={() => {
+							setEdit(false);
+						}}
 					/>
 				:
 					<div className={styles['price-header']}>

@@ -13,9 +13,10 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 type EditPriceHistoryProps = {
     onSaved?: () => void;  // optional callback to refresh history
+	onCancel?: () => void;  
 };
 
-const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved }) => {
+const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved, onCancel }) => {
     const room = useSelector((state: RootState) => state.RoomsReducer.room);
 
     const [startDate, setStartDate] = useState<Value>(new Date());
@@ -77,7 +78,12 @@ const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved }) => {
 
 	return (
 		<div className={styles['price-header']}>
-			<h3>Edit Price Details</h3>
+			<div  style={{display: 'flex',alignItems: 'center', justifyContent: 'space-between'}}>
+				<h3>Edit Price Details</h3>
+				<button className={styles['close-button']} onClick= {onCancel} aria-label="Close" title="Close">
+					&times;
+        		</button>
+			</div>
 			<div className={styles['price-info']}>
 				<div>
 					<div>price</div>
