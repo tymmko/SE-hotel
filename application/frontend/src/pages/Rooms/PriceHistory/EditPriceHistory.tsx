@@ -89,14 +89,35 @@ const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved }) => {
 				</div>
 				<div>
 					<div>valid from:</div>
-					<div className={styles['change-date']}>
-						<div className={styles.date}>{`${startDateFormatted}`}</div>
-						<div className={styles['calendar-icon']} onClick={() => {}}>
-							<Icon name='calendar' size='xxs'/>
-						</div>
-					</div>
-					<Calendar onChange={setStartDate} value={startDate} />
+					<Input
+						required={true}
+						type="date"
+						value={newPriceEntry.start_date}
+						min={ new Date().toISOString().split('T')[0]}
+						onChange={(value) => {
+							setNewPriceEntry((prev) => ({
+								...prev,
+								start_date: value,
+							}));
+						}}
+					/>
 				</div>
+
+				<div>
+					<div>valid until:</div>
+					<Input
+						type="date"
+						value={newPriceEntry.end_date || ''}
+						min={newPriceEntry.start_date || new Date().toISOString().split('T')[0]}
+						onChange={(value) => {
+							setNewPriceEntry((prev) => ({
+								...prev,
+								end_date: value,
+							}));
+						}}
+					/>
+				</div>
+
 				<button onClick={handleSave} className={styles['save-button']}>
 					Save
 				</button>
