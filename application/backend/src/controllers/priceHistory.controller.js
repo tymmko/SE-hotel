@@ -22,7 +22,7 @@ function PriceHistoryController(priceHistoryService) {
             roomId,
             price,
             start_date ? new Date(start_date) : undefined,
-            end_date ? new Date(end_date) : null
+            end_date ? new Date(end_date) : new Date(new Date().setFullYear(new Date().getFullYear() + 1))
           );
           return res.status(201).json(newEntry);
         } catch (error) {
