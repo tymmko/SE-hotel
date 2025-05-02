@@ -118,7 +118,7 @@ class ReservationRepository extends BaseRepository {
       return await this.model.update(
         { status },
         {
-          where: { reservation_id: reservationId }
+          where: { id: reservationId }
         }
       );
     } catch (error) {
@@ -139,7 +139,7 @@ class ReservationRepository extends BaseRepository {
     try {
       const whereClause = {
         room_id: roomId,
-        status: 'Confirmed', // Only check against confirmed reservations
+        status: 'confirmed', // Only check against confirmed reservations
         [Op.or]: [
           // Check-in during another stay
           {
@@ -165,7 +165,7 @@ class ReservationRepository extends BaseRepository {
       
       // Exclude the current reservation for updates
       if (excludeReservationId) {
-        whereClause.reservation_id = {
+        whereClause.id = {
           [Op.ne]: excludeReservationId
         };
       }

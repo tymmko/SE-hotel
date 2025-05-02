@@ -103,8 +103,8 @@ class RoomService extends BaseService {
   async createRoom(roomData) {
     // Create room transaction to ensure both room and price history are created
     const result = await this.repository.transaction(async (transaction) => {
-      // Create the room
-      const room = await this.repository.create(roomData, { transaction });
+    // Create the room
+    const room = await this.repository.create(roomData, { transaction });
       
       // Create initial price history if price provided
       if (roomData.price_per_night) {

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import Calendar from 'react-calendar';
-import classNames from 'classnames';
-// @ts-ignore
-import * as styles from './styles.m.less';
 import { PriceEntry } from '../../../types/rooms';
-import Input from '../../../components/Input';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../reducers/root.reducer';
-import { Icon } from '../../../components';
+import { Icon, Input } from '../../../components';
+// @ts-ignore
+import * as styles from './styles.m.less';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];

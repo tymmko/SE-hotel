@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 // @ts-ignore
 import * as styles from './styles.m.less';
-import { Icon } from '../../../components';
+import { Icon, Table } from '../../../components';
 import { PriceEntry } from '../../../types/rooms';
 import EditPriceHistory from './EditPriceHistory';
 
@@ -45,24 +45,18 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({
 				}
 				<div className={styles['price-history']}>
 					<h3>Price History</h3>
-					<table>
-						<thead>
-							<tr>
-								<th>price per night</th>
-								<th>start date</th>
-								<th>end date</th>
+					<Table
+						headers={['price per night', 'start date', 'end date']}
+					>
+						{history.map((entry, index) => (
+							<tr key={index}>
+								<td>${entry.price}</td>
+								<td>{entry.start_date}</td>
+								<td>{entry.end_date}</td>
 							</tr>
-						</thead>
-						<tbody>
-							{history.map((entry, index) => (
-								<tr key={index}>
-									<td>${entry.price}</td>
-									<td>{entry.start_date}</td>
-									<td>{entry.end_date}</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
+						))}
+					</Table>
+					
 				</div>
 			</div>
 		</div>

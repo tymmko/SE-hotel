@@ -25,7 +25,7 @@ async function resetSequences() {
   const tables = [
     { table: 'Room', column: 'id' },
     { table: 'Guest', column: 'id' },
-    { table: 'Reservation', column: 'reservation_id' },
+    { table: 'Reservation', column: 'id' },
     { table: 'Stay', column: 'stay_id' },
     { table: 'Bill', column: 'bill_id' },
     { table: 'Equipment', column: 'id' },

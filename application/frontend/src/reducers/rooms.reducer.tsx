@@ -1,42 +1,23 @@
-import { RoomsStoreType } from '../types/rooms';
+import { RoomInitialState, RoomsStoreType } from '../types/rooms';
 import * as action from '../types/constants';
-
-export const initialState: RoomsStoreType = {
-	roomsList: [],
-	room: {
-		id: 0,
-		type: 'single',
-		status: 'occupied'
-	},
-	priceHistory: [],
-	equipment: [],
-	guest: {
-		id: 0,
-		first_name: '',
-		last_name: '',
-		email: '',
-		phone_number: '',
-	},
-	error: null,
-	loading: false
-};
+import { emptyGuest } from '../types/guest';
 
 const actionMap = {
-	[action.ROOMS_LIST_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
+	[action.ROOMS_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
 		loading: true,
 	}),
-	[action.ROOMS_LIST_OK]: (
+	[action.ROOMS_OK]: (
 		store: RoomsStoreType,
 		action: {
-			rooms: RoomsStoreType['roomsList'],
+			rooms: RoomsStoreType['rooms'],
 		}
 	): RoomsStoreType => ({
 		...store,
 		loading: false,
-		roomsList: action.rooms,
+		rooms: action.rooms,
 	}),
-	[action.ROOMS_LIST_ERROR]: (
+	[action.ROOMS_ERROR]: (
 		store: RoomsStoreType,
 		action: {
 			error: unknown,
@@ -59,8 +40,8 @@ const actionMap = {
 	): RoomsStoreType => ({
 		...store,
 		loading: false,
-		roomsList: [
-			...store.roomsList,
+		rooms: [
+			...store.rooms,
 			action.room,
 		],
 	}),
@@ -100,6 +81,7 @@ const actionMap = {
 		loading: false,
 		error: action.error,
 	}),
+	
 	// GET PRICE HISTORY
 	[action.PRICE_HISTORY_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
@@ -174,14 +156,14 @@ const actionMap = {
 		...store,
 		loading: false,
 		error: action.error,
+		guest: emptyGuest,
 	}),
 }
 
-export const RoomsReducer = (store = initialState, action: any) => {
+export const RoomsReducer = (store = RoomInitialState, action: any) => {
 	if (action.type in actionMap) {
 		store = actionMap[action.type as keyof typeof actionMap](store, action);
 	}
 
 	return store;
 };
-
