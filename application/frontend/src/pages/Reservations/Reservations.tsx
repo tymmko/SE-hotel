@@ -50,6 +50,7 @@ const Reservations = () => {
 				{create &&
 					<Create
 						reservation={reservation}
+						setCreate={setCreate}
 					/>
 				}
 
