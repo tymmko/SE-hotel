@@ -11,6 +11,7 @@ import  * as styles from './styles.m.less';
 
 type CreateProps = {
 	reservation: Reservation,
+	setCreate: (value: boolean) => void,
 };
 
 const statusOptions: StatusOption[] = [
@@ -21,6 +22,7 @@ const statusOptions: StatusOption[] = [
 
 export const Create: React.FC<CreateProps> = ({
 	reservation,
+	setCreate
 }) => {
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -55,7 +57,9 @@ export const Create: React.FC<CreateProps> = ({
 			check_in_date: startDateSelected,
 			check_out_date: endDateSelected,
 			status: 'confirmed'
-		}))
+		})).then(() => {
+			setCreate(false);
+		});
 	}
 
 	const checker = (): boolean => {
