@@ -1,0 +1,33 @@
+@import '../../styles/_variables.less';
+
+.input {
+	background-color: @color-main;
+	border: 1px dashed @color-dark-light;
+	border-radius: 20px;
+	padding: 5px 12px;
+	font-size: 14px;
+	font-weight: 100;
+
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	input[type=number] {
+		-moz-appearance: textfield;
+	}
+
+	input::placeholder {
+		color: @color-dark-light !important;
+		opacity: 0.5;
+	}
+
+	input[type=date]:invalid::-webkit-datetime-edit {
+		color: @color-dark-light !important;
+	}
+
+	input[type=date]::placeholder {
+		color: @color-dark-light !important;
+	}
+}

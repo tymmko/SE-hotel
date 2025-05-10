@@ -1,0 +1,48 @@
+@import '../../styles/_variables.less';
+@import '../../styles/_mixins.less';
+
+.component {
+	width: 35%;
+	min-width: 160px;
+	max-width: 210px;
+	height: 138px;
+	border: 1px solid @color-black;
+	border-radius: 20px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	margin: 20px;
+
+	.lt-xxl({
+		width: calc(210px - 2%);
+	});
+
+	.lt-xl({
+		width: 210px;
+	});
+
+	.lt-lg({
+		width: 40%;
+	});
+	
+	.lt-md({
+		width: 210px;
+	});
+}
+
+.intersect {
+	height: 55px;
+	border-bottom: 1px solid @color-black;
+	display: flex; 
+	align-items: center;
+	justify-content: space-between; 
+	padding: 0 16px; 
+}
+
+.content {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding-top: 15px;
+}

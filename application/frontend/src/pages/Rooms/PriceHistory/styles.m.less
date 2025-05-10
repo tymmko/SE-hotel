@@ -1,0 +1,76 @@
+@import "../../../styles/_variables.less";
+
+// Add a wrapper to position the icon relative to the container
+.price-wrapper {
+	margin-top: 20px;
+	padding-top: 30px;
+	position: relative;
+}
+
+.price-icon {
+	position: absolute;
+	top: 0;
+	left: -35px;
+	z-index: 1; 
+}
+
+.edit-icon {
+	position: absolute;
+	top: 45px;
+	right: 18px;
+	padding: 5px;
+	z-index: 1;
+	background-color: @color-main;
+	border-radius: 20px;
+	display: flex;
+	cursor: pointer;
+}
+
+.calendar-icon {
+	padding: 5px 7px;
+	z-index: 1;
+	background-color: @color-main;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.price-container {
+	background: @color-main-medium;
+	padding: 30px;
+	border-radius: 16px;
+	position: relative;
+	padding-top: 40px;
+}
+
+.price-header {
+	margin-bottom: 20px;
+}
+
+.price-info {
+	margin-top: 10px;
+
+	div {
+		margin-bottom: 8px;
+		font-size: 16px;
+	}
+}
+
+.price-history {
+	margin-top: 40px;
+}
+
+
+.change-date {
+	display: flex;
+
+	.date {
+		margin-right: 10px;
+		padding: 5px 10px;
+		background-color: @color-main;
+		border-radius: 20px;
+		border: 1px dashed @color-dark-light;
+		font-size: 14px;
+	}
+}
