@@ -26,9 +26,9 @@ INSERT INTO Guest (first_name, last_name, email, phone_number) VALUES
 
 -- Insert Reservations
 INSERT INTO Reservation (check_in_date, check_out_date, status, room_id, guest_id) VALUES 
-  ('2025-05-01', '2025-05-05', 'Confirmed', 1, 1),
-  ('2025-05-10', '2025-05-12', 'Confirmed', 2, 2),
-  ('2025-05-15', '2025-05-20', 'Confirmed', 3, 3);
+  ('2025-05-01', '2025-05-05', 'confirmed', 1, 1),
+  ('2025-05-10', '2025-05-12', 'confirmed', 2, 2),
+  ('2025-05-15', '2025-05-20', 'confirmed', 3, 3);
 
 -- Insert Stays
 INSERT INTO Stay (check_in_date, check_out_date, reservation_id) VALUES 

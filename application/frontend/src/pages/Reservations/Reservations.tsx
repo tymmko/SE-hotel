@@ -1,32 +1,63 @@
-import React, { useState } from 'react';
-import { StatusOption } from '../../components/StatusDropdown';
+import React, { useEffect, useState } from 'react';
 import { Page } from '../../layouts';
+import { ReactComponent as GroupShapes } from '../../assets/icons/group-shapes.svg';
 import { Summary } from './ReservationSummary';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../app/store';
+import { fetchReservationById, fetchReservations } from '../../thunks/reservations.thunks';
+import ReservationsList from './ReservationsList';
+import * as styles from './styles.m.less';
+import classNames from 'classnames';
+import { Create } from './ReservationCreate';
 
-const statusOptions: StatusOption[] = [
-	{ value: 'Paid', label: 'Paid', color: '#FFF6DD' },
-	{ value: 'checked-in', label: 'Checked In', color: '#99AD65' },
-	{ value: 'checked-out', label: 'Checked Out', color: '#FBCD6A' },
-];
+const Reservations = () => {
+	const dispatch = useDispatch<AppDispatch>();
 
-const Reservations: React.FC = () => {
 	const [status, setStatus] = useState<string>('checked-in');
+	const [create, setCreate] = useState<boolean>(false);
+	
+	const reservations = useSelector((state: RootState) => state.ReservationReducer.reservations);
+	const reservation = useSelector((state: RootState) => state.ReservationReducer.reservation);
+
+	useEffect(() => {
+		dispatch(fetchReservations());
+	}, []);
+
+	const chooseReservation = (id: number) => {
+		dispatch(fetchReservationById(id));
+	}
 
 	return (
 		<Page active={'reservations'}>
-			<div style={{ padding: 24 }}>
-			<Summary
-				id="1234"
-				roomNumber="362"
-				guestName="Random Name"
-				status={status}
-				onStatusChange={setStatus}
-				statusOptions={statusOptions}
-				startDate="11/04/2023"
-				endDate="11/04/2023"
-				totalPrice="$300"
-			/>
+			<div className={classNames('d-flex', styles.reservations)}>
+				<ReservationsList
+					reservations={reservations}
+					reservation={reservation}
+					chooseReservation={chooseReservation}
+					create={create}
+					setCreate={setCreate}
+				/>
+
+				{reservation.id !== 0 && !create &&
+					<Summary
+						reservation={reservation}
+						status={status}
+						onStatusChange={setStatus}
+						totalPrice="$300"
+					/>
+				}
+
+				{create &&
+					<Create
+						reservation={reservation}
+						setCreate={setCreate}
+					/>
+				}
+
 			</div>
+			{(reservation.id !== 0 || create) &&
+				<GroupShapes className={styles.shapes}/>
+			}
 		</Page>
 	);
 };

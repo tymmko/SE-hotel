@@ -25,7 +25,7 @@ const StatusTag = ({
 	onClick,
 }: TagProps) => {
 	const bgColor = hex || colors[color!];
-	const style = bgColor ? { backgroundColor: bgColor, color: '#fff' } : undefined;
+	const style = bgColor ? { backgroundColor: bgColor } : undefined;
 
 	return (
 	<span

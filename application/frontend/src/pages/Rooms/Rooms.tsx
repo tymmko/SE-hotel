@@ -10,49 +10,49 @@ import { createRoom, fetchRooms } from '../../thunks/rooms.thunks';
 import CreateRoom from './CreateRoom';
 
 function Rooms() {
-  const dispatch = useDispatch<AppDispatch>();
-  const [selected, setSelected] = useState<Room>();
-  const [roomCreate, setRoomCreate] = useState<boolean>(false);
-  const rooms = useSelector((state: RootState) => state.RoomsReducer.roomsList);
-  const role = useSelector((state: RootState) => state.authReducer.role);
+	const dispatch = useDispatch<AppDispatch>();
+	const [selected, setSelected] = useState<Room>();
+	const [roomCreate, setRoomCreate] = useState<boolean>(false);
+	const rooms = useSelector((state: RootState) => state.RoomsReducer.rooms);
+	const role = useSelector((state: RootState) => state.authReducer.role);
 
-  useEffect(() => {
-    dispatch(fetchRooms());
-  }, []);
+	useEffect(() => {
+		dispatch(fetchRooms());
+	}, []);
 
-  useEffect(() => {
-    if (rooms && !selected) {
-      setSelected(rooms[0]);
-    }
-  }, [rooms]);
+	useEffect(() => {
+		if (rooms && !selected) {
+			setSelected(rooms[0]);
+		}
+	}, [rooms]);
 
-  const createNewRoom = (room: Omit<Room, 'id'>) => {
-    dispatch(createRoom(room));
-    setRoomCreate(false);
-  };
+	const createNewRoom = (room: Omit<Room, 'id'>) => {
+		dispatch(createRoom(room));
+		setRoomCreate(false);
+	};
 
-  return (
-    <Page active={'rooms'}>
-      <div className={styles['rooms']}>
-        <RoomsList
-          selectRoom={setSelected}
-          rooms={rooms}
-          roomAdd={roomCreate}
-          createRoom={role === 'admin' ? setRoomCreate : () => {}}
-        />
-        {selected && !roomCreate && (
-          <RoomSummary
-            id={selected.id}
-          />
-        )}
-        {roomCreate && role === 'admin' && (
-          <CreateRoom
-            createRoom={createNewRoom}
-          />
-        )}
-      </div>
-    </Page>
-  );
+	return (
+		<Page active={'rooms'}>
+			<div className={styles['rooms']}>
+				<RoomsList
+					selectRoom={setSelected}
+					rooms={rooms}
+					roomAdd={roomCreate}
+					createRoom={role === 'admin' ? setRoomCreate : () => {}}
+				/>
+				{selected && !roomCreate && (
+					<RoomSummary
+						id={selected.id}
+					/>
+				)}
+				{roomCreate && role === 'admin' && (
+					<CreateRoom
+						createRoom={createNewRoom}
+					/>
+				)}
+			</div>
+		</Page>
+	);
 }
 
 export default Rooms;

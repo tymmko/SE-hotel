@@ -13,6 +13,7 @@ import { ReactComponent as Couch } from './couch.svg';
 import { ReactComponent as CouchFilled } from './couch-filled.svg';
 import { ReactComponent as DollarStar } from './dollar-star.svg';
 import { ReactComponent as Eye } from './eye.svg';
+import { ReactComponent as GroupShapes } from './group-shapes.svg';
 import { ReactComponent as Visual } from './loginvisual.svg';
 import { ReactComponent as Logo } from './logo.svg';
 import { ReactComponent as Pencil } from './pencil.svg';
@@ -37,6 +38,7 @@ const icons: Record<string, FC<SVGProps<SVGSVGElement>>> = {
 	'couch-filled': CouchFilled,
 	'dollar-star': DollarStar,
 	eye: Eye,
+	'group-shapes': GroupShapes,
 	logo: Logo,
 	pencil: Pencil,
 	user: User,

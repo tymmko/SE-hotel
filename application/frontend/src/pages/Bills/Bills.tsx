@@ -4,7 +4,7 @@ import { Page } from '../../layouts';
 function Bills() {
 	return (
 		<Page active={'bills'}>
-			<div>hi! dfjkj</div>
+			<div>Bills</div>
 		</Page>
 	);
 }

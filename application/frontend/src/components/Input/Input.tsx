@@ -5,9 +5,13 @@ import classNames from 'classnames';
 
 type InputProps = {
 	value: string | number,
-	type?: 'text' | 'number',
+	type?: 'text' | 'number' | 'date',
 	required?: boolean,
+	placeHolder?: string,
 	className?: string,
+	min?: string | number,
+	max?: string | number,
+	pattern?: string,
 	onChange: (value: string) => void,
 }
 
@@ -15,7 +19,11 @@ const Input = ({
 	value,
 	type = 'text',
 	required,
+	placeHolder,
 	className,
+	min,
+	max,
+	pattern,
 	onChange
 }: InputProps) => {
 	const getChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +37,11 @@ const Input = ({
 			value={value}
 			onChange={getChange}
 			required={required}
-			step={type === 'number' ? 0.01 : ''}
+			placeholder={placeHolder}
+			step={type === 'number' ? 0.50 : ''}
+			min={min}
+			max={max}
+			pattern={pattern}
 		/>
 	);
 };

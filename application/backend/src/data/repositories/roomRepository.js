@@ -63,7 +63,7 @@ class RoomRepository extends BaseRepository {
       const reservation = await this.models.Reservation.findOne({
         where: {
           room_id: roomId,
-          status: 'Confirmed', // Status from Reservation model, not Room model
+          status: 'confirmed', // Status from Reservation model, not Room model
           check_in_date: { [Op.lte]: formattedDate },  // Check-in date is today or earlier
           check_out_date: { [Op.gte]: formattedDate }  // Check-out date is today or later
         },
@@ -157,7 +157,7 @@ class RoomRepository extends BaseRepository {
    * @param {Date} endDate - End date for the price
    * @returns {Promise<Object>} Created price history record
    */
-  async createPriceHistory(roomId, price, startDate = new Date(), endDate = null) {
+  async createPriceHistory(roomId, price, startDate = new Date(), endDate = null, options = {}) {
     try {
       // Default end date to 1 year from now if not specified
       if (!endDate) {
@@ -170,7 +170,7 @@ class RoomRepository extends BaseRepository {
         start_date: startDate,
         end_date: endDate,
         price: price
-      });
+      }, options);
     } catch (error) {
       console.error('Error in createPriceHistory:', error);
       throw error; // Rethrow to let the service handle it
@@ -211,7 +211,7 @@ class RoomRepository extends BaseRepository {
         attributes: ['room_id'],
         where: {
           status: {
-            [Op.notIn]: ['Canceled']
+            [Op.notIn]: ['canceled']
           },
           [Op.or]: [
             // Check-in during another stay
@@ -281,7 +281,7 @@ class RoomRepository extends BaseRepository {
         where: {
           room_id: roomId,
           status: {
-            [Op.notIn]: ['Canceled']
+            [Op.notIn]: ['canceled']
           }
         }
       });

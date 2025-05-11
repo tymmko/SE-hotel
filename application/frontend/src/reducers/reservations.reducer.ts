@@ -1,49 +1,91 @@
-import {
-    RESERVATIONS_LOADING, RESERVATIONS_OK, RESERVATIONS_ERROR,
-    RESERVATION_CREATE_LOADING, RESERVATION_CREATE_OK, RESERVATION_CREATE_ERROR
-  } from '../actions/reservations.actions';
-  import { ReservationsAction } from '../actions/reservations.actions';
-  import { Reservation } from '../types/reservation';
-  
-  interface ReservationsState {
-    list:        Reservation[];
-    loading:     boolean;
-    error:       any;
-    creating:    boolean;
-    createError: any;
-  }
-  
-  const initialState: ReservationsState = {
-    list:        [],
-    loading:     false,
-    error:       null,
-    creating:    false,
-    createError: null,
-  };
-  
-  export function reservationsReducer(
-    state = initialState,
-    action: ReservationsAction
-  ): ReservationsState {
-    switch (action.type) {
-      case RESERVATIONS_LOADING:
-        return { ...state, loading: true, error: null };
-      case RESERVATIONS_OK:
-        return { ...state, loading: false, list: action.payload };
-      case RESERVATIONS_ERROR:
-        return { ...state, loading: false, error: action.error };
-      case RESERVATION_CREATE_LOADING:
-        return { ...state, creating: true, createError: null };
-      case RESERVATION_CREATE_OK:
-        return { 
-          ...state,
-          creating: false,
-          list: [...state.list, action.payload]
-        };
-      case RESERVATION_CREATE_ERROR:
-        return { ...state, creating: false, createError: action.error };
-      default:
-        return state;
-    }
-  }
-  
+import { ReservationInitialState, ReservationStoreType } from "../types/reservation";
+import * as action from '../types/constants';
+
+const actionMap = {
+	[action.RESERVATIONS_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.RESERVATIONS_OK]: (
+		store: ReservationStoreType,
+		action: {
+			reservations: ReservationStoreType['reservations'],
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		reservations: action.reservations,
+	}),
+	[action.RESERVATIONS_ERROR]: (
+		store: ReservationStoreType,
+		action: {
+			error: unknown,
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+	// CREATE RESERVATION
+	[action.CREATE_RESERVATION_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.CREATE_RESERVATION_OK]: (
+		store: ReservationStoreType,
+		action: {
+			reservation: ReservationStoreType['reservation'],
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		reservations: [
+			...store.reservations,
+			action.reservation,
+		],
+	}),
+	[action.CREATE_RESERVATION_ERROR]: (
+		store: ReservationStoreType,
+		action: {
+			error: unknown,
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+
+	// GET RESERVATION BY ID
+	[action.RESERVATION_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.RESERVATION_OK]: (
+		store: ReservationStoreType,
+		action: {
+			reservation: ReservationStoreType['reservation'],
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		reservation: action.reservation
+	}),
+	[action.RESERVATION_ERROR]: (
+		store: ReservationStoreType,
+		action: {
+			error: unknown,
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+}
+
+export const ReservationReducer = (store = ReservationInitialState, action: any) => {
+	if (action.type in actionMap) {
+		store = actionMap[action.type as keyof typeof actionMap](store, action);
+	}
+
+	return store;
+};

@@ -93,7 +93,7 @@ class BillRepository extends BaseRepository {
       // Find all reservations for the guest
       const reservations = await this.models.Reservation.findAll({
         where: { guest_id: guestId },
-        attributes: ['reservation_id'],
+        attributes: ['id'],
         raw: true
       });
       

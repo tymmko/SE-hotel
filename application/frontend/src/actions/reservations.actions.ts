@@ -1,24 +1,48 @@
-import { Reservation, NewReservation } from '../types/reservation';
+import { Reservation } from '../types/reservation';
+import * as constants from '../types/constants';
 
-export const RESERVATIONS_LOADING        = 'RESERVATIONS_LOADING';
-export const RESERVATIONS_OK             = 'RESERVATIONS_OK';
-export const RESERVATIONS_ERROR          = 'RESERVATIONS_ERROR';
-export const RESERVATION_CREATE_LOADING  = 'RESERVATION_CREATE_LOADING';
-export const RESERVATION_CREATE_OK       = 'RESERVATION_CREATE_OK';
-export const RESERVATION_CREATE_ERROR    = 'RESERVATION_CREATE_ERROR';
+export const reservationsLoading = () => ({
+	type: constants.RESERVATIONS_LOADING,
+});
 
-export const reservationsLoading       = () => ({ type: RESERVATIONS_LOADING } as const);
-export const reservationsOk            = (payload: Reservation[]) => ({ type: RESERVATIONS_OK, payload } as const);
-export const reservationsError         = (error: any) => ({ type: RESERVATIONS_ERROR, error } as const);
+export const reservationsOk = (reservations: Reservation[]) => ({
+	type: constants.RESERVATIONS_OK,
+	reservations
+});
 
-export const reservationCreateLoading  = () => ({ type: RESERVATION_CREATE_LOADING } as const);
-export const reservationCreateOk       = (payload: Reservation) => ({ type: RESERVATION_CREATE_OK, payload } as const);
-export const reservationCreateError    = (error: any) => ({ type: RESERVATION_CREATE_ERROR, error } as const);
+export const reservationsError = (error: any) => ({
+	type: constants.RESERVATIONS_ERROR,
+	error
+});
 
-export type ReservationsAction =
-  | ReturnType<typeof reservationsLoading>
-  | ReturnType<typeof reservationsOk>
-  | ReturnType<typeof reservationsError>
-  | ReturnType<typeof reservationCreateLoading>
-  | ReturnType<typeof reservationCreateOk>
-  | ReturnType<typeof reservationCreateError>;
+
+
+export const createReservationLoading = () => ({
+	type: constants.CREATE_RESERVATION_LOADING
+});
+
+export const createReservationOk = (reservation: Reservation) => ({
+	type: constants.CREATE_RESERVATION_OK,
+	reservation,
+});
+
+export const createReservationError = (error: any) => ({
+	type: constants.CREATE_RESERVATION_ERROR,
+	error
+});
+
+
+
+export const reservationLoading = () => ({
+	type: constants.RESERVATION_LOADING,
+});
+
+export const reservationOk = (reservation: any) => ({
+	type: constants.RESERVATION_OK,
+	reservation,
+});
+
+export const reservationError = (error: unknown) => ({
+	type: constants.RESERVATION_ERROR,
+	error,
+});

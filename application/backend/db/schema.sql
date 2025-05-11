@@ -28,10 +28,10 @@ CREATE TABLE Room (
 );
 
 CREATE TABLE Reservation (
-    reservation_id BIGSERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     check_in_date DATE NOT NULL,
     check_out_date DATE NOT NULL,
-    status TEXT CHECK (status IN ('Confirmed', 'Canceled')) NOT NULL,
+    status TEXT CHECK (status IN ('confirmed', 'canceled')) NOT NULL,
     room_id BIGINT REFERENCES Room(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     guest_id BIGINT REFERENCES Guest(id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
@@ -40,7 +40,7 @@ CREATE TABLE Stay (
     stay_id BIGSERIAL PRIMARY KEY,
     check_in_date DATE NOT NULL,
     check_out_date DATE NOT NULL,
-    reservation_id BIGINT REFERENCES Reservation(reservation_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    reservation_id BIGINT REFERENCES Reservation(id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 CREATE TABLE Bill (
