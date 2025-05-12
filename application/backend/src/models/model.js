@@ -1,20 +1,18 @@
-// src/models/model.js
 const { Sequelize, DataTypes } = require('sequelize');
 require('dotenv').config();
 
-// Initialize Sequelize with the Neon database URL
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false
-    }
+      rejectUnauthorized: false,
+    },
   },
   define: {
     timestamps: true,
-    underscored: true
-  }
+    underscored: true,
+  },
 });
 
 // Import model definitions
@@ -26,8 +24,9 @@ const defineBill = require('./Bill');
 const defineServiceOrder = require('./ServiceOrder');
 const definePriceHistory = require('./PriceHistory');
 const defineEquipment = require('./Equipment');
+const defineUser = require('./User');
 
-// Initialize models with sequelize instance
+// Initialize models
 const Room = defineRoom(sequelize, DataTypes);
 const Guest = defineGuest(sequelize, DataTypes);
 const Reservation = defineReservation(sequelize, DataTypes);
@@ -36,6 +35,7 @@ const Bill = defineBill(sequelize, DataTypes);
 const ServiceOrder = defineServiceOrder(sequelize, DataTypes);
 const PriceHistory = definePriceHistory(sequelize, DataTypes);
 const Equipment = defineEquipment(sequelize, DataTypes);
+const User = defineUser(sequelize, DataTypes);
 
 // Create model instances
 const models = {
@@ -46,17 +46,17 @@ const models = {
   Bill,
   ServiceOrder,
   PriceHistory,
-  Equipment
+  Equipment,
+  User,
 };
 
-// Set up associations between models
+// Set up associations
 Object.keys(models).forEach(modelName => {
   if (models[modelName].associate) {
     models[modelName].associate(models);
   }
 });
 
-// Export models and sequelize instance
 module.exports = {
   sequelize,
   Room,
@@ -66,5 +66,6 @@ module.exports = {
   Bill,
   ServiceOrder,
   PriceHistory,
-  Equipment
+  Equipment,
+  User,
 };

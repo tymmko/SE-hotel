@@ -1,8 +1,12 @@
-export const baseURL = process.env.API_BASE_URL || 'https://localhost:3000';
+export const baseURL = process.env.API_BASE_URL || 'http://localhost:3000';
 
 const endpoint = (path: string) => `${baseURL}/api/${path}`;
 
 export const URL = {
+	// AUTH
+	register: endpoint('register'),
+	login: endpoint('login'),
+
 	// ROOMS
 	rooms: endpoint('rooms'),
 	room: (id: string | number) => endpoint(`rooms/${id}`),
@@ -20,4 +24,4 @@ export const URL = {
 	
 	//BILLS
 	bills: endpoint('bills'),
-}
+};

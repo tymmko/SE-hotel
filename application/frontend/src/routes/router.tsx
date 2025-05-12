@@ -1,30 +1,71 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { Rooms, Login, Bills, Guests, Reservations } from '../pages';
+import { Rooms, Login, Bills, Guests, Reservations, SignUp, EditPriceHistory, CreateRoom } from '../pages';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 export const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <Rooms />,
-	},
-	{
-		path: '/bills',
-		element: <Bills />,
-	},
-	{
-		path: '/guests',
-		element: <Guests />,
-	},
-	{
-		path: '/reservations',
-		element: <Reservations />,
-	},
-	{
-		path: '/rooms',
-		element: <Rooms />,
-	},
-	{
-		path: "/login",
-		element: <Login />
-	}
+  {
+    path: '/',
+    element: (
+      <ProtectedRoute>
+        <Rooms />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/bills',
+    element: (
+      <ProtectedRoute>
+        <Bills />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/guests',
+    element: (
+      <ProtectedRoute>
+        <Guests />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/reservations',
+    element: (
+      <ProtectedRoute>
+        <Reservations />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/rooms',
+    element: (
+      <ProtectedRoute>
+        <Rooms />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/rooms/create',
+    element: (
+      <ProtectedRoute requireAdmin>
+        <CreateRoom />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/signup',
+    element: <SignUp />,
+  },
+  {
+    path: '/edit-price-history/:id',
+    element: (
+      <ProtectedRoute requireAdmin>
+        <EditPriceHistory />
+      </ProtectedRoute>
+    ),
+  },
 ]);

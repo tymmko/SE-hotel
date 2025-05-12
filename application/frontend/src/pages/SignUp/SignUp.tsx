@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../actions/auth.actions';
+import { register } from '../../actions/auth.actions';
 import { AppDispatch, RootState } from '../../app/store';
 import { Icon, Input } from '../../components';
 import { Intro } from '../../layouts';
 import * as styles from './styles.m.less';
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
+	const [email, setEmail] = useState<string>('');
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -18,7 +19,7 @@ const Login: React.FC = () => {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		await dispatch(login(username, password))
+		await dispatch(register(username, email, password))
 			.then(() => {
 				navigate('/');
 			});
@@ -26,14 +27,24 @@ const Login: React.FC = () => {
 
 	return (
 		<Intro>
-			<h1>Log In</h1>
+			<h1>Sign Up</h1>
 			<form onSubmit={handleSubmit}>
 				<div className={styles['form-group']}>
 					<div className='mr-10'>username:</div>
 					<Input
 						type='text'
+						className='input-field'
 						value={username}
 						onChange={setUsername}
+					/>
+				</div>
+				<div className={styles['form-group']}>
+					<div className='mr-40'>email:</div>
+					<Input
+						type='email'
+						className='input-field'
+						value={email}
+						onChange={setEmail}
 					/>
 				</div>
 				<div className={styles['form-group']}>
@@ -53,12 +64,12 @@ const Login: React.FC = () => {
 						/>
 					</div>
 				</div>
-				<button type='submit'>Enter</button>
+				<button type='submit'>Sign Up</button>
 				{error && <p className='d-grid justify-content-center color-pink'>{error}</p>}
 			</form>
-			<p className='mt-10'>Don't have an account? <Link to='/signup'>Sign Up</Link></p>
+			<p>Already have an account? <Link to='/login'>Log In</Link></p>
 		</Intro>
 	);
 };
 
-export default Login;
+export default SignUp;

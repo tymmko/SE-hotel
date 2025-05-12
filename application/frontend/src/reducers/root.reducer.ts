@@ -1,9 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import { RoomsReducer } from './rooms.reducer';
+import authReducer from './auth.reducer';
 import { ReservationReducer } from './reservations.reducer';
 import { GuestReducer } from './guests.reducer';
 
 const rootReducer = combineReducers({
+	authReducer,
 	RoomsReducer,
 	ReservationReducer,
 	GuestReducer,
