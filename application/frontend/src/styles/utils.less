@@ -96,6 +96,16 @@
 	});
 }
 
+.position {
+	@values: relative;
+
+	each(@values, {
+		&-@{value} {
+			position: @value !important;
+		}
+	});
+}
+
 
 // borders
 .b {

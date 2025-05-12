@@ -9,7 +9,7 @@ TRUNCATE TABLE
   Reservation, 
   Guest, 
   Room,
-  users
+  Users
 RESTART IDENTITY CASCADE;
 
 -- Insert Rooms
@@ -61,7 +61,7 @@ INSERT INTO ServiceOrder (service_name, price, date_time, stay_id) VALUES
   ('Spa Treatment', 100, '2025-05-16 15:30:00', 3);
 
 -- Insert Service Orders (also include one for the stay without a bill)
-INSERT INTO users (username, email, password, role, created_at)
+INSERT INTO Users (username, email, password, role, created_at)
 VALUES (
   'testuser',
   'testuser@example.com',

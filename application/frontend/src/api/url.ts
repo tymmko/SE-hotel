@@ -1,20 +1,6 @@
-import axios from 'axios';
-
 export const baseURL = process.env.API_BASE_URL || 'http://localhost:3000';
 
 const endpoint = (path: string) => `${baseURL}/api/${path}`;
-
-const api = axios.create({
-	baseURL: `${baseURL}/api`,
-});
-
-api.interceptors.request.use((config) => {
-	const token = localStorage.getItem('token');
-	if (token) {
-		config.headers.Authorization = `Bearer ${token}`;
-	}
-	return config;
-});
 
 export const URL = {
 	// AUTH
@@ -38,6 +24,4 @@ export const URL = {
 	
 	//BILLS
 	bills: endpoint('bills'),
-}
-
-export default api;
+};

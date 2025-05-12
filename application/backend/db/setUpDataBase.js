@@ -31,7 +31,7 @@ async function resetSequences() {
     { table: 'Equipment', column: 'id' },
     { table: 'PriceHistory', column: 'price_history_id' },
     { table: 'ServiceOrder', column: 'service_order_id' },
-    { table: 'users', column: 'id' }
+    { table: 'Users', column: 'id' }
   ];
 
   for (const { table, column } of tables) {

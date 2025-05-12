@@ -1,0 +1,55 @@
+@import '../../styles/_variables.less';
+
+.intro-page {
+	display: flex;
+	width: calc(100vw - 60px);
+	height: calc(100vh - 60px);
+	align-items: center;
+
+	h1 {
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+	p {
+		font-size: 14px;
+	}
+
+	a {
+		color: @color-green;
+	}
+
+	button {
+		display: inline-grid;
+		justify-content: center;
+		justify-self: center;
+		background-color: @color-black;
+		color: @color-main;
+		font-size: 14px;
+		border-radius: 20px;
+		padding: 7px 40px;
+		margin-top: 40px;
+	}
+	
+	form {
+		display: grid;
+	}
+}
+
+.intro-visual {
+	height: 370px;
+	width: 60%;
+	margin: 0 45px;
+}
+
+.form-section {
+	flex: 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: solid 2px;
+	border-radius: 20px;
+	padding: 30px;
+	margin: 0 30px;
+}

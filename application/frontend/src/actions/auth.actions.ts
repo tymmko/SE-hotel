@@ -1,34 +1,29 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import api, { API } from '../api/api';
+import { AppDispatch } from '../app/store';
+import { loginOk, loginError, registerOk, registerError } from '../reducers/auth.reducer';
+import { loginUser, registerUser } from '../api/auth.api';
 
-export const register = createAsyncThunk(
-  'auth/register',
-  async ({ username, email, password }: { username: string; email: string; password: string }, { rejectWithValue }) => {
-    try {
-      const response = await api.post(API.register, { username, email, password });
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', user.role);
-      localStorage.setItem('username', user.username);
-      return { token, role: user.role, username: user.username };
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.error || 'Sign-up failed');
-    }
-  }
-);
+export const login = (username: string, password: string) => async (dispatch: AppDispatch) => {
+	try {
+		const { token, user } = await loginUser(username, password);
+		localStorage.setItem('token', token);
+		localStorage.setItem('role', user.role);
+		localStorage.setItem('username', user.username);
 
-export const login = createAsyncThunk(
-  'auth/login',
-  async ({ username, password }: { username: string; password: string }, { rejectWithValue }) => {
-    try {
-      const response = await api.post(API.login, { username, password });
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', user.role);
-      localStorage.setItem('username', user.username);
-      return { token, role: user.role, username: user.username };
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.error || 'Login failed');
-    }
-  }
-);
+		dispatch(loginOk({ token, username: user.username, role: user.role }));
+	} catch (err: any) {
+		dispatch(loginError(err.response?.data?.error || 'Login failed'));
+	}
+};
+
+export const register = (username: string, email: string, password: string) => async (dispatch: AppDispatch) => {
+	try {
+		const { token, user } = await registerUser(username, email, password);
+		localStorage.setItem('token', token);
+		localStorage.setItem('role', user.role);
+		localStorage.setItem('username', user.username);
+
+		dispatch(registerOk({ token, username: user.username, role: user.role }));
+	} catch (err: any) {
+		dispatch(registerError(err.response?.data?.error || 'Register failed'));
+	}
+};

@@ -1,56 +1,50 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { register, login } from '../actions/auth.actions';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
-  token: string | null;
-  role: string | null;
-  username: string | null;
-  error: string | null;
+	token: string | null;
+	username: string | null;
+	role: string | null;
+	error: string | null;
 }
 
 const initialState: AuthState = {
-  token: localStorage.getItem('token') || null,
-  role: localStorage.getItem('role') || null,
-  username: localStorage.getItem('username') || null,
-  error: null,
+	token: localStorage.getItem('token'),
+	username: localStorage.getItem('username'),
+	role: localStorage.getItem('role'),
+	error: null,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    logout(state) {
-      state.token = null;
-      state.role = null;
-      state.username = null;
-      state.error = null;
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-      localStorage.removeItem('username');
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(register.fulfilled, (state, action) => {
-        state.token = action.payload.token;
-        state.role = action.payload.role;
-        state.username = action.payload.username;
-        state.error = null;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.error = action.payload as string;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.token = action.payload.token;
-        state.role = action.payload.role;
-        state.username = action.payload.username;
-        state.error = null;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.error = action.payload as string;
-      });
-  },
+	name: 'auth',
+	initialState,
+	reducers: {
+		loginOk: (state, action: PayloadAction<{ token: string; username: string; role: string }>) => {
+			state.token = action.payload.token;
+			state.username = action.payload.username;
+			state.role = action.payload.role;
+			state.error = null;
+		},
+		loginError: (state, action: PayloadAction<string>) => {
+			state.error = action.payload;
+		},
+		registerOk: (state, action: PayloadAction<{ token: string; username: string; role: string }>) => {
+			state.token = action.payload.token;
+			state.username = action.payload.username;
+			state.role = action.payload.role;
+			state.error = null;
+		},
+		registerError: (state, action: PayloadAction<string>) => {
+			state.error = action.payload;
+		},
+		logout: (state) => {
+			state.token = null;
+			state.username = null;
+			state.role = null;
+			state.error = null;
+			localStorage.clear();
+		}
+	}
 });
 
-export const { logout } = authSlice.actions;
+export const { loginOk, loginError, registerOk, registerError, logout } = authSlice.actions;
 export default authSlice.reducer;
