@@ -85,6 +85,7 @@ deploy_backend:
     BACKEND_SVC_ID: $RAILWAY_BACKEND_SVC_ID
     PROJECT_ID: $RAILWAY_PROJECT_ID
   script:
+    - ls
     - cd application/backend
     - railway up --service=$BACKEND_SVC_ID
 

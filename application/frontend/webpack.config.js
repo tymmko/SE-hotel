@@ -128,6 +128,7 @@ const config = {
 	port: 8080,
 	hot: true,
 	historyApiFallback: true,
+	allowedHosts: 'all',
   },
 };
 module.exports = config;
