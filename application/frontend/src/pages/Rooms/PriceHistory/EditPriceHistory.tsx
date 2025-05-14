@@ -2,30 +2,33 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import Calendar from 'react-calendar';
 import { PriceEntry } from '../../../types/rooms';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../reducers/root.reducer';
 import { Icon, Input } from '../../../components';
 // @ts-ignore
 import * as styles from './styles.m.less';
+import { AppDispatch } from '../../../app/store';
+import { createPriceEntry } from '../../../thunks/rooms.thunks';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 type EditPriceHistoryProps = {
-    onSaved?: () => void;  // optional callback to refresh history
+	onSaved?: () => void;  // optional callback to refresh history
 	onCancel?: () => void;  
 };
 
 const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved, onCancel }) => {
-    const room = useSelector((state: RootState) => state.RoomsReducer.room);
+	const dispatch = useDispatch<AppDispatch>();
+	const room = useSelector((state: RootState) => state.RoomsReducer.room);
+	const errorPriceHistory = useSelector((state: RootState) => state.RoomsReducer.errorPriceHistory);
 
-    const [startDate, setStartDate] = useState<Value>(new Date());
-    const [startDateFormatted, setStartDateFormatted] = useState<string>('');
-	const [newPriceEntry, setNewPriceEntry] = useState<PriceEntry>({
+	const [startDate, setStartDate] = useState<Value>(new Date());
+	const [startDateFormatted, setStartDateFormatted] = useState<string>('');
+	const [newPriceEntry, setNewPriceEntry] = useState<Omit<PriceEntry, 'room_id'>>({
 		start_date: '',
 		end_date: '',
 		price: 0,
-		room_id: room.id,
 	});
 
 	const changePrice = (price: number | string) => {
@@ -46,43 +49,16 @@ const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved, onCancel }
 	}, [startDate])
 
 	const handleSave = async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/api/rooms/${room.id}/price-history`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    price: newPriceEntry.price,
-                    start_date: newPriceEntry.start_date,
-                    end_date: newPriceEntry.end_date || null,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to save price: ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            console.log('Saved successfully:', result);
-
-            if (onSaved) {
-                onSaved();
-            }
-
-        } catch (error) {
-            console.error('Error saving price history:', error);
-            alert('Failed to update price.');
-        }
-    };
+		dispatch(createPriceEntry(room.id, newPriceEntry))
+	};
 
 	return (
 		<div className={styles['price-header']}>
-			<div  style={{display: 'flex',alignItems: 'center', justifyContent: 'space-between'}}>
+			<div style={{display: 'flex',alignItems: 'center', justifyContent: 'space-between'}}>
 				<h3>Edit Price Details</h3>
 				<button className={styles['close-button']} onClick= {onCancel} aria-label="Close" title="Close">
 					&times;
-        		</button>
+				</button>
 			</div>
 			<div className={styles['price-info']}>
 				<div>
@@ -108,7 +84,6 @@ const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved, onCancel }
 						}}
 					/>
 				</div>
-
 				<div>
 					<div>valid until:</div>
 					<Input
@@ -127,6 +102,14 @@ const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onSaved, onCancel }
 				<button onClick={handleSave} className={styles['save-button']}>
 					Save
 				</button>
+
+				{errorPriceHistory != undefined && (
+					<div className='color-pink'>
+						{typeof errorPriceHistory === 'object' && errorPriceHistory !== null && 'message' in errorPriceHistory
+						? (errorPriceHistory as { message: string }).message
+						: 'Something went wrong. Please try again.'}
+					</div>
+				)}
 			</div>
 		</div>
 	);

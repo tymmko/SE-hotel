@@ -1,5 +1,6 @@
 // src/services/billService.js
 const BaseService = require('./common/baseService');
+const { Op } = require('sequelize');
 
 /**
  * Service for Bill-related business logic
@@ -111,7 +112,20 @@ class BillService extends BaseService {
         const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
         
         // Calculate total amount
-        billData.total_amount = stay.Reservation.Room.price_per_night * nights;
+        const priceEntry = await this.repository.models.PriceHistory.findOne({
+          where: {
+            room_id: stay.Reservation.Room.id,
+            start_date: { [Op.lte]: checkInDate },
+            end_date: { [Op.gte]: checkOutDate },
+          },
+          order: [['start_date', 'DESC']]
+        });
+        
+        if (!priceEntry) {
+          throw new Error('No valid price entry found for the reservation date range');
+        }
+        
+        billData.total_amount = priceEntry.price * nights;
       } catch (error) {
         console.error('Error calculating bill amount:', error);
         throw new Error('Failed to calculate bill amount. Please provide a total_amount.');
