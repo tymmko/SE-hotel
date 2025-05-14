@@ -19,9 +19,9 @@ export const createRoomLoading = () => ({
 	type: constants.CREATE_ROOM_LOADING,
 });
 
-export const createRoomOk = (room: any) => ({
+export const createRoomOk = (priceEntry: any) => ({
 	type: constants.CREATE_ROOM_OK,
-	room,
+	priceEntry,
 });
 
 export const createRoomError = (error: unknown) => ({
@@ -60,17 +60,17 @@ export const priceHistoryError = (error: unknown) => ({
 });
 
 
-export const equipmentLoading = () => ({
-	type: constants.EQUIPMENT_LOADING,
+export const createPriceEntryLoading = () => ({
+	type: constants.CREATE_PRICE_ENTRY_LOADING,
 });
 
-export const equipmentOk = (equipment: any[]) => ({
-	type: constants.EQUIPMENT_OK,
-	equipment,
+export const createPriceEntryOk = (priceEntry: any) => ({
+	type: constants.CREATE_PRICE_ENTRY_OK,
+	priceEntry,
 });
 
-export const equipmentError = (error: unknown) => ({
-	type: constants.EQUIPMENT_ERROR,
+export const createPriceEntryError = (error: unknown) => ({
+	type: constants.CREATE_PRICE_ENTRY_ERROR,
 	error,
 });
 

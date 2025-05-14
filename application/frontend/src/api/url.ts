@@ -14,6 +14,10 @@ export const URL = {
 	equipment: (id: string | number) => endpoint(`rooms/${id}/equipment`),
 	occupancy: (id: string | number) => endpoint(`rooms/${id}/occupancy`),
 
+	// EQUIPMET
+	equipments: endpoint('equipments'),
+	equipmentById: (id: string | number) => endpoint(`equipment/${id}`),
+
 	// RESERVATIONS
 	reservations: endpoint('reservations'),
 	reservation: (id: string | number) => endpoint(`reservations/${id}`),

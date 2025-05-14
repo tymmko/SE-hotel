@@ -13,10 +13,10 @@ TRUNCATE TABLE
 RESTART IDENTITY CASCADE;
 
 -- Insert Rooms
-INSERT INTO Room (type, status, capacity, price_per_night) VALUES
-  ('single','occupied',  1, 80),
-  ('double', 'occupied', 2, 120),
-  ('suite', 'available', 3, 250);
+INSERT INTO Room (type, status, capacity) VALUES
+  ('single','occupied',  1),
+  ('double', 'occupied', 2),
+  ('suite', 'available', 3);
 
 -- Insert Guests
 INSERT INTO Guest (first_name, last_name, email, phone_number) VALUES 

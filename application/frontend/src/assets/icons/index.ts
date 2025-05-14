@@ -1,6 +1,7 @@
 import { FC, SVGProps } from 'react';
 
 import { ReactComponent as Add } from './add.svg';
+import { ReactComponent as AddFilled } from './add-filled.svg';
 import { ReactComponent as ArrowDiagonal } from './arrow-diagonal.svg';
 import { ReactComponent as ArrowDown } from './arrow-down.svg';
 import { ReactComponent as Bill } from './bill.svg';
@@ -17,6 +18,7 @@ import { ReactComponent as GroupShapes } from './group-shapes.svg';
 import { ReactComponent as Visual } from './loginvisual.svg';
 import { ReactComponent as Logo } from './logo.svg';
 import { ReactComponent as Pencil } from './pencil.svg';
+import { ReactComponent as Save} from './save.svg';
 import { ReactComponent as Search } from './search.svg';
 import { ReactComponent as User } from './user.svg';
 import { ReactComponent as UserFilled } from './user-filled.svg';
@@ -25,7 +27,8 @@ import { ReactComponent as GuestBadge } from './guestBadge.svg';
 
 
 const icons: Record<string, FC<SVGProps<SVGSVGElement>>> = {
-	'add': Add,
+	add: Add,
+	'add-filled': AddFilled,
 	'arrow-diagonal': ArrowDiagonal,
 	'arrow-down': ArrowDown,
 	bill: Bill,
@@ -43,6 +46,7 @@ const icons: Record<string, FC<SVGProps<SVGSVGElement>>> = {
 	pencil: Pencil,
 	user: User,
 	'user-filled': UserFilled,
+	save: Save,
 	search: Search,
 	visual: Visual,
 	'room-number-badge': RoomNumberBadge,

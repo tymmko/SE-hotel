@@ -1,6 +1,6 @@
 import api from './api';
 import { URL } from './url';
-import { Equipment, PriceEntry, Room } from '../types/rooms';
+import { PriceEntry, Room } from '../types/rooms';
 import { Guest } from '../types/guest';
 
 // GET rooms
@@ -27,10 +27,10 @@ export const getPriceHistory = async (id: string | number): Promise<PriceEntry[]
 	return response.data.priceHistory;
 };
 
-// GET room's equipment
-export const getEquipment = async (id: string | number): Promise<Equipment[]> => {
-	const response = await api.get(URL.equipment(id));
-	return response.data.equipment;
+// POST room's price entry
+export const postPriceEntry = async (id: string | number, priceEntry: Omit<PriceEntry, 'room_id'>): Promise<PriceEntry> => {
+	const response = await api.post(URL.priceHistory(id), priceEntry);
+	return response.data.priceEntry;
 };
 
 // GET room's oocupancy

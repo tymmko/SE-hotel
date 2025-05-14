@@ -8,17 +8,31 @@ import EditPriceHistory from './EditPriceHistory';
 
 type PriceHistoryProps = {
 	currentPrice: number,
-	history: PriceEntry[],
+	history?: PriceEntry[],
 	className?: string,
 };
 
 const PriceHistory: React.FC<PriceHistoryProps> = ({
 	currentPrice,
-	history,
+	history = [],
 	className,
 }) => {
 	const [edit, setEdit] = useState<Boolean>(false);
-	const validSince = history && history[0] ? history[0].start_date : '';
+	const validSince = history ? getCurrentStartDate(history) : '';
+
+	function getCurrentStartDate(priceHistory: PriceEntry[]): string | null {
+		const today = new Date();
+	
+		if (priceHistory.length === 0) return null;
+
+		const current = priceHistory.find(entry => {
+			const start = new Date(entry.start_date);
+			const end = new Date(entry.end_date);
+			return start <= today && today <= end;
+		});
+	
+		return current ? current.start_date : null;
+	}
 
 	return (
 		<div className={styles['price-wrapper']}>
