@@ -1,5 +1,6 @@
 stages:
   - install
+  - test
   - build
   - deploy
 
@@ -29,6 +30,21 @@ install_frontend:
     paths:
       - application/frontend/node_modules/
 
+# Frontend tests
+test_frontend:
+  stage: test
+  script:
+    - cd application/frontend
+    - npm install --legacy-peer-deps --include=dev
+    - npm test
+  artifacts:
+    when: always
+    paths:
+      - application/frontend/test-results/
+    reports:
+      junit: application/frontend/test-results/junit.xml
+  allow_failure: false
+
 # Build frontend
 build_frontend:
   stage: build
@@ -45,7 +61,7 @@ deploy_frontend:
   stage: deploy
   image: ghcr.io/railwayapp/cli:latest
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
     FRONTEND_SVC_ID: $RAILWAY_FRONTEND_SVC_ID
@@ -59,7 +75,7 @@ deploy_backend:
   stage: deploy
   image: ghcr.io/railwayapp/cli:latest
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
     BACKEND_SVC_ID: $RAILWAY_BACKEND_SVC_ID
