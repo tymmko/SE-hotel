@@ -25,7 +25,7 @@ class ReservationRepository extends BaseRepository {
       return await this.model.findAll({
         include: [
           {
-            model: this.models.Guest,
+            model: this.models.User,
             attributes: ['id', 'first_name', 'last_name', 'email']
           },
           {
@@ -77,13 +77,13 @@ class ReservationRepository extends BaseRepository {
 
   /**
    * Find reservations for a specific guest
-   * @param {number} guestId - Guest ID
+   * @param {number} userId - Guest ID
    * @returns {Promise<Array>} List of reservations for the guest
    */
-  async findReservationsByGuest(guestId) {
+  async findReservationsByGuest(userId) {
     try {
       return await this.findReservationsWithDetails({
-        where: { guest_id: guestId }
+        where: { user_id: userId }
       });
     } catch (error) {
       console.error('Error in findReservationsByGuest:', error);

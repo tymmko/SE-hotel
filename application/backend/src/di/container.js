@@ -1,97 +1,121 @@
 // src/di/container.js
-const models = require('../data/models');
+const models = require('../data/models').models; // Use the exported 'models' object
 
 // Import repositories
 const RoomRepository = require('../data/repositories/roomRepository');
-const GuestRepository = require('../data/repositories/guestRepository');
+// const GuestRepository = require('../data/repositories/guestRepository'); // REMOVED
 const ReservationRepository = require('../data/repositories/reservationRepository');
+const BillRepository = require('../data/repositories/billRepository');
+const UserRepository = require('../data/repositories/userRepository');
+const PriceHistoryRepository = require('../data/repositories/priceHistoryRepository');
+const EquipmentRepository = require('../data/repositories/equipmentRepository');
 // Import other repositories as needed
 
 // Import services
 const RoomService = require('../services/roomService');
-const GuestService = require('../services/guestService');
+// const GuestService = require('../services/guestService'); // REMOVED
 const ReservationService = require('../services/reservationService');
+const BillService = require('../services/billService');
+const UserService = require('../services/userService');
+const PriceHistoryService = require('../services/priceHistoryService');
+const EquipmentService = require('../services/equipmentService');
 // Import other services as needed
 
 // Import controllers
 const RoomController = require('../controllers/room.controller');
-const GuestController = require('../controllers/guest.controller');
+// const GuestController = require('../controllers/guest.controller'); // REMOVED
 const ReservationController = require('../controllers/reservation.controller');
+const BillController = require('../controllers/bill.controller');
+const UserController = require('../controllers/user.controller');
+const PriceHistoryControllerFactory = require('../controllers/priceHistory.controller');
+const EquipmentControllerFactory = require('../controllers/equipment.controller');
+
 // Import other controllers as needed
 
-/**
- * Simple dependency injection container
- * Manages the creation and injection of all application dependencies
- */
 class Container {
   constructor() {
     this.instances = {};
   }
 
-  /**
-   * Register an instance in the container
-   * @param {string} name - Name of the instance
-   * @param {any} instance - The instance to register
-   */
   register(name, instance) {
     this.instances[name] = instance;
   }
 
-  /**
-   * Retrieve an instance from the container
-   * @param {string} name - Name of the instance
-   * @returns {any} The requested instance
-   * @throws {Error} If instance not found
-   */
   get(name) {
     if (!this.instances[name]) {
-      throw new Error(`Instance not found: ${name}`);
+      // Attempt to build it if a builder function is registered
+      if (this.builders && this.builders[name]) {
+        this.instances[name] = this.builders[name](this);
+        return this.instances[name];
+      }
+      throw new Error(`Instance not found or builder not defined: ${name}`);
     }
     return this.instances[name];
   }
 
-  /**
-   * Check if an instance exists in the container
-   * @param {string} name - Name of the instance
-   * @returns {boolean} True if instance exists
-   */
   has(name) {
-    return !!this.instances[name];
+    return !!this.instances[name] || (this.builders && !!this.builders[name]);
+  }
+
+  // Store builder functions for deferred instantiation
+  setBuilder(name, builderFn) {
+    if (!this.builders) {
+      this.builders = {};
+    }
+    this.builders[name] = builderFn;
   }
 }
 
-/**
- * Initialize the container with all application dependencies
- * @returns {Container} Initialized container
- */
 function initializeContainer() {
   const container = new Container();
   
-  // Register database models
+  // Register database models (already loaded, pass the 'models' object)
   container.register('models', models);
   
   // Register repositories
-  container.register('roomRepository', new RoomRepository(models));
-  container.register('guestRepository', new GuestRepository(models));
-  container.register('reservationRepository', new ReservationRepository(models));
-  // Register other repositories as needed
+  container.setBuilder('roomRepository', (c) => new RoomRepository(c.get('models')));
+  // container.register('guestRepository', new GuestRepository(models)); // REMOVED
+  container.setBuilder('reservationRepository', (c) => new ReservationRepository(c.get('models')));
+  container.setBuilder('billRepository', (c) => new BillRepository(c.get('models')));
+  container.setBuilder('userRepository', (c) => new UserRepository(c.get('models')));
+  container.setBuilder('priceHistoryRepository', (c) => new PriceHistoryRepository(c.get('models')));
+  container.setBuilder('equipmentRepository', (c) => new EquipmentRepository(c.get('models')));
   
   // Register services
-  container.register('roomService', new RoomService(container.get('roomRepository')));
-  container.register('guestService', new GuestService(container.get('guestRepository')));
-  container.register('reservationService', new ReservationService(
-    container.get('reservationRepository'),
-    container.get('roomService'),
-    container.get('guestService')
+  container.setBuilder('roomService', (c) => new RoomService(c.get('roomRepository')));
+  // container.register('guestService', new GuestService(container.get('guestRepository'))); // REMOVED
+  container.setBuilder('reservationService', (c) => new ReservationService(
+    c.get('reservationRepository'),
+    c.get('roomRepository'),
+    c.get('userRepository') // Added UserRepository
   ));
-  // Register other services as needed
+  container.setBuilder('billService', (c) => new BillService(
+    c.get('billRepository'),
+    // Pass other repositories or models as needed by BillService constructor
+    // For example, if BillService needs Stay model directly (not ideal): c.get('models').Stay
+    // Or better, inject repositories for Stay, Reservation, Room, PriceHistory if BillService uses them
+    c.get('models').Stay, // Example of direct model injection, review BillService dependencies
+    c.get('models').Reservation,
+    c.get('models').Room,
+    c.get('models').PriceHistory
+  ));
+  container.setBuilder('userService', (c) => new UserService(c.get('userRepository')));
+  container.setBuilder('priceHistoryService', (c) => new PriceHistoryService(c.get('priceHistoryRepository'), c.get('roomRepository')));
+  container.setBuilder('equipmentService', (c) => new EquipmentService(c.get('equipmentRepository'), c.get('roomRepository')));
   
   // Register controllers
-  container.register('roomController', new RoomController(container.get('roomService')));
-  container.register('guestController', new GuestController(container.get('guestService')));
-  container.register('reservationController', new ReservationController(container.get('reservationService')));
-  // Register other controllers as needed
+  container.setBuilder('roomController', (c) => new RoomController(c.get('roomService')));
+  // container.register('guestController', new GuestController(container.get('guestService'))); // REMOVED
+  container.setBuilder('reservationController', (c) => new ReservationController(c.get('reservationService')));
+  container.setBuilder('billController', (c) => new BillController(c.get('billService')));
+  container.setBuilder('userController', (c) => new UserController(c.get('userService')));
+  container.setBuilder('priceHistoryController', (c) => PriceHistoryControllerFactory(c.get('priceHistoryService')));
+  container.setBuilder('equipmentController', (c) => EquipmentControllerFactory(c.get('equipmentService')));
   
+  // To actually instantiate them if needed at init (or let them be lazy-loaded via get)
+  // For example, if your app.js directly uses container.get('someController')
+  // container.get('userController'); // This would build and cache it.
+
   return container;
 }
 
