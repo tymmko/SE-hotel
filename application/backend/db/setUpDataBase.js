@@ -27,7 +27,7 @@ async function resetSequences() {
     { table: 'Guest', column: 'id' },
     { table: 'Reservation', column: 'id' },
     { table: 'Stay', column: 'stay_id' },
-    { table: 'Bill', column: 'bill_id' },
+    { table: 'Bill', column: 'id' },
     { table: 'Equipment', column: 'id' },
     { table: 'PriceHistory', column: 'price_history_id' },
     { table: 'ServiceOrder', column: 'service_order_id' },

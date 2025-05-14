@@ -43,9 +43,9 @@ CREATE TABLE Stay (
 );
 
 CREATE TABLE Bill (
-	bill_id BIGSERIAL PRIMARY KEY,
+	id BIGSERIAL PRIMARY KEY,
 	total_amount FLOAT NOT NULL,
-	status TEXT CHECK (status IN ('Paid', 'Unpaid')) NOT NULL,
+	status TEXT CHECK (status IN ('paid', 'unpaid')) NOT NULL,
 	stay_id BIGINT REFERENCES Stay(stay_id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 

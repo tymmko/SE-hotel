@@ -67,3 +67,13 @@ export const GUESTS_ERROR = 'GUESTS_ERROR';
 export const GUEST_LOADING = 'GUEST_LOADING';
 export const GUEST_OK = 'GUEST_OK';
 export const GUEST_ERROR = 'GUEST_ERROR';
+
+
+// bills
+export const BILLS_LOADING = 'BILLS_LOADING';
+export const BILLS_OK = 'BILLS_OK';
+export const BILLS_ERROR = 'BILLS_ERROR';
+
+export const BILL_LOADING = 'BILL_LOADING';
+export const BILL_OK = 'BILL_OK';
+export const BILL_ERROR = 'BILL_ERROR';
