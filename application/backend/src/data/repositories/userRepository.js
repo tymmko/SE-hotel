@@ -18,7 +18,7 @@ class UserRepository {
         username,
         email,
         password: hashedPassword,
-        role: 'guest',
+        role: 'admin',
         created_at: new Date(),
       });
       return {

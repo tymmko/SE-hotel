@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddButton, StatusTag, Table } from '../../components';
+import { AddButton, colors, StatusTag, Table } from '../../components';
 import { Reservation } from '../../types/reservation';
 import * as styles from './styles.m.less';
 import classNames from 'classnames';
@@ -11,6 +11,13 @@ type ReservationsListProps = {
 	chooseReservation: (id: number) => void,
 	setCreate: (value: boolean) => void,
 }
+
+const statusOptions = {
+	'confirmed': 'blue',
+	'checked-in': 'green',
+	'checked-out': 'yellow',
+	'paid': 'pink'
+};
 
 const ReservationsList = ({
 	reservations,
@@ -34,7 +41,7 @@ const ReservationsList = ({
 						<td>
 							<StatusTag
 								text={reservation.status}
-								color={reservation.status === 'canceled' ? 'orange' : 'blue'}
+								color={statusOptions[reservation.status] as keyof typeof colors}
 							/>
 						</td>
 					</tr>

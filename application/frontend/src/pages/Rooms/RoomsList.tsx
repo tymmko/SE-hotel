@@ -69,7 +69,7 @@ const RoomsList = ({ rooms, roomAdd, selectRoom, createRoom }: RoomsListProps) =
 						</div>
 					</Card>
 				))}
-			{!roomAdd && role === 'admin' && (
+			{!roomAdd && (
 				<div className={styles.add} onClick={() => createRoom(true)}>
 					<AddButton color="orange" />
 				</div>

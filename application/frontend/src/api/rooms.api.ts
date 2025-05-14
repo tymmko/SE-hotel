@@ -30,7 +30,7 @@ export const getPriceHistory = async (id: string | number): Promise<PriceEntry[]
 // POST room's price entry
 export const postPriceEntry = async (id: string | number, priceEntry: Omit<PriceEntry, 'room_id'>): Promise<PriceEntry> => {
 	const response = await api.post(URL.priceHistory(id), priceEntry);
-	return response.data.priceEntry;
+	return response.data;
 };
 
 // GET room's oocupancy

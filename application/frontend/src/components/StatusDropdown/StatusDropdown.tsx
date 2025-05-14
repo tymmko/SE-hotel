@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { StatusTag } from '../StatusTag';
 import * as styles from './styles.m.less';
@@ -25,7 +25,21 @@ export const StatusDropdown = ({
 }: StatusDropdownProps) => {
 	const [open, setOpen] = useState<Boolean>(false);
 
+	const containerRef = useRef<HTMLDivElement>(null);
+
 	const selected = options.find(o => o.value === value);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+				setOpen(false);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
 
 	const openDropdown = () => {
 		setOpen(!open);
@@ -49,7 +63,7 @@ export const StatusDropdown = ({
 				}
 				<Icon name='arrow-down' size='xxxs' />
 			</div>
-			<div className={styles['dropdown-content']}>
+			<div className={styles['dropdown-content']} ref={containerRef}>
 				{options.map((option, i) => (
 					<div key={i}>
 						<StatusTag

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dropdown, StatusOption, Input, AddButton } from '../../components';
+import { Dropdown, StatusOption, Input, AddButton, colors } from '../../components';
 import { Reservation } from '../../types/reservation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
@@ -15,9 +15,10 @@ type CreateProps = {
 };
 
 const statusOptions: StatusOption[] = [
-	{ value: 'Paid', label: 'Paid', color: '#FFF6DD' },
+	{ value: 'confirmed', label: 'Confirmed', color: '#FFF6DD' },
 	{ value: 'checked-in', label: 'Checked In', color: '#99AD65' },
 	{ value: 'checked-out', label: 'Checked Out', color: '#FBCD6A' },
+	{ value: 'paid', label: 'Paid', color: colors.pink },
 ];
 
 export const Create: React.FC<CreateProps> = ({

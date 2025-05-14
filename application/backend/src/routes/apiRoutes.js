@@ -1,4 +1,6 @@
 // src/routes/apiRoutes.js
+const authMiddleware = require('../middlewares/authMiddleware');
+
 const express = require('express');
 const router = express.Router();
 
@@ -12,6 +14,7 @@ const ReservationRepository = require('../data/repositories/reservationRepositor
 const GuestRepository = require('../data/repositories/guestRepository');
 const EquipmentRepository = require('../data/repositories/equipmentRepository');
 const PriceHistoryRepository = require('../data/repositories/priceHistoryRepository');
+const UserRepository = require('../data/repositories/userRepository')
 
 // Create repository instances
 const roomRepository = new RoomRepository(models);
@@ -20,6 +23,7 @@ const reservationRepository = new ReservationRepository(models);
 const guestRepository = new GuestRepository(models);
 const equipmentRepository = new EquipmentRepository(models);
 const priceHistoryRepository = new PriceHistoryRepository(models);
+const userRepository = new UserRepository(models);
 
 // Import service classes
 const RoomService = require('../services/roomService');
@@ -28,6 +32,7 @@ const ReservationService = require('../services/reservationService');
 const GuestService = require('../services/guestService');
 const EquipmentService = require('../services/equipmentService');
 const PriceHistoryService = require('../services/priceHistoryService');
+const UserService = require('../services/userService');
 
 // Create service instances
 const roomService = new RoomService(roomRepository);
@@ -36,6 +41,7 @@ const reservationService = new ReservationService(reservationRepository, roomRep
 const guestService = new GuestService(guestRepository);
 const equipmentService = new EquipmentService(equipmentRepository, roomRepository);
 const priceHistoryService = new PriceHistoryService(priceHistoryRepository, roomRepository);
+const userService = new UserService(userRepository);
 
 // Import controller classes
 const RoomController = require('../controllers/room.controller');
@@ -44,6 +50,7 @@ const ReservationController = require('../controllers/reservation.controller');
 const GuestController = require('../controllers/guest.controller');
 const EquipmentController = require('../controllers/equipment.controller');
 const PriceHistoryController = require('../controllers/priceHistory.controller');
+const UserController = require('../controllers/user.controller');
 
 // Create controller instances
 const roomController = new RoomController(roomService);
@@ -52,6 +59,7 @@ const reservationController = new ReservationController(reservationService);
 const guestController = new GuestController(guestService);
 const equipmentController = EquipmentController(equipmentService);
 const priceHistoryController = PriceHistoryController(priceHistoryService);
+const userController = new UserController(userService);
 
 // Room routes
 // Specific routes first to avoid routing conflicts
@@ -72,7 +80,7 @@ router.route('/rooms/:id/occupancy')
 
 router.route('/rooms')
 	.get(roomController.getAllRooms.bind(roomController))
-	.post(roomController.createRoom.bind(roomController));
+	.post(authMiddleware, roomController.createRoom.bind(roomController));
 
 router.route('/rooms/:id')
 	.get(roomController.getRoom.bind(roomController))
@@ -124,5 +132,8 @@ router.route('/guests/:id')
 	.get(guestController.getGuest.bind(guestController))
 	.put(guestController.updateGuest.bind(guestController));
 
+// User routes
+router.post('/register', userController.register.bind(userController));
+router.post('/login', userController.login.bind(userController));
 
 module.exports = router;

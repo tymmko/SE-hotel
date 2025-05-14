@@ -29,6 +29,7 @@ const actionMap = {
 		loading: false,
 		error: action.error,
 	}),
+	
 	// CREATE ROOM
 	[action.CREATE_ROOM_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,

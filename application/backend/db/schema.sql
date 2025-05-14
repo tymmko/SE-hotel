@@ -30,7 +30,7 @@ CREATE TABLE Reservation (
 	id BIGSERIAL PRIMARY KEY,
 	check_in_date DATE NOT NULL,
 	check_out_date DATE NOT NULL,
-	status TEXT CHECK (status IN ('confirmed', 'canceled')) NOT NULL,
+	status TEXT CHECK (status IN ('confirmed', 'checked-in', 'checked-out', 'paid')) NOT NULL,
 	room_id BIGINT REFERENCES Room(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
 	guest_id BIGINT REFERENCES Guest(id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );

@@ -18,8 +18,8 @@ export const createRoom = (room: Omit<Room, 'id'>) => async (dispatch: AppDispat
 	dispatch(actions.createRoomLoading());
 
 	try {
-		const rooms = await API.postRoom(room);
-		dispatch(actions.createRoomOk(rooms));
+		const newRoom = await API.postRoom(room);
+		dispatch(actions.createRoomOk(newRoom));
 	} catch (err) {
 		dispatch(actions.createRoomError(err));
 	}

@@ -1,4 +1,5 @@
 // src/data/repositories/equipmentRepository.js
+const { Op } = require('sequelize');
 const BaseRepository = require('./common/baseRepository');
 
 class EquipmentRepository extends BaseRepository {

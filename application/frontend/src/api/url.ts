@@ -21,6 +21,7 @@ export const URL = {
 	// RESERVATIONS
 	reservations: endpoint('reservations'),
 	reservation: (id: string | number) => endpoint(`reservations/${id}`),
+	reservationStatus: (id: string | number) => endpoint(`reservations/${id}/status`),
 
 	// GUESTS
 	guests: endpoint('guests'),

@@ -19,9 +19,9 @@ export const createRoomLoading = () => ({
 	type: constants.CREATE_ROOM_LOADING,
 });
 
-export const createRoomOk = (priceEntry: any) => ({
+export const createRoomOk = (room: any) => ({
 	type: constants.CREATE_ROOM_OK,
-	priceEntry,
+	room,
 });
 
 export const createRoomError = (error: unknown) => ({

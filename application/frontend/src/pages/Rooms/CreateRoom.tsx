@@ -33,7 +33,6 @@ const CreateRoom = ({
 		type:'single',
 		status: 'available',
 		capacity: 1,
-		price_per_night: 0,
 	});
 
 	const selectType = (value: string) => {
@@ -44,13 +43,6 @@ const CreateRoom = ({
 			});
 		}
 	};
-
-	const changePricePerNight = (value: string) => {
-		setRoom({
-			...room,
-			price_per_night: Number(value)
-		})
-	}
 
 	const changeCapacity = (value: string) => {
 		setRoom({
@@ -72,17 +64,6 @@ const CreateRoom = ({
 					/>
 				</div>
 				<div className='d-flex mt-15 align-items-center'>
-					<div className={styles['info-label']}>Price per night:</div>
-					<div className={classNames('d-flex mt-0 align-items-center', styles.input)}>
-						$ <Input
-							type='number'
-							value={room.price_per_night ?? 0}
-							onChange={changePricePerNight}
-							className='ml-5'
-						/>
-					</div>
-				</div>
-				<div className='d-flex mt-15 align-items-center'>
 					<div className={styles['info-label']}>Capacity:</div>
 					<div className={classNames('d-flex mt-0 align-items-center', styles.input)}>
 						<Input
@@ -92,19 +73,7 @@ const CreateRoom = ({
 						/>
 					</div>
 				</div>
-				<div className='d-flex mt-15 align-items-center'>
-				<div className={styles['info-label']}>Amenities:</div>
-					<div>
-						{/* {equipment.map((e, i) => 
-							<StatusTag
-								text={e.name}
-								key={i}
-								hex={colors.mainMedium}
-								className={styles['amenities-tag']}
-							/>
-						)} */}
-					</div>
-				</div>
+				
 			</div>
 			<AddButton
 				type='check'

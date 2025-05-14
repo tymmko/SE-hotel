@@ -71,7 +71,7 @@ VALUES (
 ), (
   'adminuser',
   'admin@example.com',
-  '$2b$10$6z7t3Y6e1f3e9e8y9v7x9O0q8i6u4y2t0r8e4w2q6y8u0i2o4p6y8',
+  '$2b$10$n9u5Z9K6S475b5wk/gWK6uwMui/g3wIkllaf5ROmGhkIDwosaVi.G',
   'admin',
   NOW()
 );
