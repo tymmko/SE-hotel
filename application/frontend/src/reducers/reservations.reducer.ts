@@ -5,6 +5,7 @@ const actionMap = {
 	[action.RESERVATIONS_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
 		...store,
 		loading: true,
+		error: null,
 	}),
 	[action.RESERVATIONS_OK]: (
 		store: ReservationStoreType,
@@ -31,6 +32,7 @@ const actionMap = {
 	[action.CREATE_RESERVATION_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
 		...store,
 		loading: true,
+		error: null,
 	}),
 	[action.CREATE_RESERVATION_OK]: (
 		store: ReservationStoreType,
@@ -60,6 +62,7 @@ const actionMap = {
 	[action.RESERVATION_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
 		...store,
 		loading: true,
+		error: null,
 	}),
 	[action.RESERVATION_OK]: (
 		store: ReservationStoreType,
@@ -86,19 +89,22 @@ const actionMap = {
 	[action.RESERVATION_STATUS_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
 		...store,
 		loading: true,
+		error: null,
+		errorStatus: null,
 	}),
 	[action.RESERVATION_STATUS_OK]: (
 		store: ReservationStoreType,
 		action: {
-			status: ReservationStatus,
+			reservation: ReservationStoreType['reservation'],
 		}
 	): ReservationStoreType => ({
 		...store,
 		loading: false,
-		reservation: {
-			...store.reservation,
-			status: action.status
-		}
+		errorStatus: null,
+		reservation: action.reservation,
+		reservations: store.reservations.map((re) =>
+			re.id === action.reservation.id ? action.reservation : re
+		),
 	}),
 	[action.RESERVATION_STATUS_ERROR]: (
 		store: ReservationStoreType,
@@ -108,7 +114,7 @@ const actionMap = {
 	): ReservationStoreType => ({
 		...store,
 		loading: false,
-		error: action.error,
+		errorStatus: action.error,
 	}),
 }
 

@@ -56,16 +56,11 @@ class RoomRepository extends BaseRepository {
 	 */
 	async findCurrentReservationAndGuest(roomId) {
 		try {
-			const currentDate = new Date();
-			const formattedDate = currentDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-			
-			// Find current active reservation for the room
+			// Find a reservation for this room with status 'checked-in'
 			const reservation = await this.models.Reservation.findOne({
 				where: {
 					room_id: roomId,
-					status: 'confirmed', // Status from Reservation model, not Room model
-					check_in_date: { [Op.lte]: formattedDate },  // Check-in date is today or earlier
-					check_out_date: { [Op.gte]: formattedDate }  // Check-out date is today or later
+					status: 'checked-in'
 				},
 				include: [
 					{
@@ -79,26 +74,22 @@ class RoomRepository extends BaseRepository {
 				],
 				raw: false
 			});
-			
+	
 			if (!reservation) {
-				return null;  // No current reservation found
+				return null; // No current checked-in reservation found
 			}
-			
+	
 			// Format the response
 			return {
 				reservation: {
-					reservation_id: reservation.reservation_id,
+					id: reservation.id,
 					check_in_date: reservation.check_in_date,
 					check_out_date: reservation.check_out_date,
 					status: reservation.status,
-					stay: reservation.Stays && reservation.Stays.length > 0 ? {
-						stay_id: reservation.Stays[0].stay_id,
-						check_in_date: reservation.Stays[0].check_in_date,
-						check_out_date: reservation.Stays[0].check_out_date
-					} : null
+					stay: reservation.Stays?.[0] || null
 				},
 				guest: {
-					guest_id: reservation.Guest.guest_id,
+					id: reservation.Guest.id,
 					first_name: reservation.Guest.first_name,
 					last_name: reservation.Guest.last_name,
 					email: reservation.Guest.email,

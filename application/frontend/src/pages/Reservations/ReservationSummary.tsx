@@ -16,6 +16,7 @@ const statusOptions: StatusOption[] = [
 	{ value: 'confirmed', label: 'Confirmed', color: colors.blue },
 	{ value: 'checked-in', label: 'Checked In', color: '#99AD65' },
 	{ value: 'checked-out', label: 'Checked Out', color: '#FBCD6A' },
+	{ value: 'paid', label: 'Paid', color: colors.pink },
 ];
 
 export const Summary: React.FC<SummaryProps> = ({
@@ -26,6 +27,7 @@ export const Summary: React.FC<SummaryProps> = ({
 	const dispatch = useDispatch<AppDispatch>();
 
 	const guest = useSelector((state: RootState) => state.GuestReducer.guest);
+	const errorStatus = useSelector((state: RootState) => state.ReservationReducer.errorStatus);
 	
 	useEffect(() => {
 		dispatch(fetchGuestById(reservation.id));
@@ -67,6 +69,9 @@ export const Summary: React.FC<SummaryProps> = ({
 						onChange={onStatusChange}
 					/>
 				</div>
+				{errorStatus != null &&
+					<div className='color-pink w-250'>ERROR: {errorStatus.message}</div>
+				}
 			</div>
 
 			<div className='mt-90'>

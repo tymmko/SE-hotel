@@ -41,7 +41,8 @@ export const updateReservationStatus = (id: string | number, status: Reservation
 	try {
 		const newStatus = await API.putStatus(id, status);
 		dispatch(actions.reservationStatusOk(newStatus));
-	} catch (err) {
-		dispatch(actions.reservationStatusError(err));
+	} catch (err: any) {
+		const message = err?.response?.data?.message || err?.message || 'Unexpected error';
+		dispatch(actions.reservationStatusError({ message }));
 	}
 };

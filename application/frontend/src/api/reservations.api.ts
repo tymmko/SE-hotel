@@ -22,6 +22,6 @@ export const getReservationById = async (id: string | number): Promise<Reservati
 
 // PUT reservation status
 export const putStatus = async (id: string | number, status: ReservationStatus): Promise<Reservation> => {
-	const response = await api.post(URL.reservationStatus(id), {status: status});
-	return response.data.status;
+	const response = await api.put(URL.reservationStatus(id), {status: status});
+	return response.data.reservation;
 };
