@@ -5,7 +5,6 @@ import { Equipment } from '../types/equipments';
 
 export const fetchEquipments = () => async (dispatch: AppDispatch) => {
 	dispatch(actions.equipmentsLoading());
-
 	try {
 		const equipments = await API.getEquipments();
 		dispatch(actions.equipmentsOk(equipments));
