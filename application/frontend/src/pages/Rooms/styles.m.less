@@ -29,6 +29,7 @@
 
 	img {
 		max-width: 50%;
+		height: fit-content;
 	}
 
 	.lt-md({
@@ -122,12 +123,14 @@
 .amenities {
 	position: absolute;
 	bottom: 0;
+	width: 100%;
 }
 
 .amenities-tag {
 	border-radius: 20px;
 	color: @color-black !important;
 	margin-right: 10px;
+	cursor: pointer;
 }
 
 .info-label {
@@ -142,6 +145,7 @@
 .info {
 	flex-direction: column;
 	position: relative;
+	width: 100%;
 
 	div {
 		margin-top: 10px;
@@ -158,4 +162,37 @@
 	position: absolute;
 	bottom: 20px;
 	right: 20px;
+}
+
+.equipment-summary {
+	display: flex;
+	flex-direction: column;
+	background-color: @color-main-medium;
+	border-radius: 20px;
+	padding: 15px;
+
+	div {
+		font-size: 14px;
+		margin: 2px 0;
+	}
+}
+
+.edit-icon {
+	position: absolute;
+	top: 80px;
+	right: 10px;
+	padding: 5px;
+	z-index: 1;
+	background-color: @color-main;
+	border-radius: 20px;
+	display: flex;
+	cursor: pointer;
+}
+
+.add-icon {
+	background-color: @color-main-medium;
+	border-radius: 20px;
+	padding: 5px;
+	display: flex;
+	cursor: pointer;
 }

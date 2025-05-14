@@ -1,3 +1,4 @@
+import { Equipment } from './equipments';
 import { emptyGuest, Guest } from './guest';
 
 export const RoomInitialState: RoomsStoreType = {
@@ -8,9 +9,10 @@ export const RoomInitialState: RoomsStoreType = {
 		status: 'occupied'
 	},
 	priceHistory: [],
-	equipment: [],
+	equipments: [],
 	guest: emptyGuest,
 	error: null,
+	errorPriceHistory: null,
 	loading: false
 };
 
@@ -18,9 +20,10 @@ export type RoomsStoreType = {
 	rooms : Room[],
 	room: Room,
 	error: unknown | null,
+	errorPriceHistory: unknown | null,
 	loading: boolean,
 	priceHistory: PriceEntry[],
-	equipment: Equipment[],
+	equipments: Equipment[],
 	guest: Guest,
 }
 
@@ -39,10 +42,3 @@ export type PriceEntry = {
 	price: number,
 	room_id: number,
 }
-
-export type Equipment = {
-	id: number,
-    name: string,
-    price: number,
-    room_id: number,
-};

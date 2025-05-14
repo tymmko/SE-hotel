@@ -151,39 +151,44 @@ class ReservationController {
 	 */
 	async updateReservationStatus(req, res, next) {
 		try {
-			const { status } = req.body;
-			
-			if (!status) {
-				return res.status(400).json({
-					success: false,
-					message: 'Please provide a status'
-				});
-			}
-			
-			const reservation = await this.reservationService.updateReservationStatus(req.params.id, status);
-			
-			res.status(200).json({
-				success: true,
-				data: reservation
+		  const { status } = req.body;
+	  
+		  if (!status) {
+			return res.status(400).json({
+			  success: false,
+			  message: 'Please provide a status'
 			});
+		  }
+	  
+		  const reservation = await this.reservationService.updateReservationStatus(req.params.id, status);
+	  
+		  res.status(200).json({
+			success: true,
+			reservation
+		  });
 		} catch (error) {
-			if (error.message === 'Reservation not found') {
-				return res.status(404).json({
-					success: false,
-					message: error.message
-				});
-			}
-			
-			if (error.message.includes('Invalid status') || 
-					error.message.includes('Room is no longer available')) {
-				return res.status(400).json({
-					success: false,
-					message: error.message
-				});
-			}
-			next(error);
+		  if (error.message === 'Reservation not found') {
+			return res.status(404).json({
+			  success: false,
+			  message: error.message
+			});
+		  }
+	  
+		  if (
+			error.message.includes('Invalid status') || 
+			error.message.includes('Room is no longer available') ||
+			error.message.includes('Another reservation is already checked-in')
+		  ) {
+			return res.status(400).json({
+			  success: false,
+			  message: error.message
+			});
+		  }
+	  
+		  // Fallback to Express error handler for unknown errors
+		  next(error);
 		}
-	}
+	  }	  
 
 	/**
 	 * Cancel reservation

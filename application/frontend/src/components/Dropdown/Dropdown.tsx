@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Icon } from '../Icon';
 import classNames from 'classnames';
 
@@ -23,7 +23,21 @@ export const Dropdown = <T extends {
 }: DropdownProps<T>) => {
 	const [open, setOpen] = useState<Boolean>(false);
 
+	const containerRef = useRef<HTMLDivElement>(null);
+	
 	const selected = options.find(o => o.value === value);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+				setOpen(false);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
 
 	const openDropdown = () => {
 		setOpen(!open);
@@ -40,7 +54,7 @@ export const Dropdown = <T extends {
 				{renderSelected(selected)}
 				<Icon name='arrow-down' size='xxxs' />
 			</div>
-			<div className={styles['dropdown-content']}>
+			<div className={styles['dropdown-content']} ref={containerRef}>
 				{options.map((option) => 
 					renderOption(option, option.value === value, () => select(option.value)))}
 			</div>

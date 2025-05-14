@@ -30,7 +30,7 @@ class ReservationRepository extends BaseRepository {
           },
           {
             model: this.models.Room,
-            attributes: ['id', 'type', 'capacity', 'price_per_night']
+            attributes: ['id', 'type', 'capacity']
           }
         ],
         ...options,
@@ -138,7 +138,7 @@ class ReservationRepository extends BaseRepository {
   async isRoomAvailable(roomId, checkIn, checkOut, excludeReservationId = null) {
     try {
       const whereClause = {
-        room_id: roomId,
+        id: roomId,
         status: 'confirmed', // Only check against confirmed reservations
         [Op.or]: [
           // Check-in during another stay

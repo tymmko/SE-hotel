@@ -1,7 +1,7 @@
 import { AppDispatch } from '../app/store';
 import * as actions from '../actions/rooms.actions';
 import * as API from '../api/rooms.api';
-import { Room } from '../types/rooms';
+import { PriceEntry, Room } from '../types/rooms';
 
 export const fetchRooms = () => async (dispatch: AppDispatch) => {
 	dispatch(actions.roomsLoading());
@@ -18,8 +18,8 @@ export const createRoom = (room: Omit<Room, 'id'>) => async (dispatch: AppDispat
 	dispatch(actions.createRoomLoading());
 
 	try {
-		const rooms = await API.postRoom(room);
-		dispatch(actions.createRoomOk(rooms));
+		const newRoom = await API.postRoom(room);
+		dispatch(actions.createRoomOk(newRoom));
 	} catch (err) {
 		dispatch(actions.createRoomError(err));
 	}
@@ -46,13 +46,15 @@ export const fetchPriceHistory = (id: string | number) => async (dispatch: AppDi
 	}
 };
 
-export const fetchEquiment = (id: string | number) => async (dispatch: AppDispatch) => {
-	dispatch(actions.equipmentLoading());
+export const createPriceEntry = (id: string | number, priceEntry: Omit<PriceEntry, 'room_id'>) => async (dispatch: AppDispatch) => {
+	dispatch(actions.createPriceEntryLoading());
+
 	try {
-		const equipment = await API.getEquipment(id);
-		dispatch(actions.equipmentOk(equipment));
-	} catch (err) {
-		dispatch(actions.equipmentError(err));
+		const newEntry = await API.postPriceEntry(id, priceEntry);
+		dispatch(actions.createPriceEntryOk(newEntry));
+	} catch (err: any) {
+		const message = err?.response?.data?.message || err?.message || 'Unexpected error';
+		dispatch(actions.createPriceEntryError({ message }));
 	}
 };
 

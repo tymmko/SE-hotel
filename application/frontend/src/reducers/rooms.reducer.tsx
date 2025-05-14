@@ -1,11 +1,13 @@
-import { RoomInitialState, RoomsStoreType } from '../types/rooms';
+import { PriceEntry, RoomInitialState, RoomsStoreType } from '../types/rooms';
 import * as action from '../types/constants';
 import { emptyGuest } from '../types/guest';
+import { Equipment } from '../types/equipments';
 
 const actionMap = {
 	[action.ROOMS_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
 		loading: true,
+		error: undefined,
 	}),
 	[action.ROOMS_OK]: (
 		store: RoomsStoreType,
@@ -27,10 +29,12 @@ const actionMap = {
 		loading: false,
 		error: action.error,
 	}),
+	
 	// CREATE ROOM
 	[action.CREATE_ROOM_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
 		loading: true,
+		error: undefined,
 	}),
 	[action.CREATE_ROOM_OK]: (
 		store: RoomsStoreType,
@@ -60,6 +64,7 @@ const actionMap = {
 	[action.ROOM_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
 		loading: true,
+		error: undefined,
 	}),
 	[action.ROOM_OK]: (
 		store: RoomsStoreType,
@@ -86,6 +91,8 @@ const actionMap = {
 	[action.PRICE_HISTORY_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
 		loading: true,
+		error: undefined,
+		errorPriceHistory: undefined,
 	}),
 	[action.PRICE_HISTORY_OK]: (
 		store: RoomsStoreType,
@@ -105,24 +112,30 @@ const actionMap = {
 	): RoomsStoreType => ({
 		...store,
 		loading: false,
-		error: action.error,
+		errorPriceHistory: action.error,
 	}),
-	// GET EQUIPMENT
-	[action.EQUIPMENT_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
+
+	// POST PRICE ENTRY
+	[action.CREATE_PRICE_ENTRY_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
 		loading: true,
+		error: undefined,
+		errorPriceHistory: undefined,
 	}),
-	[action.EQUIPMENT_OK]: (
+	[action.CREATE_PRICE_ENTRY_OK]: (
 		store: RoomsStoreType,
 		action: {
-			equipment: RoomsStoreType['equipment'],
+			priceEntry: PriceEntry,
 		}
 	): RoomsStoreType => ({
 		...store,
 		loading: false,
-		equipment: action.equipment,
+		priceHistory: [
+			...store.priceHistory,
+			action.priceEntry
+		]
 	}),
-	[action.EQUIPMENT_ERROR]: (
+	[action.CREATE_PRICE_ENTRY_ERROR]: (
 		store: RoomsStoreType,
 		action: {
 			error: unknown,
@@ -130,12 +143,14 @@ const actionMap = {
 	): RoomsStoreType => ({
 		...store,
 		loading: false,
-		error: action.error,
+		errorPriceHistory: action.error,
 	}),
+	
 	// GET OCCUPANCY
 	[action.OCCUPANCY_LOADING]: (store: RoomsStoreType): RoomsStoreType => ({
 		...store,
 		loading: true,
+		error: undefined,
 	}),
 	[action.OCCUPANCY_OK]: (
 		store: RoomsStoreType,

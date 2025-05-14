@@ -146,7 +146,7 @@ class BillRepository extends BaseRepository {
       return await this.model.update(
         { status },
         {
-          where: { bill_id: billId }
+          where: { id: billId }
         }
       );
     } catch (error) {
@@ -164,7 +164,7 @@ class BillRepository extends BaseRepository {
   async createPayment(billId, paymentData) {
     try {
       return await this.models.Payment.create({
-        bill_id: billId,
+        id: billId,
         ...paymentData
       });
     } catch (error) {
@@ -181,7 +181,7 @@ class BillRepository extends BaseRepository {
   async getTotalPaymentsForBill(billId) {
     try {
       const result = await this.models.Payment.sum('amount', {
-        where: { bill_id: billId }
+        where: { id: billId }
       });
       
       return result || 0;

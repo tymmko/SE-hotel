@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="42" failures="0" errors="0" time="1.316">
+  <testsuite name="reservations thunks" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:35" time="0.71" tests="4">
+    <testcase classname="reservations thunks fetchReservations dispatches RESERVATIONS_OK on success" name="reservations thunks fetchReservations dispatches RESERVATIONS_OK on success" time="0.003">
+    </testcase>
+    <testcase classname="reservations thunks createReservation dispatches CREATE_RESERVATION_OK on success" name="reservations thunks createReservation dispatches CREATE_RESERVATION_OK on success" time="0.001">
+    </testcase>
+    <testcase classname="reservations thunks fetchReservationById dispatches RESERVATION_OK on success" name="reservations thunks fetchReservationById dispatches RESERVATION_OK on success" time="0">
+    </testcase>
+    <testcase classname="reservations thunks updateReservationStatus dispatches RESERVATION_STATUS_OK on success" name="reservations thunks updateReservationStatus dispatches RESERVATION_STATUS_OK on success" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="equipments thunks" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:36" time="0.039" tests="4">
+    <testcase classname="equipments thunks fetchEquipments dispatches EQUIPMENTS_OK on success" name="equipments thunks fetchEquipments dispatches EQUIPMENTS_OK on success" time="0.001">
+    </testcase>
+    <testcase classname="equipments thunks fetchEquiment dispatches EQUIPMENT_OK on success" name="equipments thunks fetchEquiment dispatches EQUIPMENT_OK on success" time="0.001">
+    </testcase>
+    <testcase classname="equipments thunks createEquipment dispatches EQUIPMENT_CREATE_OK on success" name="equipments thunks createEquipment dispatches EQUIPMENT_CREATE_OK on success" time="0">
+    </testcase>
+    <testcase classname="equipments thunks updateEquipment dispatches EQUIPMENT_UPDATE_OK on success" name="equipments thunks updateEquipment dispatches EQUIPMENT_UPDATE_OK on success" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="rooms thunks" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:36" time="0.038" tests="6">
+    <testcase classname="rooms thunks fetchRooms dispatches ROOMS_OK on success" name="rooms thunks fetchRooms dispatches ROOMS_OK on success" time="0.001">
+    </testcase>
+    <testcase classname="rooms thunks fetchRoomById dispatches ROOM_OK on success" name="rooms thunks fetchRoomById dispatches ROOM_OK on success" time="0.001">
+    </testcase>
+    <testcase classname="rooms thunks fetchPriceHistory dispatches PRICE_HISTORY_OK on success" name="rooms thunks fetchPriceHistory dispatches PRICE_HISTORY_OK on success" time="0">
+    </testcase>
+    <testcase classname="rooms thunks createRoom dispatches CREATE_ROOM_OK on success" name="rooms thunks createRoom dispatches CREATE_ROOM_OK on success" time="0.001">
+    </testcase>
+    <testcase classname="rooms thunks createPriceEntry dispatches CREATE_PRICE_ENTRY_OK on success" name="rooms thunks createPriceEntry dispatches CREATE_PRICE_ENTRY_OK on success" time="0">
+    </testcase>
+    <testcase classname="rooms thunks fetchOccupancy dispatches OCCUPANCY_OK on success" name="rooms thunks fetchOccupancy dispatches OCCUPANCY_OK on success" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="RoomsReducer" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:36" time="0.037" tests="8">
+    <testcase classname="RoomsReducer should return the initial state by default" name="RoomsReducer should return the initial state by default" time="0.001">
+    </testcase>
+    <testcase classname="RoomsReducer should handle ROOMS_LOADING" name="RoomsReducer should handle ROOMS_LOADING" time="0">
+    </testcase>
+    <testcase classname="RoomsReducer should handle ROOMS_OK" name="RoomsReducer should handle ROOMS_OK" time="0">
+    </testcase>
+    <testcase classname="RoomsReducer should handle ROOMS_ERROR" name="RoomsReducer should handle ROOMS_ERROR" time="0.001">
+    </testcase>
+    <testcase classname="RoomsReducer should handle CREATE_ROOM_OK" name="RoomsReducer should handle CREATE_ROOM_OK" time="0">
+    </testcase>
+    <testcase classname="RoomsReducer should handle ROOM_OK" name="RoomsReducer should handle ROOM_OK" time="0.001">
+    </testcase>
+    <testcase classname="RoomsReducer should handle PRICE_HISTORY_OK" name="RoomsReducer should handle PRICE_HISTORY_OK" time="0">
+    </testcase>
+    <testcase classname="RoomsReducer should handle OCCUPANCY_OK" name="RoomsReducer should handle OCCUPANCY_OK" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="bills thunks" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:36" time="0.037" tests="2">
+    <testcase classname="bills thunks fetchBills dispatches BILLS_OK on success" name="bills thunks fetchBills dispatches BILLS_OK on success" time="0.001">
+    </testcase>
+    <testcase classname="bills thunks fetchBillById dispatches BILL_OK on success" name="bills thunks fetchBillById dispatches BILL_OK on success" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="ReservationReducer" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:36" time="0.033" tests="6">
+    <testcase classname="ReservationReducer should handle RESERVATIONS_LOADING" name="ReservationReducer should handle RESERVATIONS_LOADING" time="0.001">
+    </testcase>
+    <testcase classname="ReservationReducer should handle RESERVATIONS_OK" name="ReservationReducer should handle RESERVATIONS_OK" time="0.002">
+    </testcase>
+    <testcase classname="ReservationReducer should handle RESERVATIONS_ERROR" name="ReservationReducer should handle RESERVATIONS_ERROR" time="0">
+    </testcase>
+    <testcase classname="ReservationReducer should handle CREATE_RESERVATION_OK" name="ReservationReducer should handle CREATE_RESERVATION_OK" time="0">
+    </testcase>
+    <testcase classname="ReservationReducer should handle RESERVATION_OK" name="ReservationReducer should handle RESERVATION_OK" time="0">
+    </testcase>
+    <testcase classname="ReservationReducer should handle RESERVATION_STATUS_OK and update reservations array" name="ReservationReducer should handle RESERVATION_STATUS_OK and update reservations array" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="EquipmentsReducer" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:36" time="0.031" tests="6">
+    <testcase classname="EquipmentsReducer should handle EQUIPMENTS_LOADING" name="EquipmentsReducer should handle EQUIPMENTS_LOADING" time="0">
+    </testcase>
+    <testcase classname="EquipmentsReducer should handle EQUIPMENTS_OK" name="EquipmentsReducer should handle EQUIPMENTS_OK" time="0.001">
+    </testcase>
+    <testcase classname="EquipmentsReducer should handle EQUIPMENTS_ERROR" name="EquipmentsReducer should handle EQUIPMENTS_ERROR" time="0">
+    </testcase>
+    <testcase classname="EquipmentsReducer should handle EQUIPMENT_OK" name="EquipmentsReducer should handle EQUIPMENT_OK" time="0">
+    </testcase>
+    <testcase classname="EquipmentsReducer should handle EQUIPMENT_CREATE_OK" name="EquipmentsReducer should handle EQUIPMENT_CREATE_OK" time="0">
+    </testcase>
+    <testcase classname="EquipmentsReducer should handle EQUIPMENT_UPDATE_OK" name="EquipmentsReducer should handle EQUIPMENT_UPDATE_OK" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="BillsReducer" errors="0" failures="0" skipped="0" timestamp="2025-05-14T20:55:36" time="0.031" tests="6">
+    <testcase classname="BillsReducer handles BILLS_LOADING" name="BillsReducer handles BILLS_LOADING" time="0.001">
+    </testcase>
+    <testcase classname="BillsReducer handles BILLS_OK" name="BillsReducer handles BILLS_OK" time="0">
+    </testcase>
+    <testcase classname="BillsReducer handles BILLS_ERROR" name="BillsReducer handles BILLS_ERROR" time="0.002">
+    </testcase>
+    <testcase classname="BillsReducer handles BILL_LOADING" name="BillsReducer handles BILL_LOADING" time="0">
+    </testcase>
+    <testcase classname="BillsReducer handles BILL_OK" name="BillsReducer handles BILL_OK" time="0">
+    </testcase>
+    <testcase classname="BillsReducer handles BILL_ERROR" name="BillsReducer handles BILL_ERROR" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>

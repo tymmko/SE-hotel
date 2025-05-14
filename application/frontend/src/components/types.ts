@@ -1,4 +1,5 @@
 export type IconName =  'add' |
+						'add-filled'|
 						'arrow-diagonal'|
 						'arrow-down' |
 						'bill' |
@@ -11,6 +12,7 @@ export type IconName =  'add' |
 						'eye' |
 						'group-shapes' |
 						'logo' |
+						'save' |
 						'search' |
 						'loginvisual' |
 						'room-number-badge' |

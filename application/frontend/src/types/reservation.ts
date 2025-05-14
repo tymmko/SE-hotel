@@ -9,6 +9,7 @@ export const ReservationInitialState: ReservationStoreType = {
 		status: 'confirmed',
 	},
 	error: null,
+	errorStatus: null,
 	loading: false
 };
 
@@ -17,6 +18,7 @@ export type ReservationStoreType = {
 	reservation: Reservation,
 	loading: boolean,
 	error?: any,
+	errorStatus?: any,
 }
 
 export type Reservation = {
@@ -28,4 +30,8 @@ export type Reservation = {
 	status: ReservationStatus,
 }
 
-export type ReservationStatus = 'confirmed' | 'canceled';
+export type ReservationStatus = 'confirmed' |
+								'checked-in' |
+								'checked-out' |
+								'paid';
+

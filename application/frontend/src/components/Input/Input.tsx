@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 type InputProps = {
 	value: string | number,
-	type?: 'text' | 'number' | 'date',
+	type?: 'text' | 'number' | 'date' | 'password' | 'email',
 	required?: boolean,
 	placeHolder?: string,
 	className?: string,

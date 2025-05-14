@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StatusDropdown, StatusOption} from '../../components';
+import { colors, StatusDropdown, StatusOption} from '../../components';
 import { Icon } from '../../components';
 import { Reservation } from '../../types/reservation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,26 +8,26 @@ import { fetchGuestById } from '../../thunks/guests.thunks';
 
 type SummaryProps = {
 	reservation: Reservation,
-	status: string;
 	onStatusChange: (status: string) => void;
 	totalPrice: string;
 };
 
 const statusOptions: StatusOption[] = [
-	{ value: 'Paid', label: 'Paid', color: '#FFF6DD' },
+	{ value: 'confirmed', label: 'Confirmed', color: colors.blue },
 	{ value: 'checked-in', label: 'Checked In', color: '#99AD65' },
 	{ value: 'checked-out', label: 'Checked Out', color: '#FBCD6A' },
+	{ value: 'paid', label: 'Paid', color: colors.pink },
 ];
 
 export const Summary: React.FC<SummaryProps> = ({
 	reservation,
-	status,
 	onStatusChange,
 	totalPrice,
 }) => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const guest = useSelector((state: RootState) => state.GuestReducer.guest);
+	const errorStatus = useSelector((state: RootState) => state.ReservationReducer.errorStatus);
 	
 	useEffect(() => {
 		dispatch(fetchGuestById(reservation.id));
@@ -65,10 +65,13 @@ export const Summary: React.FC<SummaryProps> = ({
 					<span className="mr-5" style={{ alignSelf: 'center' }}>status:</span>
 					<StatusDropdown
 						options={statusOptions}
-						value={status}
+						value={reservation.status}
 						onChange={onStatusChange}
 					/>
 				</div>
+				{errorStatus != null &&
+					<div className='color-pink w-250'>ERROR: {errorStatus.message}</div>
+				}
 			</div>
 
 			<div className='mt-90'>
