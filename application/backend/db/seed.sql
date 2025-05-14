@@ -13,10 +13,10 @@ TRUNCATE TABLE
 RESTART IDENTITY CASCADE;
 
 -- Insert Rooms
-INSERT INTO Room (type, status, capacity, price_per_night) VALUES
-  ('single','occupied',  1, 80),
-  ('double', 'occupied', 2, 120),
-  ('suite', 'available', 3, 250);
+INSERT INTO Room (type, status, capacity) VALUES
+  ('single','occupied',  1),
+  ('double', 'occupied', 2),
+  ('suite', 'available', 3);
 
 -- Insert Guests
 INSERT INTO Guest (first_name, last_name, email, phone_number) VALUES 
@@ -71,7 +71,7 @@ VALUES (
 ), (
   'adminuser',
   'admin@example.com',
-  '$2b$10$6z7t3Y6e1f3e9e8y9v7x9O0q8i6u4y2t0r8e4w2q6y8u0i2o4p6y8',
+  '$2b$10$n9u5Z9K6S475b5wk/gWK6uwMui/g3wIkllaf5ROmGhkIDwosaVi.G',
   'admin',
   NOW()
 );

@@ -28,4 +28,8 @@ export type Reservation = {
 	status: ReservationStatus,
 }
 
-export type ReservationStatus = 'confirmed' | 'canceled';
+export type ReservationStatus = 'confirmed' |
+								'checked-in' |
+								'checked-out' |
+								'paid';
+

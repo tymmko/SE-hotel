@@ -1,4 +1,4 @@
-import { ReservationInitialState, ReservationStoreType } from "../types/reservation";
+import { ReservationInitialState, ReservationStatus, ReservationStoreType } from "../types/reservation";
 import * as action from '../types/constants';
 
 const actionMap = {
@@ -26,6 +26,7 @@ const actionMap = {
 		loading: false,
 		error: action.error,
 	}),
+
 	// CREATE RESERVATION
 	[action.CREATE_RESERVATION_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
 		...store,
@@ -71,6 +72,35 @@ const actionMap = {
 		reservation: action.reservation
 	}),
 	[action.RESERVATION_ERROR]: (
+		store: ReservationStoreType,
+		action: {
+			error: unknown,
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		error: action.error,
+	}),
+
+	// UPDATE RESERVATION STATUS
+	[action.RESERVATION_STATUS_LOADING]: (store: ReservationStoreType): ReservationStoreType => ({
+		...store,
+		loading: true,
+	}),
+	[action.RESERVATION_STATUS_OK]: (
+		store: ReservationStoreType,
+		action: {
+			status: ReservationStatus,
+		}
+	): ReservationStoreType => ({
+		...store,
+		loading: false,
+		reservation: {
+			...store.reservation,
+			status: action.status
+		}
+	}),
+	[action.RESERVATION_STATUS_ERROR]: (
 		store: ReservationStoreType,
 		action: {
 			error: unknown,

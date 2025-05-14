@@ -46,3 +46,19 @@ export const reservationError = (error: unknown) => ({
 	type: constants.RESERVATION_ERROR,
 	error,
 });
+
+
+
+export const reservationStatusLoading = () => ({
+	type: constants.RESERVATION_STATUS_LOADING,
+});
+
+export const reservationStatusOk = (reservation: any) => ({
+	type: constants.RESERVATION_STATUS_OK,
+	reservation,
+});
+
+export const reservationStatusError = (error: unknown) => ({
+	type: constants.RESERVATION_STATUS_ERROR,
+	error,
+});

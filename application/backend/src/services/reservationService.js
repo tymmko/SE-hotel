@@ -46,7 +46,7 @@ class ReservationService extends BaseService {
    */
   async getReservationsByStatus(status) {
     // Validate status
-    const validStatuses = ['confirmed', 'canceled'];
+    const validStatuses = ['confirmed', 'checked-in', 'checked-out', 'paid'];
     
     if (!validStatuses.includes(status)) {
       throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
@@ -220,7 +220,7 @@ class ReservationService extends BaseService {
    */
   async updateReservationStatus(reservationId, status) {
     // Validate status
-    const validStatuses = ['confirmed', 'canceled'];
+    const validStatuses = ['confirmed', 'checked-in', 'checked-out', 'paid'];
     
     if (!validStatuses.includes(status)) {
       throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);

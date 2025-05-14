@@ -3,10 +3,12 @@ import { RoomsReducer } from './rooms.reducer';
 import authReducer from './auth.reducer';
 import { ReservationReducer } from './reservations.reducer';
 import { GuestReducer } from './guests.reducer';
+import { EquipmentsReducer } from './equipments.reducer';
 
 const rootReducer = combineReducers({
 	authReducer,
 	RoomsReducer,
+	EquipmentsReducer,
 	ReservationReducer,
 	GuestReducer,
 })

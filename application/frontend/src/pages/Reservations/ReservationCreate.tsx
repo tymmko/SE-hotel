@@ -15,7 +15,7 @@ type CreateProps = {
 };
 
 const statusOptions: StatusOption[] = [
-	{ value: 'Paid', label: 'Paid', color: '#FFF6DD' },
+	{ value: 'confirmed', label: 'Confirmed', color: '#FFF6DD' },
 	{ value: 'checked-in', label: 'Checked In', color: '#99AD65' },
 	{ value: 'checked-out', label: 'Checked Out', color: '#FBCD6A' },
 ];

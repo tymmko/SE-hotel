@@ -38,14 +38,14 @@ function Rooms() {
 					selectRoom={setSelected}
 					rooms={rooms}
 					roomAdd={roomCreate}
-					createRoom={role === 'admin' ? setRoomCreate : () => {}}
+					createRoom={setRoomCreate}
 				/>
 				{selected && !roomCreate && (
 					<RoomSummary
 						id={selected.id}
 					/>
 				)}
-				{roomCreate && role === 'admin' && (
+				{roomCreate && (
 					<CreateRoom
 						createRoom={createNewRoom}
 					/>

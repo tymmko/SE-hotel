@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 
 class UserRepository {
   constructor(models) {
-    console.log('User models:', models);
     if (!models.User) {
       throw new Error('User model is not defined in models');
     }
@@ -19,7 +18,7 @@ class UserRepository {
         username,
         email,
         password: hashedPassword,
-        role: 'guest',
+        role: 'admin',
         created_at: new Date(),
       });
       return {

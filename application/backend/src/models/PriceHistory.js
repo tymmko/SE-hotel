@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   
     PriceHistory.associate = (models) => {
-      PriceHistory.belongsTo(models.Room, { foreignKey: 'room_id' });
+    PriceHistory.belongsTo(models.Room, { foreignKey: 'room_id' });
     };
   
     return PriceHistory;

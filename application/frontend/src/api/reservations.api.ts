@@ -1,5 +1,5 @@
 import api from './api';
-import { Reservation } from '../types/reservation';
+import { Reservation, ReservationStatus } from '../types/reservation';
 import { URL } from './url';
 
 // GET reservations
@@ -18,4 +18,10 @@ export const postReservation = async (reservation: Omit<Reservation, 'id'>): Pro
 export const getReservationById = async (id: string | number): Promise<Reservation> => {
 	const response = await api.get(URL.reservation(id));
 	return response.data.reservation;
+};
+
+// PUT reservation status
+export const putStatus = async (id: string | number, status: ReservationStatus): Promise<Reservation> => {
+	const response = await api.post(URL.reservationStatus(id), {status: status});
+	return response.data.status;
 };
