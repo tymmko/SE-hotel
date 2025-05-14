@@ -38,8 +38,8 @@ INSERT INTO Stay (check_in_date, check_out_date, reservation_id) VALUES
 
 -- Insert Bills (only for the first two stays)
 INSERT INTO Bill (total_amount, status, stay_id) VALUES 
-  (320.00, 'Paid', 1),
-  (240.00, 'Unpaid', 2);
+  (320.00, 'paid', 1),
+  (240.00, 'unpaid', 2);
   -- No bill for stay_id 3
 
 -- Insert Equipment

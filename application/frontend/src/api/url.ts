@@ -27,6 +27,7 @@ export const URL = {
 	guests: endpoint('guests'),
 	guest: (id: string | number) => endpoint(`guests/${id}`),
 	
-	//BILLS
+	// BILLS
 	bills: endpoint('bills'),
+	bill: (id: string | number) => endpoint(`bills/${id}`),
 };

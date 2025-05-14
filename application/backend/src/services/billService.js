@@ -45,7 +45,7 @@ class BillService extends BaseService {
    */
   async getBillsByStatus(status) {
     // Validate status
-    const validStatuses = ['Paid', 'Unpaid'];
+    const validStatuses = ['paid', 'unpaid'];
     
     if (!validStatuses.includes(status)) {
       throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
@@ -134,10 +134,10 @@ class BillService extends BaseService {
     
     // Set default status if not provided
     if (!billData.status) {
-      billData.status = 'Unpaid';
+      billData.status = 'unpaid';
     } else {
       // Validate status
-      const validStatuses = ['Paid', 'Unpaid'];
+      const validStatuses = ['paid', 'unpaid'];
       
       if (!validStatuses.includes(billData.status)) {
         throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
@@ -147,7 +147,7 @@ class BillService extends BaseService {
     // Create the bill
     const bill = await this.repository.create(billData);
     
-    return await this.getBillWithDetails(bill.bill_id);
+    return await this.getBillWithDetails(bill.id);
   }
 
   /**
@@ -165,7 +165,7 @@ class BillService extends BaseService {
     
     // Validate status if provided
     if (billData.status) {
-      const validStatuses = ['Paid', 'Unpaid'];
+      const validStatuses = ['paid', 'unpaid'];
       
       if (!validStatuses.includes(billData.status)) {
         throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
@@ -173,7 +173,7 @@ class BillService extends BaseService {
     }
     
     // Update the bill
-    const [updated] = await this.repository.update(billData, { bill_id: billId });
+    const [updated] = await this.repository.update(billData, { id: billId });
     
     if (updated === 0) {
       throw new Error('Bill not found');
@@ -191,7 +191,7 @@ class BillService extends BaseService {
    */
   async updateBillStatus(billId, status) {
     // Validate status
-    const validStatuses = ['Paid', 'Unpaid'];
+    const validStatuses = ['paid', 'unpaid'];
     
     if (!validStatuses.includes(status)) {
       throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
@@ -240,11 +240,11 @@ class BillService extends BaseService {
     await this.repository.createPayment(billId, paymentData);
     
     // Check if bill is fully paid
-    const totalPaid = await this.repository.getTotalPaymentsForBill(billId);
+    const totalpaid = await this.repository.getTotalPaymentsForBill(billId);
     
     // If fully paid, update status
-    if (totalPaid >= bill.total_amount) {
-      await this.updateBillStatus(billId, 'Paid');
+    if (totalpaid >= bill.total_amount) {
+      await this.updateBillStatus(billId, 'paid');
     }
     
     return await this.getBillWithDetails(billId);
@@ -257,7 +257,7 @@ class BillService extends BaseService {
   async checkOverdueBills() {
     try {
       // Get all unpaid bills
-      const unpaidBills = await this.repository.findBillsByStatus('Unpaid');
+      const unpaidBills = await this.repository.findBillsByStatus('unpaid');
       
       const today = new Date();
       let overdueCount = 0;
