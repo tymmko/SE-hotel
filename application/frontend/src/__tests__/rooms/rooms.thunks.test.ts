@@ -99,6 +99,7 @@ describe('rooms thunks', () => {
 
 	it('fetchOccupancy dispatches OCCUPANCY_OK on success', async () => {
 		const guest = {
+			id: 1,
 			guest_id: 1,
 			first_name: 'John',
 			last_name: 'Doe',
