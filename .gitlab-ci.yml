@@ -3,6 +3,7 @@ stages:
   - test
   - build
   - package
+  - docs
   - deploy
 
 default:
@@ -92,6 +93,37 @@ package_release:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "dev"'
+
+# Generate docs frontend
+docs_frontend:
+  stage: docs
+  image: node:20
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
+  before_script:
+    - npm ci
+  script:
+    # 1. Generate Markdown docs
+    - npx typedoc --options typedoc.json
+
+    # 2. Clone the GitLab Wiki (use the CI token for authentication)
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - git config --global user.name "$GITLAB_USER_NAME"
+    - git clone "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.wiki.git" wiki
+
+    # 3. Replace old docs
+    - rm -rf wiki/*
+    - cp -r docs/* wiki/
+
+    # 4. Commit and push
+    - cd wiki
+    - git add .
+    - git commit -m "Update frontend logic docs [CI skip]" || echo "No changes to commit"
+    - git push
+  variables:
+    GITLAB_USER_EMAIL: "docs-bot@example.com"
+    GITLAB_USER_NAME: "Docs Bot"
 
 # Deploy frontend
 deploy_frontend:
