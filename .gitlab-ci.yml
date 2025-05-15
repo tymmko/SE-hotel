@@ -2,6 +2,7 @@ stages:
   - install
   - test
   - build
+  - package
   - deploy
 
 default:
@@ -52,6 +53,8 @@ build_frontend:
     - cd application/frontend
     - npm install --legacy-peer-deps --include=dev
     - npm run build
+  variables:
+    API_BASE_URL: https://backend.railway.internal
   artifacts:
     paths:
       - application/frontend/dist
@@ -65,6 +68,29 @@ build_backend:
   artifacts:
     paths:
       - application/backend/node_modules/
+
+# Package release
+package_release:
+  stage: package
+  image: node:20
+  dependencies:
+    - build_backend
+    - build_frontend
+  script:
+    - mkdir release
+    - cp -r application/backend release/backend
+    - rm -rf release/backend/node_modules
+    - cp -r application/frontend/dist release/frontend
+    - cd release
+    - zip -r ../release-package-$CI_COMMIT_BRANCH.zip .
+  artifacts:
+    paths:
+      - release-package-$CI_COMMIT_BRANCH.zip
+    name: "release-$CI_COMMIT_BRANCH"
+    expire_in: 7 days
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
 
 # Deploy frontend
 deploy_frontend:
