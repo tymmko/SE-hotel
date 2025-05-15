@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-require('dotenv').config();
 
 const path = require('path');
 
@@ -114,7 +113,7 @@ const config = {
 			filename: 'assets/fonts.css',
 		}),
 		new webpack.DefinePlugin({
-			'process.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL)
+			'process.env.API_BASE_URL': JSON.stringify(process.env.DEVELOP ? 'http://localhost:3000' : 'https://your-prod-api-url.com')
 		})
 	],
   resolve: {
