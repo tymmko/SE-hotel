@@ -1,6 +1,4 @@
-export const baseURL = process.env.API_BASE_URL || 'http://localhost:3000';
-
-const endpoint = (path: string) => `${baseURL}/api/${path}`;
+export const endpoint = (path: string) => path;
 
 export const URL = {
 	// AUTH
