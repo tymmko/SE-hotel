@@ -57,8 +57,8 @@ const roomController = new RoomController(roomService);
 const billController = new BillController(billService);
 const reservationController = new ReservationController(reservationService);
 const guestController = new GuestController(guestService);
-const equipmentController = new EquipmentController(equipmentService);
-const priceHistoryController = new PriceHistoryController(priceHistoryService);
+const equipmentController = EquipmentController(equipmentService);
+const priceHistoryController = PriceHistoryController(priceHistoryService);
 const userController = new UserController(userService);
 
 // Room routes
