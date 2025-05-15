@@ -40,6 +40,16 @@ build_frontend:
     paths:
       - application/frontend/dist
 
+# Build backend
+build_backend:
+  stage: build
+  script:
+    - cd application/backend
+    - npm install --legacy-peer-deps --include=dev
+  artifacts:
+    paths:
+      - application/backend/node_modules/
+
 # Deploy frontend
 deploy_frontend:
   stage: deploy
