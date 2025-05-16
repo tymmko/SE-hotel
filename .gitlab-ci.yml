@@ -1,6 +1,11 @@
+image: 
+    name: sonarsource/sonar-scanner-cli:11
+    entrypoint: [""]
+
 stages:
   - install
   - test
+  - build-sonar
   - build
   - deploy
 
@@ -9,6 +14,8 @@ default:
 
 variables:
   NODE_ENV: production
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+  GIT_DEPTH: "0"
 
 # Install backend dependencies
 install_backend:
@@ -65,6 +72,25 @@ build_backend:
   artifacts:
     paths:
       - application/backend/node_modules/
+
+build-sonar:
+  stage: build-sonar
+  
+  
+  cache:
+    policy: pull-push
+    key: "sonar-cache-$CI_COMMIT_REF_SLUG"
+    paths:
+      - "${SONAR_USER_HOME}/cache"
+      - sonar-scanner/
+      
+  script: 
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_COMMIT_BRANCH == 'dev'
 
 # Deploy frontend
 deploy_frontend:
