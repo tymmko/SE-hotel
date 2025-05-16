@@ -1,6 +1,4 @@
-image: 
-    name: sonarsource/sonar-scanner-cli:11
-    entrypoint: [""]
+
 
 stages:
   - install
@@ -75,7 +73,9 @@ build_backend:
 
 build-sonar:
   stage: build-sonar
-  
+  image: 
+    name: sonarsource/sonar-scanner-cli:11
+    entrypoint: [""]
   
   cache:
     policy: pull-push
