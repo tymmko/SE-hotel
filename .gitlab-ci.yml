@@ -47,23 +47,32 @@ test_frontend:
       junit: application/frontend/test-results/junit.xml
   allow_failure: false
 
+
+# Backend unit tests
 test_backend_unit:
   stage: test
-  dependencies: 
-    - install_backend
+  dependencies:
+    - install_backend # This brings in node_modules from the install_backend job
   script:
     - cd application/backend
-    - npm test 
+    - echo "Current directory: $(pwd)"
+    - echo "Verifying node_modules and jest executable in test_backend_unit job:"
+    - if [ -d "node_modules/.bin" ]; then ls -la node_modules/.bin; else echo "node_modules/.bin not found"; fi
+    - echo "Attempting to run tests..."
+    # This is the most standard way and should work if node_modules are present
+    # and npm's PATH handling is effective in the CI environment.
+    - npm test
   artifacts:
     when: always
     paths:
-      - application/backend/coverage/ 
+      - application/backend/coverage/
+      - application/backend/test-results/ # Artifact this whole folder
     reports:
-      junit: application/backend/junit.xml 
-      coverage_report: 
-        coverage_format: cobertura 
-        path: application/backend/coverage/cobertura-coverage.xml 
-  allow_failure: false 
+      junit: application/backend/test-results/junit.xml # Ensure this matches your Jest output config
+      coverage_report:
+        coverage_format: cobertura
+        path: application/backend/coverage/cobertura-coverage.xml # Ensure this matches
+  allow_failure: false
 
 # Build frontend
 build_frontend:
