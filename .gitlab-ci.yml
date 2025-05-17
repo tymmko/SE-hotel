@@ -113,21 +113,43 @@ package_release:
     - rm -rf release/backend/node_modules
     - cp -r application/frontend/dist release/frontend
     - cd release
-    - zip -r ../release-package-$CI_COMMIT_BRANCH.zip .
+    - zip -r ../release-package-$CI_COMMIT_REF_NAME.zip .
   artifacts:
     paths:
-      - release-package-$CI_COMMIT_BRANCH.zip
-    name: "release-$CI_COMMIT_BRANCH"
+      - release-package-$CI_COMMIT_REF_NAME.zip
+    name: "release-$CI_COMMIT_REF_NAME"
     expire_in: 30 days
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-    - if: '$CI_COMMIT_BRANCH == "dev"'
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+    - if: '$CI_COMMIT_REF_NAME == "dev"'
+    - if: '$CI_COMMIT_TAG'
 
 # Upload release to GitLab Releases page
 release_upload:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   needs: [package_release]
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - echo "Creating release for $CI_COMMIT_REF_NAME"
+  release:
+    tag_name: "$CI_COMMIT_REF_NAME"
+    name: "Release for $CI_COMMIT_REF_NAME"
+    description: 'Automated release for $CI_COMMIT_REF_NAME'
+    assets:
+      links:
+        - name: "Release Package"
+          url: "$CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/file/release-package-$CI_COMMIT_REF_NAME.zip"
+
+# Upload release to GitLab Releases page
+release_upload:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs: [package_release]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   script:
     - echo "Creating release for $CI_COMMIT_BRANCH"
   release:
@@ -137,10 +159,7 @@ release_upload:
     assets:
       links:
         - name: "Release Package"
-          filepath: "release-package-$CI_COMMIT_BRANCH.zip"
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-    - if: '$CI_COMMIT_BRANCH == "dev"'
+          url: "$CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/file/release-package-$CI_COMMIT_REF_NAME.zip"
 
 # Deploy frontend
 deploy_frontend:
