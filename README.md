@@ -35,7 +35,7 @@ Our GitLab pipeline is organized into the following stages:
 
 The frontend logic documentation is automatically generated and published here:
 
-👉 [**GitLab Pages Documentation**](https://diazgand.gitlab.io/bie-swi-hotel/)
+👉 [**GitLab Pages Documentation**](https://gitlab.fit.cvut.cz/pages/diazgand/bie-swi-hotel)
 
 (Replace with actual URL after first GitLab Pages deployment.)
 
