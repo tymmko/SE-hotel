@@ -1,131 +1,60 @@
 // src/controllers/user.controller.js
+// (Your uploaded version - adapted for clarity on what's passed to service)
 class UserController {
   constructor(userService) {
-    this.userService = userService;
+    this.userService = userService; // This will be the refactored UserService
   }
 
-  async register(req, res, next) {
+  async register(req, res) { // For POST /register route
     try {
-      // This can handle both full user registration and admin-defined users
-      const { username, email, password, first_name, last_name, phone_number, role } = req.body;
-      const user = await this.userService.register({ username, email, password, first_name, last_name, phone_number, role });
-      res.status(201).json({ success: true, user });
+      // The `/register` route in your apiRoutes.js is simple.
+      // It calls this controller method, which calls userService.register.
+      // userService.register now makes an 'admin' user by default.
+      const { username, email, password, first_name, last_name, phone_number } = req.body;
+      
+      // The role 'admin' is now set by the UserService.register method.
+      // UserController just passes the necessary data.
+      const user = await this.userService.register({ 
+          username, 
+          email, 
+          password,
+          first_name, // Pass these if your client sends them for admin registration
+          last_name,
+          phone_number
+      });
+      // Your original controller response: res.status(201).json(user);
+      // The refactored userService.register returns the created user object.
+      res.status(201).json(user); 
     } catch (error) {
-      // Basic error handling, can be enhanced with a global error handler
-      if (error.message.includes('required') || error.message.includes('exists') || error.message.includes('Invalid email')) {
-        res.status(400).json({ success: false, error: error.message });
+      // Match error messages from the updated UserService
+      if (error.message.includes('required') || error.message.includes('already exists')) {
+          res.status(400).json({ error: error.message });
       } else {
-        next(error); // Pass to global error handler
+          // For other errors, you might want a more generic message or let a global error handler deal with it
+          console.error("Registration Error:", error); // Log the full error server-side
+          res.status(500).json({ error: "An unexpected error occurred during registration." });
       }
     }
   }
 
-  async login(req, res, next) {
+  async login(req, res) { // For POST /login route
     try {
       const { username, password } = req.body;
       const result = await this.userService.login({ username, password });
-      res.status(200).json({ success: true, ...result });
+      // Your original controller response: res.status(200).json(result);
+      // The refactored userService.login returns { token, user: { id, username, email, role } }
+      res.status(200).json(result);
     } catch (error) {
-      if (error.message.includes('required') || error.message.includes('Invalid username or password')) {
-        res.status(400).json({ success: false, error: error.message });
-      } else {
-        next(error);
+      if (error.message.includes('Invalid username or password') || error.message.includes('required')) {
+         res.status(400).json({ error: error.message });
+      } else if (error.message.includes('Authentication system configuration error')) {
+         console.error("Login Configuration Error:", error);
+         res.status(500).json({ error: "Server authentication configuration error." });
       }
-    }
-  }
-
-  async getAllUsers(req, res, next) {
-    try {
-      // Add query parameter handling for filtering, e.g., by role
-      const queryOptions = {};
-      if (req.query.role) {
-        queryOptions.where = { role: req.query.role };
+      else {
+        console.error("Login Error:", error);
+        res.status(500).json({ error: "An unexpected error occurred during login." });
       }
-      const users = await this.userService.getAllUsers(queryOptions);
-      res.status(200).json({
-        success: true,
-        count: users.length,
-        users
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async getUser(req, res, next) {
-    try {
-      const user = await this.userService.getUserById(req.params.id);
-      res.status(200).json({
-        success: true,
-        user
-      });
-    } catch (error) {
-      if (error.message === 'User not found') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-      next(error);
-    }
-  }
-
-  async createUserAsGuest(req, res, next) { // Specifically for creating guest-like users
-    try {
-      const { first_name, last_name, email, phone_number } = req.body;
-      const guestUser = await this.userService.createUserAsGuest({ first_name, last_name, email, phone_number });
-      res.status(201).json({
-        success: true,
-        user: guestUser
-      });
-    } catch (error) {
-      if (error.message.includes('required') || error.message.includes('Invalid email') || error.message.includes('exists')) {
-        return res.status(400).json({
-          success: false,
-          message: error.message
-        });
-      }
-      next(error);
-    }
-  }
-
-  async updateUser(req, res, next) {
-    try {
-      // Exclude role from direct update by users unless specific logic allows it
-      // Password changes should ideally go through a separate, more secure endpoint.
-      const { role, password, ...updateData } = req.body;
-
-      // If an admin is updating, they might be allowed to change the role.
-      // This requires checking req.user.role (from authMiddleware)
-      let finalUpdateData = { ...updateData };
-      if (req.user && req.user.role === 'admin' && role !== undefined) {
-          finalUpdateData.role = role;
-      }
-      // Handle password update separately or ensure service layer manages hashing if password field is present
-      if (password) {
-          finalUpdateData.password = password; // Service's updateUser should handle hashing via model hook
-      }
-
-
-      const user = await this.userService.updateUser(req.params.id, finalUpdateData);
-      res.status(200).json({
-        success: true,
-        user
-      });
-    } catch (error) {
-      if (error.message === 'User not found') {
-        return res.status(404).json({
-          success: false,
-          message: error.message
-        });
-      }
-      if (error.message.includes('Invalid email') || error.message.includes('Username cannot be changed')) {
-        return res.status(400).json({
-          success: false,
-          message: error.message
-        });
-      }
-      next(error);
     }
   }
 }

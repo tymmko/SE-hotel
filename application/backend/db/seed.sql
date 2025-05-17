@@ -83,12 +83,4 @@ INSERT INTO ServiceOrder (service_name, price, date_time, stay_id) VALUES
   ('Spa Treatment', 100.00, '2025-06-16 15:30:00', 3);
 
 
--- Update room statuses based on active reservations if your setup script doesn't handle this
--- This is a simplified example; a more robust approach would check current date against reservation dates.
--- For simplicity, we assume the seed data implies these rooms are occupied by these initial reservations.
-UPDATE Room SET status = 'occupied' WHERE id IN (1, 2); -- Assuming first two rooms are occupied by initial reservations
-UPDATE Room SET status = 'available' WHERE id = 3; -- If the third reservation is in the future or room is otherwise free
-
-COMMENT ON TABLE Stay IS 'Note: Stay with ID 3 might or might not have a bill based on business logic for testing bill creation';
-
 COMMIT;

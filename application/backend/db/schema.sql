@@ -1,13 +1,12 @@
 -- Drop Tables
 DROP TABLE IF EXISTS Bill CASCADE;
 DROP TABLE IF EXISTS Equipment CASCADE;
--- DROP TABLE IF EXISTS Guest CASCADE; -- Removed
 DROP TABLE IF EXISTS PriceHistory CASCADE;
+DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS Reservation CASCADE;
 DROP TABLE IF EXISTS Room CASCADE;
 DROP TABLE IF EXISTS ServiceOrder CASCADE;
 DROP TABLE IF EXISTS Stay CASCADE;
-DROP TABLE IF EXISTS Users CASCADE; -- Will be recreated with merged fields
 
 -- Create Tables
 
@@ -24,7 +23,7 @@ CREATE TABLE Users (
   username VARCHAR(255) UNIQUE, -- Made nullable for guest users
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255), -- Made nullable for guest users
-  role VARCHAR(50) NOT NULL DEFAULT 'guest', -- Max length 50, or as needed
+  role VARCHAR(50) NOT NULL DEFAULT 'admin', -- Max length 50, or as needed
   first_name VARCHAR(100), -- Added from Guest, nullable
   last_name VARCHAR(100),  -- Added from Guest, nullable
   phone_number VARCHAR(50), -- Added from Guest, nullable

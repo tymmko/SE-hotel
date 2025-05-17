@@ -2,22 +2,49 @@ const pool = require('./pool');
 const fs = require('fs').promises;
 const path = require('path');
 
-// Function to read and execute SQL file statements individually
 async function executeSqlFile(sqlFilePath) {
   const sqlContent = await fs.readFile(sqlFilePath, 'utf8');
-  // Improved split to handle potential empty statements better and comments
-  const statements = sqlContent.split(/;\s*$/m) // Split by semicolon at the end of a line (multiline aware)
-    .map(s => s.trim())
-    .filter(s => s.length > 0 && !s.startsWith('--')); // Filter out empty lines and full-line comments
+
+  // Split by semicolon first
+  const rawStatements = sqlContent.split(';');
+  const statements = [];
+
+  for (const s of rawStatements) {
+    // For each segment, remove comments and then trim.
+    // Process line by line to remove '--' comments effectively.
+    const lines = s.split(/\r?\n/);
+    const processedLines = lines.map(line => {
+      // Remove /* ... */ comments and // comments first from the line
+      let cleanLine = line.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+      // Then remove -- comments from the beginning of what's left of the line
+      cleanLine = cleanLine.replace(/^[\s]*--.*/g, ''); // Only if -- is at the start (after potential whitespace)
+      return cleanLine;
+    });
+
+    // Join the cleaned lines back and then trim the whole statement
+    let statement = processedLines.join('\n').trim();
+
+    if (statement.length > 0) {
+      statements.push(statement);
+    }
+  }
+
+  console.log(`--- Parsed Statements from ${path.basename(sqlFilePath)} (Revised Logic) ---`);
+  statements.forEach((stmt, index) => console.log(`[Parsed ${index}]: ${stmt.substring(0, 150).replace(/\r?\n|\r/g, " ").trim()}...`));
+  console.log("------------------------------------");
 
   for (const statement of statements) {
+    // Check if the statement is not empty again after potential full comment blocks
+    if (statement.trim().length === 0) {
+        continue;
+    }
+    console.log(`[ATTEMPTING EXECUTION]: ${statement.substring(0, 200).replace(/\r?\n|\r/g, " ").trim()}...`);
     try {
       await pool.query(statement);
-      console.log(`✅ Executed: ${statement.substring(0, 80).replace(/\r?\n|\r/g, " ")}...`);
+      console.log(`✅ Executed: ${statement.substring(0, 80).replace(/\r?\n|\r/g, " ").trim()}...`);
     } catch (error) {
-      console.error(`❌ Error executing statement: ${statement.substring(0, 80).replace(/\r?\n|\r/g, " ")}...`, error.message);
-      // Decide if you want to throw and stop, or continue with other statements
-      // For schema setup, it's often better to stop on error.
+      console.error(`❌ Error executing statement for: ${statement.substring(0, 80).replace(/\r?\n|\r/g, " ").trim()}...`, error.message);
+      console.error(`[FULL FAILING STATEMENT]: ${statement}`);
       throw error;
     }
   }
@@ -26,15 +53,15 @@ async function executeSqlFile(sqlFilePath) {
 // Function to reset sequences for all SERIAL/BIGSERIAL columns
 async function resetSequences() {
   const tables = [
-    { table: 'Room', column: 'id' },
+    { table: 'room', column: 'id' },
     // { table: 'Guest', column: 'id' }, // Removed
-    { table: 'Users', column: 'id' }, // Added Users here explicitly as it's BIGSERIAL
-    { table: 'Reservation', column: 'id' },
-    { table: 'Stay', column: 'stay_id' },
-    { table: 'Bill', column: 'id' },
-    { table: 'Equipment', column: 'id' },
-    { table: 'PriceHistory', column: 'price_history_id' },
-    { table: 'ServiceOrder', column: 'service_order_id' }
+    { table: 'users', column: 'id' }, // Added Users here explicitly as it's BIGSERIAL
+    { table: 'reservation', column: 'id' },
+    { table: 'stay', column: 'stay_id' },
+    { table: 'bill', column: 'id' },
+    { table: 'equipment', column: 'id' },
+    { table: 'pricehistory', column: 'price_history_id' },
+    { table: 'serviceorder', column: 'service_order_id' }
     // Users table's id sequence will be reset if it's named users_id_seq (PostgreSQL default for SERIAL/BIGSERIAL)
   ];
 
