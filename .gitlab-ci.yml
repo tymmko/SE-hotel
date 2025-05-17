@@ -49,7 +49,26 @@ test_frontend:
 
 
 # Backend unit tests
+# Backend unit tests
 test_backend_unit:
+  stage: test
+  dependencies:
+    - install_backend
+  script:
+    - cd application/backend
+    - npm test
+  artifacts:
+    when: always
+    paths:
+      - application/backend/coverage/
+      - application/backend/test-results/
+    reports:
+      junit: application/backend/test-results/junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: application/backend/coverage/cobertura-coverage.xml
+  allow_failure: false
+
   stage: test
   dependencies:
     - install_backend
