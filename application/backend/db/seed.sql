@@ -50,7 +50,7 @@ INSERT INTO Users (username, email, password, role, first_name, last_name, phone
 -- Assuming 'John Doe' is User ID 1, 'Jane Smith' is User ID 2, 'Alex Johnson' is User ID 3
 INSERT INTO Reservation (check_in_date, check_out_date, status, room_id, user_id) VALUES
   ('2025-06-01', '2025-06-05', 'confirmed', 1, 1), -- John Doe to Room 1
-  ('2025-06-10', '2025-06-12', 'confirmed', 2, 2), -- Jane Smith to Room 2
+  ('2025-06-10', '2025-06-12', 'checked-in', 2, 2), -- Jane Smith to Room 2
   ('2025-06-15', '2025-06-20', 'confirmed', 3, 3); -- Alex Johnson to Room 3
 
 -- Insert Stays

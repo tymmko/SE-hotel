@@ -59,12 +59,12 @@ class RoomRepository extends BaseRepository {
 			// Find a reservation for this room with status 'checked-in'
 			const reservation = await this.models.Reservation.findOne({
 				where: {
-					room_id: roomId,
+					id: roomId,
 					status: 'checked-in'
 				},
 				include: [
 					{
-						model: this.models.Guest,
+						model: this.models.User,
 						attributes: ['id', 'first_name', 'last_name', 'email', 'phone_number']
 					},
 					{
@@ -89,11 +89,11 @@ class RoomRepository extends BaseRepository {
 					stay: reservation.Stays?.[0] || null
 				},
 				guest: {
-					id: reservation.Guest.id,
-					first_name: reservation.Guest.first_name,
-					last_name: reservation.Guest.last_name,
-					email: reservation.Guest.email,
-					phone_number: reservation.Guest.phone_number
+					id: reservation.User.id,
+					first_name: reservation.User.first_name,
+					last_name: reservation.User.last_name,
+					email: reservation.User.email,
+					phone_number: reservation.User.phone_number
 				}
 			};
 		} catch (error) {

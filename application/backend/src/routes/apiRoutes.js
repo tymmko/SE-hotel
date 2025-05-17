@@ -35,7 +35,7 @@ const UserService = require('../services/userService');
 // Create service instances
 const roomService = new RoomService(roomRepository);
 const billService = new BillService(billRepository);
-const reservationService = new ReservationService(reservationRepository, roomRepository);
+const reservationService = new ReservationService(reservationRepository, roomRepository, userRepository);
 const guestService = new GuestService(userRepository);
 const equipmentService = new EquipmentService(equipmentRepository, roomRepository);
 const priceHistoryService = new PriceHistoryService(priceHistoryRepository, roomRepository);

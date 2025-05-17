@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING(20),
 			allowNull: false,
 			validate: {
-				isIn: [['occupied', 'available']]
+				isIn: [['occupied', 'available', 'maintenance']]
 			}
 		},
 		capacity: { 

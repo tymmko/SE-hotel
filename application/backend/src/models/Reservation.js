@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: false,
             validate: {
-                isIn: [['confirmed', 'checked-in', 'checked-out', 'paid']]
+                isIn: [['confirmed', 'checked-in', 'checked-out', 'paid', 'canceled']]
             }
         },
         room_id: {

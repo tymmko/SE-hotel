@@ -92,7 +92,7 @@ class RoomService extends BaseService {
 		}
 	
 		return await this.repository.transaction(async (transaction) => {
-			const [updated] = await this.repository.update(roomData, { room_id: roomId }, { transaction });
+			const [updated] = await this.repository.update(roomData, { id: roomId }, { transaction });
 			if (updated === 0) {
 				throw new Error('Room not found');
 			}
@@ -117,7 +117,7 @@ class RoomService extends BaseService {
 		if (hasReservations) {
 			throw new Error('Cannot delete room with active reservations');
 		}
-		const deleted = await this.repository.delete({ room_id: roomId });
+		const deleted = await this.repository.delete({ id: roomId });
 		if (deleted === 0) {
 			throw new Error('Room not found');
 		}
@@ -143,11 +143,11 @@ class RoomService extends BaseService {
 	}
 
 	async updateRoomStatus(roomId, status) {
-		const validStatuses = ['Available', 'Occupied', 'Maintenance'];
+		const validStatuses = ['available', 'occupied', 'maintenance'];
 		if (!validStatuses.includes(status)) {
 			throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
 		}
-		if (status === 'Available') {
+		if (status === 'available') {
 			const today = new Date();
 			const tomorrow = new Date();
 			tomorrow.setDate(tomorrow.getDate() + 1);
