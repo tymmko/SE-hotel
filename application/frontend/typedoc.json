@@ -10,6 +10,6 @@
 	"excludeNotDocumented": true,
 	"includeVersion": true,
 	"tsconfig": "tsconfig.json",
-	"name": "Frontend Logic Documentation",
+	"name": "Frontend Logic Documentation"
 }
 
