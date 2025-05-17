@@ -54,7 +54,7 @@ test_backend_unit:
     - install_backend
   script:
     - cd application/backend
-    - npm test
+    - npm test # This will now execute "npx jest --coverage"
   artifacts:
     when: always
     paths:
