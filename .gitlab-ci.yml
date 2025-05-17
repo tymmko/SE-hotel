@@ -1,7 +1,11 @@
 stages:
   - install
   - test
+  - docs
+  - pages
   - build
+  - package
+  - release
   - deploy
 
 default:
@@ -29,6 +33,8 @@ install_frontend:
   artifacts:
     paths:
       - application/frontend/node_modules/
+      - application/frontend/package-lock.json
+      - application/frontend/package.json
 
 # Frontend tests
 test_frontend:
@@ -45,6 +51,31 @@ test_frontend:
       junit: application/frontend/test-results/junit.xml
   allow_failure: false
 
+# Generate docs for frontend using TypeDoc
+docs_frontend:
+  stage: docs
+  dependencies:
+    - install_frontend
+  script:
+    - cd application/frontend
+    - npm install --legacy-peer-deps --include=dev
+    - npx typedoc src --out ../../public
+  artifacts:
+    paths:
+      - public
+
+      # GitLab Pages deployment
+pages:
+  stage: pages
+  script:
+    - echo "Deploying to GitLab Pages"
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_TAG'
+
 # Build frontend
 build_frontend:
   stage: build
@@ -52,9 +83,82 @@ build_frontend:
     - cd application/frontend
     - npm install --legacy-peer-deps --include=dev
     - npm run build
+  variables:
+    API_BASE_URL: https://backend.railway.internal
   artifacts:
     paths:
       - application/frontend/dist
+
+# Build backend
+build_backend:
+  stage: build
+  script:
+    - cd application/backend
+    - npm install --legacy-peer-deps --include=dev
+  artifacts:
+    paths:
+      - application/backend/node_modules/
+
+# Package release
+package_release:
+  stage: package
+  image: node:20
+  dependencies:
+    - build_backend
+    - build_frontend
+  script:
+    - apt-get update && apt-get install -y zip
+    - mkdir release
+    - cp -r application/backend release/backend
+    - rm -rf release/backend/node_modules
+    - cp -r application/frontend/dist release/frontend
+    - cd release
+    - zip -r ../release-package-$CI_COMMIT_REF_NAME.zip .
+  artifacts:
+    paths:
+      - release-package-$CI_COMMIT_REF_NAME.zip
+    name: "release-$CI_COMMIT_REF_NAME"
+    expire_in: 30 days
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+    - if: '$CI_COMMIT_REF_NAME == "dev"'
+    - if: '$CI_COMMIT_TAG'
+
+# Upload release to GitLab Releases page
+release_upload:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs: [package_release]
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - echo "Creating release for $CI_COMMIT_REF_NAME"
+  release:
+    tag_name: "$CI_COMMIT_REF_NAME"
+    name: "Release for $CI_COMMIT_REF_NAME"
+    description: 'Automated release for $CI_COMMIT_REF_NAME'
+    assets:
+      links:
+        - name: "Release Package"
+          url: "$CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/file/release-package-$CI_COMMIT_REF_NAME.zip"
+
+# Upload release to GitLab Releases page
+release_upload:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs: [package_release]
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - echo "Creating release for $CI_COMMIT_REF_NAME"
+  release:
+    tag_name: "$CI_COMMIT_REF_NAME"
+    name: "Release for $CI_COMMIT_REF_NAME"
+    description: "Automated release package for tag $CI_COMMIT_REF_NAME"
+    assets:
+      links:
+        - name: "Release Package"
+          url: "$CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/file/release-package-$CI_COMMIT_REF_NAME.zip"
 
 # Deploy frontend
 deploy_frontend:
@@ -62,6 +166,8 @@ deploy_frontend:
   image: ghcr.io/railwayapp/cli:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "dev"'
+      when: always
+      allow_failure: false
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
     FRONTEND_SVC_ID: $RAILWAY_FRONTEND_SVC_ID
@@ -76,11 +182,14 @@ deploy_backend:
   image: ghcr.io/railwayapp/cli:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "dev"'
+      when: always
+      allow_failure: false
   variables:
     RAILWAY_TOKEN: $RAILWAY_TOKEN
     BACKEND_SVC_ID: $RAILWAY_BACKEND_SVC_ID
     PROJECT_ID: $RAILWAY_PROJECT_ID
   script:
+    - ls
     - cd application/backend
     - railway up --service=$BACKEND_SVC_ID
 
