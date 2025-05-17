@@ -47,8 +47,6 @@ test_frontend:
       junit: application/frontend/test-results/junit.xml
   allow_failure: false
 
-
-# Backend unit tests
 # Backend unit tests
 test_backend_unit:
   stage: test
@@ -56,28 +54,6 @@ test_backend_unit:
     - install_backend
   script:
     - cd application/backend
-    - npm test
-  artifacts:
-    when: always
-    paths:
-      - application/backend/coverage/
-      - application/backend/test-results/
-    reports:
-      junit: application/backend/test-results/junit.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: application/backend/coverage/cobertura-coverage.xml
-  allow_failure: false
-
-  stage: test
-  dependencies:
-    - install_backend
-  script:
-    - cd application/backend
-    - echo "Current directory: $(pwd)"
-    - echo "Listing contents of node_modules/.bin (if it exists):"
-    - 'if [ -d "node_modules/.bin" ]; then ls -la node_modules/.bin; else echo "node_modules/.bin not found"; fi' # Good for debugging PATH issues with npm executables
-    - echo "Attempting to run backend tests with npm test..."
     - npm test
   artifacts:
     when: always
