@@ -72,30 +72,6 @@ test_backend_unit:
         path: application/backend/coverage/cobertura-coverage.xml
   allow_failure: false
 
-
-
-  stage: test
-  dependencies:
-    - install_backend
-  script:
-    - cd application/backend
-    - echo "Current directory: $(pwd)"
-    - echo "Verifying node_modules and jest executable in test_backend_unit job:"
-    - 'if [ -d "node_modules/.bin" ]; then ls -la node_modules/.bin; else echo "node_modules/.bin not found"; fi' # Encapsulating complex command in single quotes
-    - echo "Attempting to run tests..."
-    - npm test
-  artifacts:
-    when: always
-    paths:
-      - application/backend/coverage/
-      - application/backend/test-results/
-    reports:
-      junit: application/backend/test-results/junit.xml
-      coverage_report:
-        coverage_format: cobertura
-        path: application/backend/coverage/cobertura-coverage.xml
-  allow_failure: false
-
 # Build frontend
 build_frontend:
   stage: build
