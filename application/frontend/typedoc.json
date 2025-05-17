@@ -1,8 +1,7 @@
 {
 	"entryPoints": ["src"],
+	"plugin": ["typedoc-plugin-markdown"],
 	"out": "wiki/frontend-docs",
-	"plugin": ["typedoc-gitlab-wiki-theme"],
-	"theme": "gitlab-wiki",
 	"readme": "none",
 	"exclude": ["src/__tests__/**/*", "**/*.*.test.ts", "**/*.test.tsx", "test-results/"],
 	"excludeExternals": true,
