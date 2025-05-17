@@ -32,7 +32,7 @@ class PriceHistoryService extends BaseService {
 
 		// Normalize dates
 		const newStart = startDate || new Date();
-		const newEnd = endDate || new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+		const newEnd = endDate || new Date(new Date(newStart).setFullYear(newStart.getFullYear() + 1));
 
 		// Check for overlapping price history
 		const existingPrices = await this.repository.findPriceHistoryByRoom(roomId);

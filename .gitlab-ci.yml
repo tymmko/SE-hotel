@@ -47,6 +47,24 @@ test_frontend:
       junit: application/frontend/test-results/junit.xml
   allow_failure: false
 
+test_backend_unit:
+  stage: test
+  dependencies: 
+    - install_backend
+  script:
+    - cd application/backend
+    - npm test 
+  artifacts:
+    when: alway
+    paths:
+      - application/backend/coverage/ 
+    reports:
+      junit: application/backend/junit.xml 
+      coverage_report: 
+        coverage_format: cobertura 
+        path: application/backend/coverage/cobertura-coverage.xml 
+  allow_failure: false 
+  
 # Build frontend
 build_frontend:
   stage: build

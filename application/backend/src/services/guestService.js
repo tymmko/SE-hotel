@@ -30,12 +30,7 @@ class GuestService extends BaseService { // Keep extends BaseService if its meth
    */
   async getGuestById(guestId) {
     // Use UserRepository to find a user by ID and also check their role.
-    const guest = await this.repository.findUserById(guestId, { // Assuming UserRepository has findUserById
-        // No need to pass role here if findUserById doesn't support it,
-        // but then we must check the role on the returned user.
-        // For simplicity, assume findUserById is generic.
-        // attributes: { exclude: ['password'] } // findUserById in unified repo should handle this
-    });
+    const guest = await this.repository.findUserById(guestId);
     
     if (!guest || guest.role !== this.guestRole) { // Check role here
       throw new Error('Guest not found');
@@ -95,25 +90,32 @@ async updateGuest(guestId, guestData) {
   const guestDataClone = { ...guestData };
 
   // Destructure from the clone
+  // Destructure to check/use specific fields from guestDataClone
   const {
-      role,          // Extracted from input, but not used to change the role
-      username,
-      password,
-      first_name,
-      last_name,
-      phone_number,
-      email,
-      ...allowedUpdates // Contains properties from guestDataClone not explicitly destructured
+    first_name,
+    last_name,
+    phone_number,
+    email
+    // role, username, password are deliberately not included here for building the update payload
   } = guestDataClone;
 
-  // Note: The `allowedUpdates` will correctly contain only the fields
-  // that are in guestData but not in the list of explicitly destructured ones.
-  // For your input: { "first_name": "UpdatedApiTestViaRoute", "phone_number": "111222333", "role": "admin" }
-  // `allowedUpdates` will be an empty object {} because all keys are destructured.
-  // If guestData had other fields, they would be in allowedUpdates.
+  const updatesPayload = {};
+  if (first_name !== undefined) updatesPayload.first_name = first_name;
+  if (last_name !== undefined) updatesPayload.last_name = last_name;
+  if (phone_number !== undefined) updatesPayload.phone_number = phone_number;
+  if (email !== undefined) updatesPayload.email = email;
+  // Add any other fields that are permissible for guests to update
 
-  // Ensure `updateUser` is called correctly and its return (a number) is handled.
-  const updatedCount = await this.repository.updateUser(guestId, allowedUpdates);
+  // Ensure we don't pass an empty object if no valid fields were in guestData
+  if (Object.keys(updatesPayload).length === 0 && Object.keys(guestData).length > 0) {
+    // This case means guestData had keys, but none were updatable by this logic.
+    // Depending on desired behavior, you could throw an error, or proceed knowing no DB update will occur.
+    // For now, we'll let it proceed; the `updateUser` mock expecting an empty object will fail if the test data actually had updatable fields.
+    // The current test structure might be okay if it leads to [0] updated rows.
+  }
+
+
+  const updatedCount = await this.repository.updateUser(guestId, updatesPayload);
 
   if (updatedCount === 0) {
       console.log(`[GuestService.updateGuest] No rows updated for guestId: ${guestId}. Data might be the same.`);

@@ -43,7 +43,7 @@ class UserService {
 
   async login({ username, password }) {
     // Use findUserByUsername from unified repo, requesting password for comparison
-    const user = await this.userRepository.findUserByUsername(username, { includePassword: true });
+    const user = await this.userRepository.findUserByUsername(username);
     
     if (!user) { // Handles user not found
       throw new Error('Invalid username or password');
