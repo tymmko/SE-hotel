@@ -1,5 +1,3 @@
-
-
 stages:
   - install
   - test
@@ -71,14 +69,12 @@ build_backend:
     paths:
       - application/backend/node_modules/
 
+
 sonarqube-check:
   stage: build-sonar
-  image: 
+  image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
   cache:
     key: "${CI_JOB_NAME}"
     paths:
@@ -86,16 +82,10 @@ sonarqube-check:
   script: 
     - sonar-scanner
   allow_failure: true
-  only:
-    - main  
-  script: 
-    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
-  allow_failure: true
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_COMMIT_BRANCH == 'main'
     - if: $CI_COMMIT_BRANCH == 'dev'
-    - if: $CI_COMMIT_BRANCH
 
 # Deploy frontend
 deploy_frontend:
@@ -129,4 +119,3 @@ deploy_backend:
     - ls
     - cd application/backend
     - railway up --service=$BACKEND_SVC_ID
-
