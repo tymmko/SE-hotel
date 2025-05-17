@@ -55,7 +55,7 @@ test_backend_unit:
     - cd application/backend
     - npm test 
   artifacts:
-    when: alway
+    when: always
     paths:
       - application/backend/coverage/ 
     reports:
@@ -64,7 +64,7 @@ test_backend_unit:
         coverage_format: cobertura 
         path: application/backend/coverage/cobertura-coverage.xml 
   allow_failure: false 
-  
+
 # Build frontend
 build_frontend:
   stage: build
