@@ -132,7 +132,7 @@ release_upload:
   release:
     tag_name: "$CI_COMMIT_BRANCH"
     name: "Release for $CI_COMMIT_BRANCH"
-    description: "Automated release package for branch \`$CI_COMMIT_BRANCH\`"
+    description: 'Automated release package for branch `$CI_COMMIT_BRANCH`'
     assets:
       links:
         - name: "Release Package"
