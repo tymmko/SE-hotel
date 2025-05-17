@@ -62,25 +62,14 @@ docs_frontend:
   script:
     - cd application/frontend
     - npm install --legacy-peer-deps --include=dev
-    - npx typedoc
-    # Configure Git
+    - npx typedoc --out temp-docs
     - git config --global user.email "$GITLAB_USER_EMAIL"
     - git config --global user.name "$GITLAB_USER_NAME"
-    # Clone the GitLab Wiki
-    - git clone "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.wiki.git" wiki
-    # Create subdirectory if needed and copy docs in there
-    - mkdir -p wiki/frontend-docs
-    - cp -r wiki/frontend-docs/* wiki/frontend-docs-old/ || echo "No previous frontend-docs to back up"
-    - rm -rf wiki/frontend-docs/*
-    - cp -r wiki/frontend-docs/* wiki/frontend-docs/
-    - cp -r wiki/frontend-docs/* wiki/
-    - cp -r wiki/frontend-docs/* wiki/frontend-docs/
-    - cp -r wiki/frontend-docs/* wiki/
-    - cp -r wiki/frontend-docs/* wiki/
-    - cp -r wiki/frontend-docs/* wiki/
-    - cp -r wiki/frontend-docs/* wiki/
-    # Commit and push
-    - cd wiki
+    - git clone "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.wiki.git" wiki-repo
+    - mkdir -p wiki-repo/frontend-docs
+    - rm -rf wiki-repo/frontend-docs/*
+    - cp -r temp-docs/* wiki-repo/frontend-docs/
+    - cd wiki-repo
     - git add .
     - git commit -m "Update frontend docs in wiki/frontend-docs [CI skip]" || echo "No changes to commit"
     - git push
