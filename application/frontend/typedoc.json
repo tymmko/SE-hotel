@@ -1,15 +1,16 @@
 {
 	"entryPoints": ["src"],
 	"out": "wiki/frontend-docs",
+	"plugin": ["typedoc-gitlab-wiki-theme"],
+	"theme": "gitlab-wiki",
+	"readme": "none",
 	"exclude": ["src/__tests__/**/*", "**/*.*.test.ts", "**/*.test.tsx", "test-results/"],
 	"excludeExternals": true,
 	"excludePrivate": true,
 	"excludeProtected": true,
 	"excludeNotDocumented": true,
 	"includeVersion": true,
-	"plugin": ["typedoc-gitlab-wiki-theme"],
 	"tsconfig": "tsconfig.json",
 	"name": "Frontend Logic Documentation",
-	"entryPointStrategy": "expand",
 }
 
