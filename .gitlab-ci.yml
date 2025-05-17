@@ -1,9 +1,10 @@
 stages:
   - install
   - test
+  - docs
   - build
   - package
-  - docs
+  - release
   - deploy
 
 default:
@@ -49,6 +50,31 @@ test_frontend:
       junit: application/frontend/test-results/junit.xml
   allow_failure: false
 
+# Generate docs frontend
+docs_frontend:
+  stage: docs
+  image: node:20
+  dependencies:
+    - install_frontend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
+  script:
+    - cd application/frontend
+    - npx typedoc --options typedoc.json
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - git config --global user.name "$GITLAB_USER_NAME"
+    - git clone "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.wiki.git" wiki
+    - rm -rf ../../wiki/*
+    - cp -r docs/* ../../wiki/
+    - cd ../../wiki
+    - git add .
+    - git commit -m "Update frontend logic docs [CI skip]" || echo "No changes to commit"
+    - git push
+  variables:
+    GITLAB_USER_EMAIL: "docs-bot@example.com"
+    GITLAB_USER_NAME: "Docs Bot"
+
 # Build frontend
 build_frontend:
   stage: build
@@ -91,35 +117,29 @@ package_release:
     paths:
       - release-package-$CI_COMMIT_BRANCH.zip
     name: "release-$CI_COMMIT_BRANCH"
-    expire_in: 7 days
+    expire_in: 30 days
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "dev"'
 
-# Generate docs frontend
-docs_frontend:
-  stage: docs
-  image: node:20
-  dependencies:
-    - install_frontend
+# Upload release to GitLab Releases page
+release_upload:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs: [package_release]
+  script:
+    - echo "Creating release for $CI_COMMIT_BRANCH"
+  release:
+    tag_name: "$CI_COMMIT_BRANCH"
+    name: "Release for $CI_COMMIT_BRANCH"
+    description: "Automated release package for branch \`$CI_COMMIT_BRANCH\`"
+    assets:
+      links:
+        - name: "Release Package"
+          filepath: "release-package-$CI_COMMIT_BRANCH.zip"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "dev"'
-  script:
-    - cd application/frontend
-    - npx typedoc --options typedoc.json
-    - git config --global user.email "$GITLAB_USER_EMAIL"
-    - git config --global user.name "$GITLAB_USER_NAME"
-    - git clone "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.wiki.git" wiki
-    - rm -rf ../../wiki/*
-    - cp -r docs/* ../../wiki/
-    - cd ../../wiki
-    - git add .
-    - git commit -m "Update frontend logic docs [CI skip]" || echo "No changes to commit"
-    - git push
-  variables:
-    GITLAB_USER_EMAIL: "docs-bot@example.com"
-    GITLAB_USER_NAME: "Docs Bot"
 
 # Deploy frontend
 deploy_frontend:
