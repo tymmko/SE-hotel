@@ -31,6 +31,8 @@ install_frontend:
   artifacts:
     paths:
       - application/frontend/node_modules/
+      - application/frontend/package-lock.json
+      - application/frontend/package.json
 
 # Frontend tests
 test_frontend:
@@ -98,6 +100,8 @@ package_release:
 docs_frontend:
   stage: docs
   image: node:20
+  dependencies:
+    - install_frontend
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_COMMIT_BRANCH == "dev"'
