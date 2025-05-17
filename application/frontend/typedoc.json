@@ -1,15 +1,15 @@
 {
-	"entryPoints": ["src"],
-	"plugin": ["typedoc-plugin-markdown"],
-	"out": "wiki/frontend-docs",
-	"readme": "none",
-	"exclude": ["src/__tests__/**/*", "**/*.*.test.ts", "**/*.test.tsx", "test-results/"],
-	"excludeExternals": true,
-	"excludePrivate": true,
-	"excludeProtected": true,
-	"excludeNotDocumented": true,
-	"includeVersion": true,
-	"tsconfig": "tsconfig.json",
-	"name": "Frontend Logic Documentation"
+  "entryPoints": ["src", "src/types"],
+  "entryPointStrategy": "expand",
+  "plugin": ["typedoc-plugin-markdown"],
+  "out": "wiki/frontend-docs",
+  "exclude": ["src/__tests__/**/*", "**/*.test.ts", "**/*.test.tsx", "test-results/"],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeNotDocumented": true,
+  "includeVersion": true,
+  "tsconfig": "tsconfig.json",
+  "name": "Frontend Logic Documentation"
 }
 
