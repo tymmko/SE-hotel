@@ -17,7 +17,7 @@ install_backend:
   stage: install
   script:
     - cd application/backend
-    - npm install --legacy-peer-deps
+    - npm install --legacy-peer-deps --include=SW-37
   artifacts:
     paths:
       - application/backend/node_modules/
