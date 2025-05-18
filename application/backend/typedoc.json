@@ -1,0 +1,16 @@
+{
+  "entryPoints": ["src/controllers", "src/services", "src/data/repositories"],
+  "entryPointStrategy": "expand",
+  "out": "wiki/backend-docs",
+  "plugin": ["typedoc-plugin-markdown"],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeNotDocumented": true,
+  "includeVersion": true,
+  "tsconfig": "tsconfig.json",
+  "name": "Backend Logic Documentation"
+}
+
+
+

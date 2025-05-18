@@ -1,6 +1,9 @@
 import { Equipment } from './equipments';
 import { emptyGuest, Guest } from './guest';
 
+/**
+ * Initial state for the room reducer.
+ */
 export const RoomInitialState: RoomsStoreType = {
 	rooms: [],
 	room: {
@@ -16,6 +19,9 @@ export const RoomInitialState: RoomsStoreType = {
 	loading: false
 };
 
+/**
+ * Redux state shape for room-related data.
+ */
 export type RoomsStoreType = {
 	rooms : Room[],
 	room: Room,
@@ -27,6 +33,9 @@ export type RoomsStoreType = {
 	guest: Guest,
 }
 
+/**
+ * Represents a room in the hotel.
+ */
 export type Room = {
 	id: number,
 	type: 'single' | 'double' | 'suite';
@@ -35,6 +44,9 @@ export type Room = {
 	capacity?: number; 
 };
 
+/**
+ * Represents the price history entry of a room.
+ */
 export type PriceEntry = {
 	price_history_id?: number,
 	start_date: string,

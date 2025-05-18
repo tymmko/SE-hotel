@@ -1,17 +1,26 @@
-// src/data/repositories/billRepository.js
-const { Op } = require('sequelize');
-const BaseRepository = require('./common/baseRepository');
-
+/**
+ * Repository for managing bill-related data operations
+ * Extends BaseRepository to provide bill-specific data access methods
+ */
 class BillRepository extends BaseRepository {
+  /**
+   * @param {Object} models - Sequelize models
+   */
   constructor(models) {
     super(models.Bill);
     this.models = models;
   }
 
+  /**
+   * Find all bills with associated details
+   * @param {Object} [options={}] - Additional query options
+   * @returns {Promise<Array>} List of bills with related data
+   * @throws {Error} If an error occurs during the query
+   */
   async findBillsWithDetails(options = {}) {
     try {
       return await this.model.findAll({
-        include: [ // It's good practice to specify includes if you need related data
+        include: [
           {
             model: this.models.Stay,
             include: [
@@ -19,11 +28,11 @@ class BillRepository extends BaseRepository {
                 model: this.models.Reservation,
                 include: [
                   {
-                    model: this.models.User, // For user details
+                    model: this.models.User,
                     attributes: ['id', 'first_name', 'last_name', 'email']
                   },
                   {
-                    model: this.models.Room, // For room details
+                    model: this.models.Room,
                     attributes: ['id', 'type']
                   }
                 ]
@@ -32,7 +41,7 @@ class BillRepository extends BaseRepository {
           }
         ],
         ...options,
-        raw: false // Set to false if using includes to get nested objects
+        raw: false
       });
     } catch (error) {
       console.error('Error in findBillsWithDetails:', error);
@@ -40,6 +49,12 @@ class BillRepository extends BaseRepository {
     }
   }
 
+  /**
+   * Find a single bill by ID with associated details
+   * @param {number|string} billId - Bill ID
+   * @returns {Promise<Object|null>} Bill with related data
+   * @throws {Error} If an error occurs during the query
+   */
   async findBillWithDetails(billId) {
     try {
       return await this.model.findByPk(billId, {
@@ -54,7 +69,7 @@ class BillRepository extends BaseRepository {
                     model: this.models.User,
                     attributes: ['id', 'first_name', 'last_name', 'email']
                   },
-                   {
+                  {
                     model: this.models.Room,
                     attributes: ['id', 'type']
                   }
@@ -71,6 +86,12 @@ class BillRepository extends BaseRepository {
     }
   }
 
+  /**
+   * Find bills by status
+   * @param {string} status - Bill status (e.g., 'paid', 'unpaid')
+   * @returns {Promise<Array>} List of bills with the specified status
+   * @throws {Error} If an error occurs during the query
+   */
   async findBillsByStatus(status) {
     try {
       return await this.findBillsWithDetails({ where: { status } });
@@ -80,24 +101,36 @@ class BillRepository extends BaseRepository {
     }
   }
 
+  /**
+   * Find bills associated with a stay
+   * @param {number|string} stayId - Stay ID
+   * @returns {Promise<Array>} List of bills for the stay
+   * @throws {Error} If an error occurs during the query
+   */
   async findBillsByStay(stayId) {
     try {
-      return await this.findBillsWithDetails({ where: { '$Stay.stay_id$': stayId } }); // Adjusted for include
+      return await this.findBillsWithDetails({ where: { '$Stay.stay_id$': stayId } });
     } catch (error) {
       console.error('Error in findBillsByStay:', error);
       throw error;
     }
   }
 
-  async findBillsByUser(userId) { // Changed from findBillsByGuest and guestId
+  /**
+   * Find bills associated with a user
+   * @param {number|string} userId - User ID
+   * @returns {Promise<Array>} List of bills for the user
+   * @throws {Error} If an error occurs during the query
+   */
+  async findBillsByUser(userId) {
     try {
       const reservations = await this.models.Reservation.findAll({
-        where: { user_id: userId }, // Changed from guest_id
+        where: { user_id: userId },
         attributes: ['id'],
         raw: true
       });
       
-      const reservationIds = reservations.map(res => res.id); // Assuming reservation id is 'id'
+      const reservationIds = reservations.map(res => res.id);
       
       if (reservationIds.length === 0) {
         return [];
@@ -126,6 +159,13 @@ class BillRepository extends BaseRepository {
     }
   }
 
+  /**
+   * Update the status of a bill
+   * @param {number|string} billId - Bill ID
+   * @param {string} status - New status
+   * @returns {Promise<Array>} [affectedCount, affectedRows]
+   * @throws {Error} If an error occurs during the update
+   */
   async updateBillStatus(billId, status) {
     try {
       return await this.model.update(
@@ -140,13 +180,17 @@ class BillRepository extends BaseRepository {
     }
   }
 
+  /**
+   * Create a payment for a bill
+   * @param {number|string} billId - Bill ID
+   * @param {Object} paymentData - Payment data
+   * @returns {Promise<Object>} Created payment
+   * @throws {Error} If an error occurs during creation
+   */
   async createPayment(billId, paymentData) {
     try {
-      // Assuming Payment model is associated with Bill and has bill_id
-      // Or if Payment model's primary key is the billId as in your previous code structure.
-      // This might need adjustment based on your Payment model definition.
       return await this.models.Payment.create({
-        bill_id: billId, // Ensure your Payment model has a bill_id foreign key
+        bill_id: billId,
         ...paymentData
       });
     } catch (error) {
@@ -155,10 +199,16 @@ class BillRepository extends BaseRepository {
     }
   }
 
+  /**
+   * Calculate the total payments for a bill
+   * @param {number|string} billId - Bill ID
+   * @returns {Promise<number>} Total payment amount
+   * @throws {Error} If an error occurs during the query
+   */
   async getTotalPaymentsForBill(billId) {
     try {
       const result = await this.models.Payment.sum('amount', {
-        where: { bill_id: billId } // Ensure your Payment model has a bill_id foreign key
+        where: { bill_id: billId }
       });
       return result || 0;
     } catch (error) {

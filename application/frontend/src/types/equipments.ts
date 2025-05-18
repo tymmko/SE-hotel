@@ -1,3 +1,6 @@
+/**
+ * Initial default values for the equipment store.
+ */
 export const EquipmentInitialState: EquipmentsStoreType = {
 	equipments: [],
 	roomEquipments: [],
@@ -11,6 +14,9 @@ export const EquipmentInitialState: EquipmentsStoreType = {
 	loading: false
 };
 
+/**
+ * Represents the shape of the equipment-related slice of the Redux store.
+ */
 export type EquipmentsStoreType = {
 	equipments : Equipment[],
 	roomEquipments: Equipment[],
@@ -19,6 +25,9 @@ export type EquipmentsStoreType = {
 	loading: boolean,
 }
 
+/**
+ * Represents a single equipment item.
+ */
 export type Equipment = {
 	id: number,
 	name: string,

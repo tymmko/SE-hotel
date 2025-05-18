@@ -1,3 +1,6 @@
+/**
+ * Represents a single bill entity.
+ */
 export const EmptyBill: Bill = {
 	id: '0',
 	total_amount: 0,
@@ -5,6 +8,9 @@ export const EmptyBill: Bill = {
 	stay_id: '0',
 };
 
+/**
+ * Represents the shape of the Redux store slice for bills.
+ */
 export const BillInitialState: BillsStoreType = {
 	bills: [],
 	bill: EmptyBill,
@@ -12,6 +18,9 @@ export const BillInitialState: BillsStoreType = {
 	loading: false
 };
 
+/**
+ * A placeholder empty bill used for initialization.
+ */
 export type BillsStoreType = {
 	bills : Bill[],
 	bill: Bill,
@@ -19,6 +28,9 @@ export type BillsStoreType = {
 	loading: boolean,
 };
 
+/**
+ * Initial state of the bills slice in the Redux store.
+ */
 export type Bill = {
     id: string,
 	total_amount: number,

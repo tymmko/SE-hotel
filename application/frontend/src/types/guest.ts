@@ -1,3 +1,7 @@
+
+/**
+ * Initial state for the guest reducer.
+ */
 export const GuestInitialState: GuestStoreType = {
 	guests: [],
 	guest: {
@@ -11,6 +15,9 @@ export const GuestInitialState: GuestStoreType = {
 	loading: false
 };
 
+/**
+ * Shape of the Redux state for managing guest data.
+ */
 export type GuestStoreType = {
 	guests: Guest[],
 	guest: Guest,
@@ -18,6 +25,9 @@ export type GuestStoreType = {
 	error?: any,
 }
 
+/**
+ * Represents a guest in the hotel system.
+ */
 export type Guest = {
 	id: number
 	first_name: string
@@ -26,6 +36,9 @@ export type Guest = {
 	phone_number: string
 }
 
+/**
+ * A reusable empty guest object.
+ */
 export const emptyGuest = {
 	id: 0,
 	first_name: '',
