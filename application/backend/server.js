@@ -6,7 +6,7 @@
 
 		async function startServer() {
 			try {
-				// await setupDatabase();
+				//await setupDatabase();
 				app.listen(PORT, () => {
 					console.log(`Server running on port ${PORT}`);
 				});

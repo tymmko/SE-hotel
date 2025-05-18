@@ -11,7 +11,6 @@ const models = require('../models/model');
 const RoomRepository = require('../data/repositories/roomRepository');
 const BillRepository = require('../data/repositories/billRepository');
 const ReservationRepository = require('../data/repositories/reservationRepository');
-const GuestRepository = require('../data/repositories/guestRepository');
 const EquipmentRepository = require('../data/repositories/equipmentRepository');
 const PriceHistoryRepository = require('../data/repositories/priceHistoryRepository');
 const UserRepository = require('../data/repositories/userRepository')
@@ -20,7 +19,6 @@ const UserRepository = require('../data/repositories/userRepository')
 const roomRepository = new RoomRepository(models);
 const billRepository = new BillRepository(models);
 const reservationRepository = new ReservationRepository(models);
-const guestRepository = new GuestRepository(models);
 const equipmentRepository = new EquipmentRepository(models);
 const priceHistoryRepository = new PriceHistoryRepository(models);
 const userRepository = new UserRepository(models);
@@ -37,8 +35,8 @@ const UserService = require('../services/userService');
 // Create service instances
 const roomService = new RoomService(roomRepository);
 const billService = new BillService(billRepository);
-const reservationService = new ReservationService(reservationRepository, roomRepository);
-const guestService = new GuestService(guestRepository);
+const reservationService = new ReservationService(reservationRepository, roomRepository, userRepository);
+const guestService = new GuestService(userRepository);
 const equipmentService = new EquipmentService(equipmentRepository, roomRepository);
 const priceHistoryService = new PriceHistoryService(priceHistoryRepository, roomRepository);
 const userService = new UserService(userRepository);
@@ -126,7 +124,7 @@ router.route('/reservations/:id/status')
 // Guest routes
 router.route('/guests')
 	.get(guestController.getAllGuests.bind(guestController))
-	.post(guestController.createGuest.bind(guestController));
+	.post( userController.register.bind(userController));
 
 router.route('/guests/:id')
 	.get(guestController.getGuest.bind(guestController))

@@ -2,108 +2,107 @@
 const { Op } = require('sequelize');
 const BaseRepository = require('./common/baseRepository');
 
-/**
- * Repository for Bill-related data operations
- * Extends BaseRepository with bill-specific data access methods
- */
 class BillRepository extends BaseRepository {
-  /**
-   * @param {Object} models - Sequelize models
-   */
   constructor(models) {
     super(models.Bill);
-    this.models = models; // Store all models for relationships
+    this.models = models;
   }
 
-  /**
-   * Find bills with basic details
-   * @param {Object} options - Additional query options
-   * @returns {Promise<Array>} List of bills with related data
-   */
   async findBillsWithDetails(options = {}) {
     try {
-      // Start with a simpler query without complex includes
       return await this.model.findAll({
+        include: [ // It's good practice to specify includes if you need related data
+          {
+            model: this.models.Stay,
+            include: [
+              {
+                model: this.models.Reservation,
+                include: [
+                  {
+                    model: this.models.User, // For user details
+                    attributes: ['id', 'first_name', 'last_name', 'email']
+                  },
+                  {
+                    model: this.models.Room, // For room details
+                    attributes: ['id', 'type']
+                  }
+                ]
+              }
+            ]
+          }
+        ],
         ...options,
-        raw: true // Get plain JSON objects instead of Sequelize instances
+        raw: false // Set to false if using includes to get nested objects
       });
     } catch (error) {
       console.error('Error in findBillsWithDetails:', error);
-      throw error; // Rethrow to let the service handle it
+      throw error;
     }
   }
 
-  /**
-   * Find a single bill with details
-   * @param {number} billId - Bill ID
-   * @returns {Promise<Object>} Bill with related data
-   */
   async findBillWithDetails(billId) {
     try {
       return await this.model.findByPk(billId, {
-        raw: true // Get plain JSON object instead of Sequelize instance
+        include: [
+          {
+            model: this.models.Stay,
+            include: [
+              {
+                model: this.models.Reservation,
+                include: [
+                  {
+                    model: this.models.User,
+                    attributes: ['id', 'first_name', 'last_name', 'email']
+                  },
+                   {
+                    model: this.models.Room,
+                    attributes: ['id', 'type']
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        raw: false
       });
     } catch (error) {
       console.error('Error in findBillWithDetails:', error);
-      throw error; // Rethrow to let the service handle it
+      throw error;
     }
   }
 
-  /**
-   * Find bills by status
-   * @param {string} status - Bill status
-   * @returns {Promise<Array>} List of bills with specified status
-   */
   async findBillsByStatus(status) {
     try {
-      return await this.model.findAll({
-        where: { status },
-        raw: true
-      });
+      return await this.findBillsWithDetails({ where: { status } });
     } catch (error) {
       console.error('Error in findBillsByStatus:', error);
       throw error;
     }
   }
 
-  /**
-   * Find bills for a specific stay
-   * @param {number} stayId - Stay ID
-   * @returns {Promise<Array>} List of bills for the stay
-   */
   async findBillsByStay(stayId) {
     try {
-      return await this.model.findAll({
-        where: { stay_id: stayId },
-        raw: true
-      });
+      return await this.findBillsWithDetails({ where: { '$Stay.stay_id$': stayId } }); // Adjusted for include
     } catch (error) {
       console.error('Error in findBillsByStay:', error);
       throw error;
     }
   }
 
-  /**
-   * Find bills for a specific guest through their reservations and stays
-   * @param {number} guestId - Guest ID
-   * @returns {Promise<Array>} List of bills for the guest
-   */
-  async findBillsByGuest(guestId) {
+  async findBillsByUser(userId) { // Changed from findBillsByGuest and guestId
     try {
-      // Find all reservations for the guest
       const reservations = await this.models.Reservation.findAll({
-        where: { guest_id: guestId },
+        where: { user_id: userId }, // Changed from guest_id
         attributes: ['id'],
         raw: true
       });
       
-      const reservationIds = reservations.map(res => res.reservation_id);
+      const reservationIds = reservations.map(res => res.id); // Assuming reservation id is 'id'
       
       if (reservationIds.length === 0) {
         return [];
       }
       
-      // Find all stays associated with those reservations
       const stays = await this.models.Stay.findAll({
         where: {
           reservation_id: {
@@ -120,27 +119,13 @@ class BillRepository extends BaseRepository {
         return [];
       }
       
-      // Find all bills for those stays
-      return await this.model.findAll({
-        where: {
-          stay_id: {
-            [Op.in]: stayIds
-          }
-        },
-        raw: true
-      });
+      return await this.findBillsWithDetails({ where: { stay_id: { [Op.in]: stayIds } }});
     } catch (error) {
-      console.error('Error in findBillsByGuest:', error);
+      console.error('Error in findBillsByUser:', error);
       throw error;
     }
   }
 
-  /**
-   * Update bill status
-   * @param {number} billId - Bill ID
-   * @param {string} status - New status
-   * @returns {Promise<Array>} [affectedCount, affectedRows]
-   */
   async updateBillStatus(billId, status) {
     try {
       return await this.model.update(
@@ -155,16 +140,13 @@ class BillRepository extends BaseRepository {
     }
   }
 
-  /**
-   * Create a payment for a bill
-   * @param {number} billId - Bill ID
-   * @param {Object} paymentData - Payment data
-   * @returns {Promise<Object>} Created payment
-   */
   async createPayment(billId, paymentData) {
     try {
+      // Assuming Payment model is associated with Bill and has bill_id
+      // Or if Payment model's primary key is the billId as in your previous code structure.
+      // This might need adjustment based on your Payment model definition.
       return await this.models.Payment.create({
-        id: billId,
+        bill_id: billId, // Ensure your Payment model has a bill_id foreign key
         ...paymentData
       });
     } catch (error) {
@@ -173,17 +155,11 @@ class BillRepository extends BaseRepository {
     }
   }
 
-  /**
-   * Get total payments for a bill
-   * @param {number} billId - Bill ID
-   * @returns {Promise<number>} Total amount paid
-   */
   async getTotalPaymentsForBill(billId) {
     try {
       const result = await this.models.Payment.sum('amount', {
-        where: { id: billId }
+        where: { bill_id: billId } // Ensure your Payment model has a bill_id foreign key
       });
-      
       return result || 0;
     } catch (error) {
       console.error('Error in getTotalPaymentsForBill:', error);

@@ -10,14 +10,14 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     },
   },
   define: {
-    timestamps: true,
+    timestamps: true, // Ensure this is true if you want sequelize to manage createdAt/updatedAt
     underscored: true,
   },
 });
 
 // Import model definitions
 const defineRoom = require('./Room');
-const defineGuest = require('./Guest');
+// const defineGuest = require('./Guest'); // REMOVED
 const defineReservation = require('./Reservation');
 const defineStay = require('./Stay');
 const defineBill = require('./Bill');
@@ -28,19 +28,19 @@ const defineUser = require('./User');
 
 // Initialize models
 const Room = defineRoom(sequelize, DataTypes);
-const Guest = defineGuest(sequelize, DataTypes);
+// const Guest = defineGuest(sequelize, DataTypes); // REMOVED
 const Reservation = defineReservation(sequelize, DataTypes);
 const Stay = defineStay(sequelize, DataTypes);
 const Bill = defineBill(sequelize, DataTypes);
 const ServiceOrder = defineServiceOrder(sequelize, DataTypes);
 const PriceHistory = definePriceHistory(sequelize, DataTypes);
 const Equipment = defineEquipment(sequelize, DataTypes);
-const User = defineUser(sequelize, DataTypes);
+const User = defineUser(sequelize, DataTypes); // User is already defined
 
 // Create model instances
 const models = {
   Room,
-  Guest,
+  // Guest, // REMOVED
   Reservation,
   Stay,
   Bill,
@@ -60,7 +60,7 @@ Object.keys(models).forEach(modelName => {
 module.exports = {
   sequelize,
   Room,
-  Guest,
+  // Guest, // REMOVED
   Reservation,
   Stay,
   Bill,
@@ -68,4 +68,6 @@ module.exports = {
   PriceHistory,
   Equipment,
   User,
+  // Also export models object if it's used elsewhere for convenience
+  models, // ADDED for consistency if other parts of the app rely on the 'models' object
 };

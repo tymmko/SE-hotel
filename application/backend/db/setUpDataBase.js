@@ -2,48 +2,90 @@ const pool = require('./pool');
 const fs = require('fs').promises;
 const path = require('path');
 
-// Function to read and execute SQL file statements individually
 async function executeSqlFile(sqlFilePath) {
   const sqlContent = await fs.readFile(sqlFilePath, 'utf8');
-  const statements = sqlContent.split(';')
-    .map(s => s.trim())
-    .filter(s => s.length > 0);
+
+  // Split by semicolon first
+  const rawStatements = sqlContent.split(';');
+  const statements = [];
+
+  for (const s of rawStatements) {
+    // For each segment, remove comments and then trim.
+    // Process line by line to remove '--' comments effectively.
+    const lines = s.split(/\r?\n/);
+    const processedLines = lines.map(line => {
+      // Remove /* ... */ comments and // comments first from the line
+      let cleanLine = line.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+      // Then remove -- comments from the beginning of what's left of the line
+      cleanLine = cleanLine.replace(/^[\s]*--.*/g, ''); // Only if -- is at the start (after potential whitespace)
+      return cleanLine;
+    });
+
+    // Join the cleaned lines back and then trim the whole statement
+    let statement = processedLines.join('\n').trim();
+
+    if (statement.length > 0) {
+      statements.push(statement);
+    }
+  }
+
+  console.log(`--- Parsed Statements from ${path.basename(sqlFilePath)} (Revised Logic) ---`);
+  statements.forEach((stmt, index) => console.log(`[Parsed ${index}]: ${stmt.substring(0, 150).replace(/\r?\n|\r/g, " ").trim()}...`));
+  console.log("------------------------------------");
 
   for (const statement of statements) {
+    // Check if the statement is not empty again after potential full comment blocks
+    if (statement.trim().length === 0) {
+        continue;
+    }
+    console.log(`[ATTEMPTING EXECUTION]: ${statement.substring(0, 200).replace(/\r?\n|\r/g, " ").trim()}...`);
     try {
       await pool.query(statement);
-      console.log(`✅ Executed: ${statement.substring(0, 50)}...`);
+      console.log(`✅ Executed: ${statement.substring(0, 80).replace(/\r?\n|\r/g, " ").trim()}...`);
     } catch (error) {
-      console.error(`❌ Error executing statement: ${statement}`, error);
+      console.error(`❌ Error executing statement for: ${statement.substring(0, 80).replace(/\r?\n|\r/g, " ").trim()}...`, error.message);
+      console.error(`[FULL FAILING STATEMENT]: ${statement}`);
       throw error;
     }
   }
 }
 
-// Function to reset sequences for all SERIAL columns
+// Function to reset sequences for all SERIAL/BIGSERIAL columns
 async function resetSequences() {
   const tables = [
-    { table: 'Room', column: 'id' },
-    { table: 'Guest', column: 'id' },
-    { table: 'Reservation', column: 'id' },
-    { table: 'Stay', column: 'stay_id' },
-    { table: 'Bill', column: 'id' },
-    { table: 'Equipment', column: 'id' },
-    { table: 'PriceHistory', column: 'price_history_id' },
-    { table: 'ServiceOrder', column: 'service_order_id' },
-    { table: 'Users', column: 'id' }
+    { table: 'room', column: 'id' },
+    // { table: 'Guest', column: 'id' }, // Removed
+    { table: 'users', column: 'id' }, // Added Users here explicitly as it's BIGSERIAL
+    { table: 'reservation', column: 'id' },
+    { table: 'stay', column: 'stay_id' },
+    { table: 'bill', column: 'id' },
+    { table: 'equipment', column: 'id' },
+    { table: 'pricehistory', column: 'price_history_id' },
+    { table: 'serviceorder', column: 'service_order_id' }
+    // Users table's id sequence will be reset if it's named users_id_seq (PostgreSQL default for SERIAL/BIGSERIAL)
   ];
 
   for (const { table, column } of tables) {
+    // PostgreSQL default sequence name for SERIAL/BIGSERIAL is tablename_columnname_seq
     const sequenceName = `${table.toLowerCase()}_${column}_seq`;
     try {
-      await pool.query(`
-        SELECT setval($1, (SELECT COALESCE(MAX(${column}), 0) FROM ${table}), true)
-      `, [sequenceName]);
-      console.log(`✅ Reset sequence for ${table}.${column}`);
+      // Ensure the column is actually a serial type by checking if the sequence exists
+      const checkSeqExists = await pool.query(
+        "SELECT 1 FROM pg_class WHERE relkind = 'S' AND relname = $1",
+        [sequenceName]
+      );
+
+      if (checkSeqExists.rowCount > 0) {
+        await pool.query(`
+          SELECT setval($1, COALESCE((SELECT MAX(${column}) FROM "${table}"), 0) + 1, false)
+        `, [sequenceName]); // Set next value to MAX+1, last param false means next nextval() will be this value
+        console.log(`✅ Reset sequence ${sequenceName} for "${table}"."${column}"`);
+      } else {
+        console.log(`ℹ️ Sequence ${sequenceName} not found for "${table}"."${column}", skipping reset.`);
+      }
     } catch (error) {
-      console.error(`❌ Error resetting sequence for ${table}.${column}:`, error);
-      throw error;
+      // Log error but don't necessarily throw, as some tables might not have sequences if defined differently
+      console.warn(`⚠️ Error resetting sequence for "${table}"."${column}" (Sequence: ${sequenceName}):`, error.message);
     }
   }
 }
@@ -55,21 +97,34 @@ async function setupDatabase() {
 
     // Execute schema.sql
     const schemaPath = path.join(__dirname, 'schema.sql');
+    console.log('📄 Executing schema.sql...');
     await executeSqlFile(schemaPath);
     console.log('✅ Database schema created successfully!');
 
     // Execute seed.sql
     const seedPath = path.join(__dirname, 'seed.sql');
+    console.log('🌱 Executing seed.sql...');
     await executeSqlFile(seedPath);
     console.log('🌱 Database seeded successfully!');
 
-    // Reset sequences
+    // Reset sequences after seeding
+    console.log('🔄 Resetting sequences...');
     await resetSequences();
     console.log('🔄 All sequences reset successfully!');
+
+    console.log('🎉 Database setup complete!');
   } catch (error) {
-    console.error('❌ Error setting up database:', error);
-    throw error;
+    console.error('❌ Error setting up database:', error.message);
+    // process.exit(1); // Exit if setup fails
+  } finally {
+    await pool.end(); // Close the pool connection
+    console.log('🚪 Database pool closed.');
   }
 }
 
-module.exports = { setupDatabase };
+// If run directly: node setUpDataBase.js
+if (require.main === module) {
+  setupDatabase();
+}
+
+module.exports = { setupDatabase, executeSqlFile, resetSequences }; // Export for potential programmatic use
