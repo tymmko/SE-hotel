@@ -14,7 +14,6 @@ import { ReservationStatus } from '../../types/reservation';
 const Reservations = () => {
 	const dispatch = useDispatch<AppDispatch>();
 
-	const [status, setStatus] = useState<string>('checked-in');
 	const [create, setCreate] = useState<boolean>(false);
 	
 	const reservations = useSelector((state: RootState) => state.ReservationReducer.reservations);

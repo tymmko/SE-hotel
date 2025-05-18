@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as styles from './styles.m.less';
 import { Room } from '../../types/rooms';
 import { AddButton, colors, Input, StatusDropdown } from '../../components';

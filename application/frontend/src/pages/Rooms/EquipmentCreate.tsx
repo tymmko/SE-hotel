@@ -4,8 +4,6 @@ import { Icon, Input } from '../../components';
 import * as API from '../../thunks/equipments.thunks';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
-import { Equipment } from '../../types/equipments';
-
 type EquipmentCreateProps = {
 	room_id: number,
 	selected: (value: boolean) => void,

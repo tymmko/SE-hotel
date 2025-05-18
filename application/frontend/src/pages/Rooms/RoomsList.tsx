@@ -1,6 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import { Room } from '../../types/rooms';
 import { AddButton, Card, colors, Icon, StatusTag } from '../../components';
 import * as styles from './styles.m.less';
@@ -27,8 +25,6 @@ type RoomsListProps = {
 };
 
 const RoomsList = ({ rooms, roomAdd, selectRoom, createRoom }: RoomsListProps) => {
-	const { role } = useSelector((state: RootState) => state.authReducer);
-
 	const getClass = (type: Room['type']) => {
 		return styles[`room-${type}`];
 	};

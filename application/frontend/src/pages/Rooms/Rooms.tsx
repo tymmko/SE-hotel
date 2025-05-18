@@ -14,7 +14,6 @@ function Rooms() {
 	const [selected, setSelected] = useState<Room>();
 	const [roomCreate, setRoomCreate] = useState<boolean>(false);
 	const rooms = useSelector((state: RootState) => state.RoomsReducer.rooms);
-	const role = useSelector((state: RootState) => state.authReducer.role);
 
 	useEffect(() => {
 		dispatch(fetchRooms());

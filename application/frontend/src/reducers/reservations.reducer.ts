@@ -1,4 +1,4 @@
-import { ReservationInitialState, ReservationStatus, ReservationStoreType } from "../types/reservation";
+import { ReservationInitialState, ReservationStoreType } from '../types/reservation';
 import * as action from '../types/constants';
 
 /**
