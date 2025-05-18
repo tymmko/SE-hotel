@@ -1,3 +1,5 @@
+const BaseRepository = require('./common/baseRepository');
+
 /**
  * Repository for managing price history-related data operations
  * Extends BaseRepository to provide price history-specific data access methods
