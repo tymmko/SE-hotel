@@ -1,4 +1,5 @@
-const BaseRepository = require('./baseRepository');
+const BaseRepository = require('./common/baseRepository');
+const { Op } = require('sequelize');
 
 /**
  * Repository for managing room-related data operations

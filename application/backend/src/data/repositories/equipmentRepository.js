@@ -1,3 +1,6 @@
+const BaseRepository = require('./common/baseRepository');
+const { Op } = require('sequelize');
+
 /**
  * Repository for managing equipment-related data operations
  * Extends BaseRepository to provide equipment-specific data access methods
