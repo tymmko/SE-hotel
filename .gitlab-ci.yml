@@ -18,7 +18,7 @@ install_backend:
   stage: install
   script:
     - cd application/backend
-    - npm install --legacy-peer-deps
+    - npm install --legacy-peer-deps --include=dev
   artifacts:
     paths:
       - application/backend/node_modules/
@@ -48,6 +48,26 @@ test_frontend:
       - application/frontend/test-results/
     reports:
       junit: application/frontend/test-results/junit.xml
+  allow_failure: false
+
+# Backend unit tests
+test_backend_unit:
+  stage: test
+  dependencies:
+    - install_backend
+  script:
+    - cd application/backend
+    - npm test # This will now execute "npx jest --coverage"
+  artifacts:
+    when: always
+    paths:
+      - application/backend/coverage/
+      - application/backend/test-results/
+    reports:
+      junit: application/backend/test-results/junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: application/backend/coverage/cobertura-coverage.xml
   allow_failure: false
 
 # Generate docs for frontend using TypeDoc

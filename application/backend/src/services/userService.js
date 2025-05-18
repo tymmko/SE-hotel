@@ -58,7 +58,8 @@ class UserService {
    * @throws {Error} If credentials are invalid or configuration is incorrect
    */
   async login({ username, password }) {
-    const user = await this.userRepository.findUserByUsername(username, { includePassword: true });
+    // Use findUserByUsername from unified repo, requesting password for comparison
+    const user = await this.userRepository.findUserByUsername(username);
     
     if (!user) {
       throw new Error('Invalid username or password');

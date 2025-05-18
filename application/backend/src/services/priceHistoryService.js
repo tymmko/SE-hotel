@@ -27,8 +27,9 @@ class PriceHistoryService extends BaseService {
       throw new Error('Room not found');
     }
 
-    const newStart = startDate || new Date();
-    const newEnd = endDate || new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+		// Normalize dates
+		const newStart = startDate || new Date();
+		const newEnd = endDate || new Date(new Date(newStart).setFullYear(newStart.getFullYear() + 1));
 
     const existingPrices = await this.repository.findPriceHistoryByRoom(roomId);
     const hasOverlap = existingPrices.some(entry => {

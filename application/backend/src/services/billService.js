@@ -200,11 +200,19 @@ class BillService extends BaseService {
    * @throws {Error} If bill is not found, payment data is invalid, or amount is invalid
    */
   async processPayment(billId, paymentData) {
-    if (!paymentData.amount || !paymentData.payment_method) {
+    // Check for presence of method AND if amount is strictly undefined or null
+    if (paymentData.amount === undefined || paymentData.amount === null || !paymentData.payment_method) {
       throw new Error('Payment amount and method are required');
     }
-    
-    const bill = await this.getBillWithDetails(billId);
+    // Now, if amount is 0, the first check above passes (0 is not undefined/null).
+    // This check will now be correctly hit for amount: 0
+    if (paymentData.amount <= 0) {
+      throw new Error('Payment amount must be greater than zero');
+    }
+
+    const bill = await this.getBillWithDetails(billId); // This should only be called if above checks pass
+    // ... rest of the logic
+
     if (paymentData.amount <= 0) {
       throw new Error('Payment amount must be greater than zero');
     }
