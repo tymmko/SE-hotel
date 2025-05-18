@@ -1,3 +1,5 @@
+const BaseService = require('./common/baseService');
+
 /**
  * Service for managing room-related business logic
  * Extends BaseService to provide room-specific operations

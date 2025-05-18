@@ -1,3 +1,7 @@
+const BaseService = require('./common/baseService');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 /**
  * Service for managing user-related business logic
  * Handles user registration and authentication
