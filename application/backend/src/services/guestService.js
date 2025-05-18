@@ -1,3 +1,5 @@
+const BaseService = require('./common/baseService');
+
 /**
  * Service for managing guest-related business logic
  * Extends BaseService to provide guest-specific operations using UserRepository

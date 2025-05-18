@@ -1,3 +1,6 @@
+const BaseService = require('./common/baseService');
+const { Op } = require('sequelize');
+
 /**
  * Service for managing reservation-related business logic
  * Extends BaseService to provide reservation-specific operations

@@ -1,3 +1,5 @@
+const BaseService = require('./common/baseService');
+
 /**
  * Service for managing price history-related business logic
  * Extends BaseService to provide price history-specific operations

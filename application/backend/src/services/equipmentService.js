@@ -1,3 +1,5 @@
+const BaseService = require('./common/baseService');
+
 /**
  * Service for managing equipment-related business logic
  * Extends BaseService to provide equipment-specific operations
