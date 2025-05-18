@@ -25,7 +25,10 @@
 	"devDependencies": {
 		"jest": "^29.7.0",
 		"jest-junit": "^16.0.0",
-		"nodemon": "^3.1.10"
+		"nodemon": "^3.1.10",
+		"typedoc": "^0.28.4",
+        "typedoc-plugin-markdown": "^4.6.3"
+		
 	},
 	"jest": {
 		"reporters": [
