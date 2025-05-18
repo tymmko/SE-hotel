@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src/controllers/**/*",
+    "src/services/**/*",
+    "src/data/repositories/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "wiki"
+  ]
+}
