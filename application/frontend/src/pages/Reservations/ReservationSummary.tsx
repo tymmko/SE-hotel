@@ -69,7 +69,7 @@ export const Summary: React.FC<SummaryProps> = ({
 						onChange={onStatusChange}
 					/>
 				</div>
-				{errorStatus != null &&
+				{errorStatus !== null &&
 					<div className='color-pink w-250'>ERROR: {errorStatus.message}</div>
 				}
 			</div>

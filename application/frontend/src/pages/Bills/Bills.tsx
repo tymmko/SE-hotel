@@ -12,8 +12,6 @@ import classNames from 'classnames';
 
 function Bills () {
 	const dispatch = useDispatch<AppDispatch>();
-
-	const [status, setStatus] = useState<string>('checked-in');
 	const [create, setCreate] = useState<boolean>(false);
 	
 	const bills = useSelector((state: RootState) => state.BillsReducer.bills);

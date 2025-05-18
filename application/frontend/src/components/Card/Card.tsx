@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import colors from '../../assets/colors.json';
 
 import * as styles from './styles.m.less';

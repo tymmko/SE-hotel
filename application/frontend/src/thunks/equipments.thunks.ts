@@ -97,7 +97,4 @@ export const updateEquipment = (id: number, updates: Partial<Equipment>) => asyn
 		dispatch(actions.equipmentUpdateError(err));
 	}
 };
-export function updateCreate(id: number, arg1: { name: string; price: number; room_id: number; }): any {
-	throw new Error('Function not implemented.');
-}
 

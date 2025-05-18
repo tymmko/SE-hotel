@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import roomImg from '../../assets/pictures/room.png'
 import * as styles from './styles.m.less';
 import { colors, Icon, StatusTag } from '../../components';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { Rooms, Login, Bills, Guests, Reservations, SignUp, EditPriceHistory, CreateRoom } from '../pages';
+import { Rooms, Login, Bills, Guests, Reservations, SignUp, CreateRoom } from '../pages';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 /**

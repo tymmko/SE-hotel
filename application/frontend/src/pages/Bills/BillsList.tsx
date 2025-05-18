@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddButton, colors, StatusTag, Table } from '../../components';
+import { colors, StatusTag, Table } from '../../components';
 import { Bill } from '../../types/bills';
 import * as styles from './styles.m.less';
 import classNames from 'classnames';

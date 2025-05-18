@@ -47,9 +47,6 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({
 			<div className={classNames(styles['price-container'], className)}>
 				{edit ?
 					<EditPriceHistory
-						onSaved={() => {
-							window.location.reload();
-						}}
 						onCancel={() => {
 							setEdit(false);
 						}}
