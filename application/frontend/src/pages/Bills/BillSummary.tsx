@@ -1,9 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { colors, StatusDropdown, StatusOption} from '../../components';
-import { Icon } from '../../components'; 
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
-import { fetchGuestById } from '../../thunks/guests.thunks';
 import { Bill } from '../../types/bills';
 
 type SummaryProps = {
@@ -20,11 +16,6 @@ const BillSummary: React.FC<SummaryProps> = ({
 	bill,
 	onStatusChange,
 }) => {
-	const dispatch = useDispatch<AppDispatch>();
-
-	const errorStatus = useSelector((state: RootState) => state.BillsReducer.error);
-	
-
 	return (
 		<div className="bg-amber-50 p-6 rounded-xl w-fit text-sm font-medium">
 			<h1>Summary</h1>

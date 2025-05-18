@@ -1,10 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import unionIcon from '../../assets/icons/union.svg'; // adjust path if needed
 import colors from '../../assets/colors.json';
+import { Icon } from '../Icon';
 // @ts-ignore
 import * as styles from './styles.m.less';
-import { Icon } from '../Icon';
 
 type AddButtonProps = {
 	type?: 'add' | 'check';

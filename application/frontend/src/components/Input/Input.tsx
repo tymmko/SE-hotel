@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
+import classNames from 'classnames';
 // @ts-ignore
 import * as styles from './styles.m.less';
-import classNames from 'classnames';
 
 type InputProps = {
 	value: string | number,

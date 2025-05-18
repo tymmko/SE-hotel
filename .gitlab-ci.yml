@@ -10,6 +10,12 @@ stages:
 default:
   image: node:20
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - application/frontend/node_modules/
+    - application/backend/node_modules/
+
 variables:
   NODE_ENV: production
 
@@ -28,7 +34,7 @@ install_frontend:
   stage: install
   script:
     - cd application/frontend
-    - npm install --legacy-peer-deps
+    - npm install --legacy-peer-deps --include=dev
   artifacts:
     paths:
       - application/frontend/node_modules/
@@ -38,9 +44,10 @@ install_frontend:
 # Frontend tests
 test_frontend:
   stage: test
+  dependencies:
+    - install_frontend
   script:
     - cd application/frontend
-    - npm install --legacy-peer-deps --include=dev
     - npm test
   artifacts:
     when: always
@@ -50,14 +57,23 @@ test_frontend:
       junit: application/frontend/test-results/junit.xml
   allow_failure: false
 
+# Frontend lint
+lint_frontend:
+  stage: test
+  dependencies:
+    - install_frontend
+  script:
+    - cd application/frontend
+    - npm run lint
+
 # Backend unit tests
-test_backend_unit:
+test_backend:
   stage: test
   dependencies:
     - install_backend
   script:
     - cd application/backend
-    - npm test # This will now execute "npx jest --coverage"
+    - npm test
   artifacts:
     when: always
     paths:
@@ -81,7 +97,6 @@ docs_frontend:
     - if: '$CI_COMMIT_BRANCH == "dev"'
   script:
     - cd application/frontend
-    - npm install --legacy-peer-deps --include=dev
     - npx typedoc --out temp-docs
     - git config --global user.email "$GITLAB_USER_EMAIL"
     - git config --global user.name "$GITLAB_USER_NAME"
@@ -108,7 +123,6 @@ docs_backend:
     - if: '$CI_COMMIT_BRANCH == "dev"'
   script:
     - cd application/backend
-    - npm install --legacy-peer-deps --include=dev
     - npx typedoc --out temp-docs
     - git config --global user.email "$GITLAB_USER_EMAIL"
     - git config --global user.name "$GITLAB_USER_NAME"
@@ -127,9 +141,10 @@ docs_backend:
 # Build frontend
 build_frontend:
   stage: build
+  dependencies:
+    - install_frontend
   script:
     - cd application/frontend
-    - npm install --legacy-peer-deps --include=dev
     - npm run build
   variables:
     API_BASE_URL: https://backend.railway.internal
@@ -140,9 +155,11 @@ build_frontend:
 # Build backend
 build_backend:
   stage: build
+  dependencies:
+    - install_backend
   script:
     - cd application/backend
-    - npm install --legacy-peer-deps --include=dev
+    - echo "Backend ready"
   artifacts:
     paths:
       - application/backend/node_modules/
