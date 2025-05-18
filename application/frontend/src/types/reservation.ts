@@ -1,3 +1,6 @@
+/**
+ * Initial state for the reservation reducer.
+ */
 export const ReservationInitialState: ReservationStoreType = {
 	reservations: [],
 	reservation: {
@@ -13,6 +16,9 @@ export const ReservationInitialState: ReservationStoreType = {
 	loading: false
 };
 
+/**
+ * Redux state shape for managing reservations.
+ */
 export type ReservationStoreType = {
 	reservations: Reservation[],
 	reservation: Reservation,
@@ -21,6 +27,9 @@ export type ReservationStoreType = {
 	errorStatus?: any,
 }
 
+/**
+ * Represents a reservation record in the system.
+ */
 export type Reservation = {
 	id: number,
 	guest_id: number,
@@ -30,6 +39,9 @@ export type Reservation = {
 	status: ReservationStatus,
 }
 
+/**
+ * Represents the possible statuses of a reservation.
+ */
 export type ReservationStatus = 'confirmed' |
 								'checked-in' |
 								'checked-out' |

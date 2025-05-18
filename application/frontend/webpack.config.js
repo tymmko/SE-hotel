@@ -114,7 +114,11 @@ const config = {
 			filename: 'assets/fonts.css',
 		}),
 		new webpack.DefinePlugin({
-			'process.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL)
+			'process.env.API_BASE_URL': JSON.stringify(
+			  process.env.DEVELOP === 'true'
+				? 'http://localhost:3000' // 👈 Dev server
+				: process.env.API_BASE_URL || 'https://backend.railway.internal' // 👈 Fallback
+			)
 		})
 	],
   resolve: {
