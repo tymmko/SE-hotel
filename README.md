@@ -23,7 +23,7 @@ Our GitLab pipeline is organized into the following stages:
 |-----------|-------------|
 | 🧱 `install` | Installs backend and frontend dependencies |
 | 🧪 `test`    | Runs frontend tests using Jest |
-| 📚 `docs`    | Generates TypeScript documentation using [TypeDoc](https://typedoc.org) and publishes it via GitLab Pages |
+| 📚 `docs`    | Generates TypeScript documentation using [TypeDoc](https://typedoc.org) and publishes it via GitLab Wiki |
 | 🔨 `build`   | Builds the production frontend and prepares backend |
 | 📦 `package` | Packages the backend and frontend into a downloadable zip |
 | 🚀 `release` | Publishes a GitLab release when a Git tag (e.g., `v1.0.0`) is pushed |
@@ -35,9 +35,7 @@ Our GitLab pipeline is organized into the following stages:
 
 The frontend logic documentation is automatically generated and published here:
 
-👉 [**GitLab Pages Documentation**](https://gitlab.fit.cvut.cz/pages/diazgand/bie-swi-hotel)
-
-(Replace with actual URL after first GitLab Pages deployment.)
+👉 [**GitLab Wiki**](https://gitlab.fit.cvut.cz/diazgand/bie-swi-hotel/-/wikis/home)
 
 ---
 
