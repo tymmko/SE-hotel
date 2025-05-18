@@ -1,0 +1,11 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm run build"
+buildEnvVars = { NODE_ENV = "production" }
+
+[install]
+installCommand = "npm install --legacy-peer-deps"
+
+[deploy]
+startCommand = "npm run start"
+

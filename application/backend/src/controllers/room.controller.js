@@ -1,6 +1,6 @@
 /**
- * Controller for Room-related endpoints
- * Handles HTTP requests/responses and delegates business logic to the service layer
+ * Controller for managing room-related endpoints
+ * Handles HTTP requests and delegates business logic to the RoomService
  */
 class RoomController {
   /**
@@ -11,10 +11,13 @@ class RoomController {
   }
 
   /**
-   * Get all rooms
+   * Retrieve all rooms
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the list of rooms
+   * @example
+   * GET /rooms
    */
   async getAllRooms(req, res, next) {
     try {
@@ -30,10 +33,13 @@ class RoomController {
   }
 
   /**
-   * Get single room by ID
+   * Retrieve a single room by ID
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the room details
+   * @example
+   * GET /rooms/123
    */
   async getRoom(req, res, next) {
     try {
@@ -54,10 +60,13 @@ class RoomController {
   }
 
   /**
-   * Get current reservation and guest for a room
+   * Retrieve the current reservation and guest for a room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with occupancy information
+   * @example
+   * GET /rooms/123/occupancy
    */
   async getCurrentOccupancy(req, res, next) {
     try {
@@ -78,10 +87,13 @@ class RoomController {
   }
 
   /**
-   * Get price history for a room
+   * Retrieve price history for a room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the price history
+   * @example
+   * GET /rooms/123/price-history
    */
   async getPriceHistoryByRoom(req, res, next) {
     try {
@@ -103,10 +115,13 @@ class RoomController {
   }
 
   /**
-   * Get equipment/amenities for a room
+   * Retrieve equipment for a room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the list of equipment
+   * @example
+   * GET /rooms/123/equipment
    */
   async getEquipmentByRoom(req, res, next) {
     try {
@@ -128,10 +143,18 @@ class RoomController {
   }
 
   /**
-   * Create new room
+   * Create a new room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the created room
+   * @example
+   * POST /rooms
+   * {
+   *   "number": "101",
+   *   "type": "single",
+   *   "price": 100.00
+   * }
    */
   async createRoom(req, res, next) {
     try {
@@ -152,10 +175,17 @@ class RoomController {
   }
 
   /**
-   * Update room
+   * Update an existing room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the updated room
+   * @example
+   * PUT /rooms/123
+   * {
+   *   "price": 120.00,
+   *   "status": "available"
+   * }
    */
   async updateRoom(req, res, next) {
     try {
@@ -182,10 +212,13 @@ class RoomController {
   }
 
   /**
-   * Delete room
+   * Delete a room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response confirming deletion
+   * @example
+   * DELETE /rooms/123
    */
   async deleteRoom(req, res, next) {
     try {
@@ -212,10 +245,13 @@ class RoomController {
   }
 
   /**
-   * Get available rooms for date range
+   * Retrieve available rooms for a date range
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the list of available rooms
+   * @example
+   * GET /rooms/available?checkIn=2025-01-01&checkOut=2025-01-05
    */
   async getAvailableRooms(req, res, next) {
     try {
@@ -248,10 +284,16 @@ class RoomController {
   }
 
   /**
-   * Update room status
+   * Update the status of a room
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
    * @param {Function} next - Express next middleware function
+   * @returns {Promise<void>} Sends a JSON response with the updated room
+   * @example
+   * PATCH /rooms/123/status
+   * {
+   *   "status": "maintenance"
+   * }
    */
   async updateRoomStatus(req, res, next) {
     try {

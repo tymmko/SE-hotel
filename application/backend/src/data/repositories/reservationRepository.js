@@ -1,10 +1,6 @@
-// src/data/repositories/reservationRepository.js
-const { Op } = require('sequelize');
-const BaseRepository = require('./common/baseRepository');
-
 /**
- * Repository for Reservation-related data operations
- * Extends BaseRepository with reservation-specific data access methods
+ * Repository for managing reservation-related data operations
+ * Extends BaseRepository to provide reservation-specific data access methods
  */
 class ReservationRepository extends BaseRepository {
   /**
@@ -12,13 +8,14 @@ class ReservationRepository extends BaseRepository {
    */
   constructor(models) {
     super(models.Reservation);
-    this.models = models; // Store all models for relationships
+    this.models = models;
   }
 
   /**
-   * Find reservations with basic details
-   * @param {Object} options - Additional query options
+   * Find all reservations with associated details
+   * @param {Object} [options={}] - Additional query options
    * @returns {Promise<Array>} List of reservations with related data
+   * @throws {Error} If an error occurs during the query
    */
   async findReservationsWithDetails(options = {}) {
     try {
@@ -34,35 +31,36 @@ class ReservationRepository extends BaseRepository {
           }
         ],
         ...options,
-        raw: false // Need Sequelize instances for includes
+        raw: false
       });
     } catch (error) {
       console.error('Error in findReservationsWithDetails:', error);
-      throw error; // Rethrow to let the service handle it
+      throw error;
     }
   }
 
   /**
-   * Find a single reservation with details
+   * Find a single reservation by ID with associated details
    * @param {number} reservationId - Reservation ID
-   * @returns {Promise<Object>} Reservation with related data
+   * @returns {Promise<Object|null>} Reservation with related data
+   * @throws {Error} If an error occurs during the query
    */
   async findReservationWithDetails(reservationId) {
     try {
       return await this.model.findByPk(reservationId, {
-       
-        raw: false // Need Sequelize instances for includes
+        raw: false
       });
     } catch (error) {
       console.error('Error in findReservationWithDetails:', error);
-      throw error; // Rethrow to let the service handle it
+      throw error;
     }
   }
 
   /**
    * Find reservations by status
    * @param {string} status - Reservation status
-   * @returns {Promise<Array>} List of reservations with specified status
+   * @returns {Promise<Array>} List of reservations with the specified status
+   * @throws {Error} If an error occurs during the query
    */
   async findReservationsByStatus(status) {
     try {
@@ -76,9 +74,10 @@ class ReservationRepository extends BaseRepository {
   }
 
   /**
-   * Find reservations for a specific guest
-   * @param {number} userId - Guest ID
-   * @returns {Promise<Array>} List of reservations for the guest
+   * Find reservations for a specific user
+   * @param {number} userId - User ID
+   * @returns {Promise<Array>} List of reservations for the user
+   * @throws {Error} If an error occurs during the query
    */
   async findReservationsByGuest(userId) {
     try {
@@ -95,6 +94,7 @@ class ReservationRepository extends BaseRepository {
    * Find reservations for a specific room
    * @param {number} roomId - Room ID
    * @returns {Promise<Array>} List of reservations for the room
+   * @throws {Error} If an error occurs during the query
    */
   async findReservationsByRoom(roomId) {
     try {
@@ -108,10 +108,11 @@ class ReservationRepository extends BaseRepository {
   }
 
   /**
-   * Update reservation status
+   * Update the status of a reservation
    * @param {number} reservationId - Reservation ID
    * @param {string} status - New status
    * @returns {Promise<Array>} [affectedCount, affectedRows]
+   * @throws {Error} If an error occurs during the update
    */
   async updateReservationStatus(reservationId, status) {
     try {
@@ -132,28 +133,26 @@ class ReservationRepository extends BaseRepository {
    * @param {number} roomId - Room ID
    * @param {Date} checkIn - Check-in date
    * @param {Date} checkOut - Check-out date
-   * @param {number} excludeReservationId - Reservation ID to exclude (for updates)
-   * @returns {Promise<boolean>} True if room is available
+   * @param {number} [excludeReservationId] - Reservation ID to exclude (for updates)
+   * @returns {Promise<boolean>} True if the room is available
+   * @throws {Error} If an error occurs during the query
    */
   async isRoomAvailable(roomId, checkIn, checkOut, excludeReservationId = null) {
     try {
       const whereClause = {
         id: roomId,
-        status: 'confirmed', // Only check against confirmed reservations
+        status: 'confirmed',
         [Op.or]: [
-          // Check-in during another stay
           {
             check_in_date: {
               [Op.between]: [new Date(checkIn), new Date(checkOut)]
             }
           },
-          // Check-out during another stay
           {
             check_out_date: {
               [Op.between]: [new Date(checkIn), new Date(checkOut)]
             }
           },
-          // Completely encompasses another stay
           {
             [Op.and]: [
               { check_in_date: { [Op.lte]: new Date(checkIn) } },
@@ -163,7 +162,6 @@ class ReservationRepository extends BaseRepository {
         ]
       };
       
-      // Exclude the current reservation for updates
       if (excludeReservationId) {
         whereClause.id = {
           [Op.ne]: excludeReservationId
@@ -185,7 +183,8 @@ class ReservationRepository extends BaseRepository {
    * Create a stay record for a reservation
    * @param {number} reservationId - Reservation ID
    * @param {Date} actualCheckIn - Actual check-in date
-   * @returns {Promise<Object>} Created stay
+   * @returns {Promise<Object>} Created stay record
+   * @throws {Error} If an error occurs during creation
    */
   async createStay(reservationId, actualCheckIn) {
     try {
@@ -201,10 +200,11 @@ class ReservationRepository extends BaseRepository {
   }
 
   /**
-   * Update stay with check-out information
+   * Update a stay with check-out information
    * @param {number} stayId - Stay ID
    * @param {Date} actualCheckOut - Actual check-out date
    * @returns {Promise<Array>} [affectedCount, affectedRows]
+   * @throws {Error} If an error occurs during the update
    */
   async updateStay(stayId, actualCheckOut) {
     try {

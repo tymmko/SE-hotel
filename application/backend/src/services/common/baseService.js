@@ -1,20 +1,18 @@
-// src/services/common/baseService.js
-
 /**
- * Base Service class that provides common functionality
+ * Base Service class providing common CRUD operations
  * Implements the Service Layer Pattern for business logic
  */
 class BaseService {
   /**
-   * @param {Object} repository - Data repository
+   * @param {Object} repository - Data repository for the entity
    */
   constructor(repository) {
     this.repository = repository;
   }
 
   /**
-   * Get all records
-   * @param {Object} options - Query options
+   * Retrieve all records
+   * @param {Object} [options={}] - Query options
    * @returns {Promise<Array>} List of records
    */
   async getAll(options = {}) {
@@ -22,11 +20,11 @@ class BaseService {
   }
 
   /**
-   * Get one record by ID
+   * Retrieve a single record by ID
    * @param {number|string} id - Record ID
-   * @param {Object} options - Query options
+   * @param {Object} [options={}] - Query options
    * @returns {Promise<Object>} Found record
-   * @throws {Error} If record not found
+   * @throws {Error} If record is not found
    */
   async getById(id, options = {}) {
     const record = await this.repository.findById(id, options);
@@ -50,7 +48,7 @@ class BaseService {
    * @param {number|string} id - Record ID
    * @param {Object} data - Data to update
    * @returns {Promise<Object>} Updated record
-   * @throws {Error} If record not found
+   * @throws {Error} If record is not found
    */
   async update(id, data) {
     const [updated] = await this.repository.update(data, { id });
@@ -65,8 +63,8 @@ class BaseService {
   /**
    * Delete a record
    * @param {number|string} id - Record ID
-   * @returns {Promise<boolean>} Deletion success
-   * @throws {Error} If record not found
+   * @returns {Promise<boolean>} True if deletion was successful
+   * @throws {Error} If record is not found
    */
   async delete(id) {
     const deleted = await this.repository.delete({ id });
