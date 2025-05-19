@@ -65,7 +65,7 @@ const CreateRoom = ({
 				</div>
 				<div className='d-flex mt-15 align-items-center'>
 					<div className={styles['info-label']}>Capacity:</div>
-					<div className={classNames('d-flex mt-0 align-items-center', styles.input)}>
+					<div className={classNames('d-flex mt-0 align-items-center')}>
 						<Input
 							value={room.capacity ?? 0}
 							onChange={changeCapacity}

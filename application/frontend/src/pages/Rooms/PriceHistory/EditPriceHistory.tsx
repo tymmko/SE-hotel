@@ -38,7 +38,7 @@ const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onCancel }) => {
 		<div className={styles['price-header']}>
 			<div style={{display: 'flex',alignItems: 'center', justifyContent: 'space-between'}}>
 				<h3>Edit Price Details</h3>
-				<button className={styles['close-button']} onClick= {onCancel} aria-label="Close" title="Close">
+				<button onClick= {onCancel} aria-label="Close" title="Close">
 					&times;
 				</button>
 			</div>
@@ -81,7 +81,7 @@ const EditPriceHistory: React.FC<EditPriceHistoryProps> = ({ onCancel }) => {
 					/>
 				</div>
 
-				<button onClick={handleSave} className={styles['save-button']}>
+				<button onClick={handleSave}>
 					Save
 				</button>
 
