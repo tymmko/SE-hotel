@@ -7,8 +7,6 @@ import classNames from 'classnames';
 import * as styles from './styles.m.less';
 import { SearchBar } from '../SearchBar';
 
-const filters = ['type', 'status'];
-
 export const TopBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

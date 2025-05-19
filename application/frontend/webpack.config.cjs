@@ -30,26 +30,27 @@ const config = {
 	  {
 		test: /\.m\.less$/i,
 		use: [
-			{ loader: 'style-loader' },
+			process.env.NODE_ENV !== 'production'
+			  ? 'style-loader'
+			  : MiniCssExtractPlugin.loader,
 			{
-				loader: 'css-loader',
-				options: {
-					modules: {
-						localIdentName: '[name]__[local]--[hash:base64:5]',
-					}
-				},
+			  loader: 'css-loader',
+			  options: {
+				modules: {
+				  localIdentName: '[name]__[local]--[hash:base64:5]',
+				}
+			  },
 			},
 			{
-				loader: "less-loader",
-				options: {
-				  lessOptions: {
-					javascriptEnabled: true,
-					math: "always",
-				  },
+			  loader: 'less-loader',
+			  options: {
+				lessOptions: {
+				  javascriptEnabled: true,
+				  math: "always",
 				},
-			},
-		],
-		sideEffects: false,
+			  },
+			}
+		  ],		  
 	  },
 	  {
 		test: /\.less$/i,

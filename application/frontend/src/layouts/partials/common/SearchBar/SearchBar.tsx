@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '../../../../components';
 import classNames from 'classnames';
-// @ts-ignore
+
 import * as styles from './styles.m.less';
 
 const filters = ['type', 'status'];
@@ -15,7 +15,7 @@ export const SearchBar = () => {
 				className={classNames(styles['search-icon'], 'mr-10')} 
 			/>
 			<div className={classNames('d-flex align-items-center br-2-30 p-15', styles['search-section'])}>
-				<span className={styles['search-text']}>Search</span>
+				<span>Search</span>
 				<div className={classNames(styles['filters'], 'd-flex')}>
 					{filters.map((tag) => (
 						<span key={tag} className={styles['filter-tag']}>{tag}</span>
